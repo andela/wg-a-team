@@ -16,6 +16,8 @@
 
 import datetime
 import decimal
+import fitbit
+from fitbit.exceptions import HTTPUnauthorized
 
 from django.db import models
 from django.db.models import IntegerField
@@ -647,3 +649,110 @@ class WeightUnit(models.Model):
         This is done basically to not litter the code with magic IDs
         '''
         return self.id in (1, 2)
+
+class FitbitUser(models.Model):
+  user = models.ForeignKey(User, verbose_name=_('User'),
+    editable=False, on_delete=models.CASCADE)
+  fitbit_id = models.CharField(max_length=10)
+  access_token = models.CharField(max_length=100)
+  refresh_token = models.CharField(max_length=100)
+
+  def authenticate(self, user):
+    self.user = user
+    self.key = settings['FITBIT_CLIENT_ID']
+    self.secret = settings['FITBIT_CLIENT_SECRET']
+    is_authorized = self.isAuthenticated()
+
+    if is_authorized:
+      self.access_token = is_authorized.access_token
+      self.refresh_token = is_authorized.refresh_token
+      self.authenticated = True
+      return self.authenticated
+
+    return False
+
+  def refresh(self, token):
+    print(token)
+
+  def getUrl(self):
+    auth = fitbit.FitbitOauth2Client(self.key, self.secret)
+    return auth.authorize_token_url()
+
+  def isAuthenticated(self):
+    is_authorized = FitbitUser.objects.filter(user=self.user).first()
+    return is_authorized
+
+  def completeAuth(self, code):
+    auth = fitbit.FitbitOauth2Client(self.key, self.secret)
+    data = auth.fetch_access_token(code)
+    self.access_token = data['access_token']
+    self.refresh_token = data['refresh_token']
+    self.fitbit_id = data['user_id']
+    self.authenticated = True
+
+    is_authorized = self.isAuthenticated()
+    if is_authorized:
+      is_authorized.access_token = self.access_token
+      is_authorized.refresh_token = self.refresh_token
+      is_authorized.save()
+    else:
+      self.save
+    return self
+
+  def initFitbit(self):
+    fitbit_instance = fitbit.Fitbit(self.key, self.secret,
+                                    access_token=self.access_token,
+                                    refresh_token=self.refresh_token,
+                                    system='en_UK')
+    return fitbit_instance
+
+  def getWeightInfo(self, start=None, end=None):
+    try:
+      fitbit_instance = self.initFitbit()
+      body_weight = fitbit_instance.get_bodyweight(period='1m')
+      clean_data = []
+      prev_entry = None
+      for data in body_weight['weight']:
+        weight_obj = WeightEntry()
+        weight_diff = 0
+        day_diff = 0
+        weight_obj.date = data['date']
+        weight_obj.weight = data['weight']
+
+        if prev_entry:
+          weight_diff = weight_obj.weight - prev_entry.weight
+          day_diff = (parse_date(weight_obj.date) - 
+                      parse_date(prev_entry.date)).days
+        prev_entry = weight_obj
+        clean_data.append((weight_obj, int(weight_diff), day_diff))
+    except HTTPUnauthorized:
+      return False
+    except BaseException:
+      return clean_data
+    return clean_data
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
