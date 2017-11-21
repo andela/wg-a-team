@@ -12,7 +12,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
-# You should have received a copy of the GNU Affero General Public License
+# You should have received a copy of the GNU Affero General Public
+# License
 
 import logging
 
@@ -38,9 +39,10 @@ class UnitChooserForm(forms.Form):
     amount = forms.DecimalField(decimal_places=2,
                                 max_digits=5,
                                 localize=True)
-    unit = forms.ModelChoiceField(queryset=IngredientWeightUnit.objects.none(),
-                                  empty_label="g",
-                                  required=False)
+    unit = forms.ModelChoiceField(
+        queryset=IngredientWeightUnit.objects.none(),
+        empty_label="g",
+        required=False)
 
     def __init__(self, *args, **kwargs):
         super(UnitChooserForm, self).__init__(*args, **kwargs)
@@ -101,18 +103,15 @@ class DailyCaloriesForm(forms.ModelForm):
     Form for the total daily calories needed
     '''
 
-    base_calories = forms.IntegerField(label=_('Basic caloric intake'),
-                                       help_text=_('Your basic caloric intake as calculated for '
-                                                   'your data'),
-                                       required=False,
-                                       widget=Html5NumberInput())
-    additional_calories = forms.IntegerField(label=_('Additional calories'),
-                                             help_text=_('Additional calories to add to the base '
-                                                         'rate (to substract, enter a negative '
-                                                         'number)'),
-                                             initial=0,
-                                             required=False,
-                                             widget=Html5NumberInput())
+    base_calories = forms.IntegerField(
+        label=_('Basic caloric intake'), help_text=_(
+            'Your basic caloric intake as calculated for '
+            'your data'), required=False, widget=Html5NumberInput())
+    additional_calories = forms.IntegerField(
+        label=_('Additional calories'), help_text=_(
+            'Additional calories to add to the base '
+            'rate (to substract, enter a negative '
+            'number)'), initial=0, required=False, widget=Html5NumberInput())
 
     class Meta:
         model = UserProfile
@@ -120,11 +119,13 @@ class DailyCaloriesForm(forms.ModelForm):
 
 
 class MealItemForm(forms.ModelForm):
-    weight_unit = forms.ModelChoiceField(queryset=IngredientWeightUnit.objects.none(),
-                                         empty_label="g",
-                                         required=False)
-    ingredient = forms.ModelChoiceField(queryset=Ingredient.objects.all(),
-                                        widget=forms.HiddenInput)
+    weight_unit = forms.ModelChoiceField(
+        queryset=IngredientWeightUnit.objects.none(),
+        empty_label="g",
+        required=False)
+    ingredient = forms.ModelChoiceField(
+        queryset=Ingredient.objects.all(),
+        widget=forms.HiddenInput)
 
     class Meta:
         model = MealItem
@@ -145,4 +146,5 @@ class MealItemForm(forms.ModelForm):
         # Filter the available ingredients
         if ingredient_id:
             self.fields['weight_unit'].queryset = \
-                IngredientWeightUnit.objects.filter(ingredient_id=ingredient_id)
+                IngredientWeightUnit.objects.filter(
+                    ingredient_id=ingredient_id)

@@ -13,7 +13,8 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU Affero General Public License
-# along with Workout Manager.  If not, see <http://www.gnu.org/licenses/>.
+# along with Workout Manager.  If not, see
+# <http://www.gnu.org/licenses/>.
 
 from rest_framework import serializers
 from wger.nutrition.models import (
@@ -58,8 +59,8 @@ class MealItemSerializer(serializers.ModelSerializer):
     '''
     MealItem serializer
     '''
-    meal = serializers.PrimaryKeyRelatedField(label='Nutrition plan',
-                                              queryset=Meal.objects.all())
+    meal = serializers.PrimaryKeyRelatedField(
+        label='Nutrition plan', queryset=Meal.objects.all())
 
     class Meta:
         model = MealItem
@@ -69,8 +70,9 @@ class MealSerializer(serializers.ModelSerializer):
     '''
     Meal serializer
     '''
-    plan = serializers.PrimaryKeyRelatedField(label='Nutrition plan',
-                                              queryset=NutritionPlan.objects.all())
+    plan = serializers.PrimaryKeyRelatedField(
+        label='Nutrition plan',
+        queryset=NutritionPlan.objects.all())
 
     class Meta:
         model = Meal

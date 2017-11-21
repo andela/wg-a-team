@@ -12,7 +12,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
-# You should have received a copy of the GNU Affero General Public License
+# You should have received a copy of the GNU Affero General Public
+# License
 
 from django.contrib.sitemaps import Sitemap
 from wger.exercises.models import Exercise
@@ -25,5 +26,6 @@ class ExercisesSitemap(Sitemap):
     priority = 0.5
 
     def items(self):
-        language_list = load_item_languages(LanguageConfig.SHOW_ITEM_EXERCISES)
+        language_list = load_item_languages(
+            LanguageConfig.SHOW_ITEM_EXERCISES)
         return Exercise.objects.accepted().filter(language__in=language_list)

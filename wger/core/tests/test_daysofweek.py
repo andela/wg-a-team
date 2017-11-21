@@ -11,7 +11,8 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU Affero General Public License
-# along with Workout Manager.  If not, see <http://www.gnu.org/licenses/>.
+# along with Workout Manager.  If not, see
+# <http://www.gnu.org/licenses/>.
 
 from wger.core.models import DaysOfWeek
 from wger.core.tests import api_base_test
@@ -27,7 +28,10 @@ class DaysOfWeekRepresentationTestCase(WorkoutManagerTestCase):
         '''
         Test that the representation of an object is correct
         '''
-        self.assertEqual("{0}".format(DaysOfWeek.objects.get(pk=1)), 'Monday')
+        self.assertEqual(
+            "{0}".format(
+                DaysOfWeek.objects.get(
+                    pk=1)), 'Monday')
 
 
 class DaysOfWeekApiTestCase(api_base_test.ApiBaseResourceTestCase):

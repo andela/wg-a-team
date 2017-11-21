@@ -12,7 +12,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
-# You should have received a copy of the GNU Affero General Public License
+# You should have received a copy of the GNU Affero General Public
+# License
 
 import datetime
 
@@ -37,23 +38,27 @@ class Command(BaseCommand):
 
     def handle(self, **options):
 
-        profile_list = UserProfile.objects.filter(num_days_weight_reminder__gt=0)
+        profile_list = UserProfile.objects.filter(
+            num_days_weight_reminder__gt=0)
 
         for profile in profile_list:
 
             # Only continue if the user has provided an email address.
-            # Checking it here so we check for NULL values and emtpy strings
+            # Checking it here so we check for NULL values and emtpy
+            # strings
             if not profile.user.email:
                 continue
 
             today = datetime.datetime.now().date()
 
             try:
-                last_entry = WeightEntry.objects.filter(user=profile.user).latest().date
+                last_entry = WeightEntry.objects.filter(
+                    user=profile.user).latest().date
                 datediff = (today - last_entry).days
 
                 if datediff >= profile.num_days_weight_reminder:
-                    self.send_email(profile.user, last_entry, datediff)
+                    self.send_email(
+                        profile.user, last_entry, datediff)
             except WeightEntry.DoesNotExist:
                 pass
 
@@ -67,7 +72,8 @@ class Command(BaseCommand):
         '''
 
         # Compose and send the email
-        translation.activate(user.userprofile.notification_language.short_name)
+        translation.activate(
+            user.userprofile.notification_language.short_name)
 
         context = {'site': Site.objects.get_current(),
                    'date': last_entry,
@@ -75,7 +81,8 @@ class Command(BaseCommand):
                    'user': user}
 
         subject = _('You have to enter your weight')
-        message = loader.render_to_string('workout/email_weight_reminder.tpl', context)
+        message = loader.render_to_string(
+            'workout/email_weight_reminder.tpl', context)
         mail.send_mail(subject,
                        message,
                        settings.WGER_SETTINGS['EMAIL_FROM'],

@@ -11,7 +11,8 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU Affero General Public License
-# along with Workout Manager.  If not, see <http://www.gnu.org/licenses/>.
+# along with Workout Manager.  If not, see
+# <http://www.gnu.org/licenses/>.
 
 from django.conf import settings
 from django.templatetags.static import static
@@ -58,7 +59,8 @@ def processor(request):
         # Flag for guest users
         'has_demo_data': request.session.get('has_demo_data', False),
 
-        # Don't show messages on AJAX requests (they are deleted if shown)
+        # Don't show messages on AJAX requests (they are deleted if
+        # shown)
         'no_messages': request.META.get('HTTP_X_WGER_NO_MESSAGES', False),
 
         # Default cache time for template fragment caching
@@ -72,8 +74,8 @@ def processor(request):
     if '/software/' in request.get_full_path() \
        or '/contact' in request.get_full_path() \
        or '/api/v2' in request.get_full_path():
-            context['active_tab'] = constants.SOFTWARE_TAB
-            context['show_shariff'] = True
+        context['active_tab'] = constants.SOFTWARE_TAB
+        context['show_shariff'] = True
 
     elif '/exercise/' in request.get_full_path():
         context['active_tab'] = constants.EXERCISE_TAB

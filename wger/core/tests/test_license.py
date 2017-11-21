@@ -11,11 +11,13 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU Affero General Public License
-# along with Workout Manager.  If not, see <http://www.gnu.org/licenses/>.
+# along with Workout Manager.  If not, see
+# <http://www.gnu.org/licenses/>.
 
 from wger.core.models import License
 from wger.core.tests import api_base_test
-from wger.core.tests.base_testcase import WorkoutManagerAccessTestCase, WorkoutManagerTestCase
+from wger.core.tests.base_testcase import (
+    WorkoutManagerAccessTestCase, WorkoutManagerTestCase)
 from wger.core.tests.base_testcase import WorkoutManagerAddTestCase
 from wger.core.tests.base_testcase import WorkoutManagerDeleteTestCase
 from wger.core.tests.base_testcase import WorkoutManagerEditTestCase
@@ -30,8 +32,11 @@ class LicenseRepresentationTestCase(WorkoutManagerTestCase):
         '''
         Test that the representation of an object is correct
         '''
-        self.assertEqual("{0}".format(License.objects.get(pk=1)),
-                         'A cool and free license - Germany (ACAFL - DE)')
+        self.assertEqual(
+            "{0}".format(
+                License.objects.get(
+                    pk=1)),
+            'A cool and free license - Germany (ACAFL - DE)')
 
 
 class LicenseOverviewTest(WorkoutManagerAccessTestCase):
