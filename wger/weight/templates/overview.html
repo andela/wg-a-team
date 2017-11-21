@@ -19,7 +19,7 @@
 {# Content #}
 {#         #}
 {% block content %}
-<div id="current-username" data-current-username="{{ owner_user.username }}"></div>
+<div id="current-username" data-current-username="{{ owner_user.username }}"data-fitbit={{request.GET.fitbit}}></div>
 
 
 {% if not min_date %}
@@ -110,6 +110,12 @@
                 {% trans "Import from spreadsheet" %}
             </a>
         </li>
+        <li>
+            <a href="{{ request.url }}?fitbit=true" {% auto_link_css flavour %}>
+                <span class="{% fa_class 'download' %}"></span>
+                {% trans "Import from Fitbit" %}
+            </a>
+        </li>
     </ul>
 </div>
 <a href="{% url 'weight:add' %}" class="btn btn-success btn-sm wger-modal-dialog">
@@ -117,3 +123,8 @@
 </a>
 {% endif %}
 {% endblock %}
+
+
+
+
+
