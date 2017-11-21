@@ -17,7 +17,7 @@
 import logging
 
 from django.conf import settings
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse, reverse_lazy
@@ -30,7 +30,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login as django_login
 from django.template.loader import render_to_string
 
-
+from wger.core.models import FitbitUser
 from wger.core.forms import FeedbackRegisteredForm, FeedbackAnonymousForm
 from wger.core.demo import create_demo_entries, create_temporary_user
 from wger.core.models import DaysOfWeek
@@ -89,6 +89,18 @@ def dashboard(request):
     '''
 
     template_data = {}
+
+    fitbit = request.GET.get('code')
+
+    if fitbit:
+        fitbituser = FitbitUser()
+        fitbituser.authenticate(request.user)
+        print(fitbit)
+        fitbituser.completeAuth(fitbit)
+        return HttpResponseRedirect(
+            reverse('weight:overview',
+             kwargs={'username': request.user.username}) + "?fitbit=true")
+
 
     # Load the last workout, either from a schedule or a 'regular' one
     (current_workout, schedule) = Schedule.objects.get_current_workout(request.user)
