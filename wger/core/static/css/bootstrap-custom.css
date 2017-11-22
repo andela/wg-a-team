@@ -248,3 +248,8 @@ body.modal {
     overflow-y: hidden;
 }
 */
+
+
+.social, .social a {
+    color: #fff !important;
+}
