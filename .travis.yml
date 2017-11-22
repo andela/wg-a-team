@@ -59,7 +59,7 @@ script:
   - pep8 wger
 
   # Javascript linting
-   - ./node_modules/.bin/gulp lint
+  - ./node_modules/.bin/gulp lint
 
   # Regular application
   - coverage run --source='.' ./manage.py test
