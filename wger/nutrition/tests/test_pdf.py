@@ -46,7 +46,7 @@ class NutritionalPlanPdfExportTestCase(WorkoutManagerTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response['Content-Type'], 'application/pdf')
         self.assertEqual(response['Content-Disposition'],
-                         'attachment; filename=nutritional-plan.pdf')
+                         'attachment;         filename=nutritional-plan.pdf')
 
         # Approximate size
         self.assertGreater(int(response['Content-Length']), 29000)
@@ -73,7 +73,7 @@ class NutritionalPlanPdfExportTestCase(WorkoutManagerTestCase):
                 'application/pdf')
             self.assertEqual(
                 response['Content-Disposition'],
-                'attachment; filename=nutritional-plan.pdf')
+                'attachment;         filename=nutritional-plan.pdf')
 
             # Approximate size
             self.assertGreater(int(response['Content-Length']), 29000)
@@ -101,7 +101,7 @@ class NutritionalPlanPdfExportTestCase(WorkoutManagerTestCase):
                 'application/pdf')
             self.assertEqual(
                 response['Content-Disposition'],
-                'attachment; filename=nutritional-plan.pdf')
+                'attachment;         filename=nutritional-plan.pdf')
 
             # Approximate size
             self.assertGreater(int(response['Content-Length']), 29000)
