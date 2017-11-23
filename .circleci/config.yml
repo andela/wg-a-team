@@ -9,6 +9,12 @@ jobs:
       # specify the version you desire here
       # use `-browsers` prefix for selenium tests, e.g. `3.6.1-browsers`
       - image: circleci/python:3.5
+      environment:
+        - TEST_MOBILE=True  DB=postgresql TRAVIS_NODE_VERSION="4"
+        - TEST_MOBILE=True  DB=sqlite     TRAVIS_NODE_VERSION="4"
+        - TEST_MOBILE=False DB=postgresql TRAVIS_NODE_VERSION="4"
+        - TEST_MOBILE=False DB=sqlite     TRAVIS_NODE_VERSION="4"
+
       
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
@@ -28,7 +34,15 @@ jobs:
           command: |
             python3 -m venv venv-django
             . venv-django/bin/activate
-            pip install -r requirements.txt
+            pip install -r requirements_devel.txt
+            pip install wger
+            npm install
+            if [[ "$DB" = "postgresql" ]]; then pip install psycopg2; fi
+
+            # Setup application
+            if [[ "$DB" = "sqlite" ]]; then wger create_settings; fi
+            if [[ "$DB" = "postgresql" ]]; then wger create_settings --database-type postgresql; fi
+            
       - save_cache:
           paths:
             - ./venv-django
