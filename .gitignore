@@ -68,3 +68,6 @@ venv-django/
 
 #vscode settings
 .vscode/
+
+#static files
+**/static/**
