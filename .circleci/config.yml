@@ -53,6 +53,7 @@ jobs:
           name: run tests
           command: |
             . venv-django/bin/activate
+            wger config_location
             python manage.py test
       - store_artifacts:
           path: test-reports
