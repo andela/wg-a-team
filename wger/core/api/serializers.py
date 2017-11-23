@@ -16,6 +16,7 @@
 # along with Workout Manager.  If not, see <http://www.gnu.org/licenses/>.
 
 from rest_framework import serializers
+from django.contrib.auth.models import User
 
 from wger.core.models import (
     UserProfile,
@@ -24,6 +25,13 @@ from wger.core.models import (
     License,
     RepetitionUnit,
     WeightUnit)
+
+class RegisteruserSerializer(serializers.ModelSerializer):
+    '''
+    Register User Serializer
+    '''
+    class Meta:
+        model = User
 
 
 class UserprofileSerializer(serializers.ModelSerializer):
