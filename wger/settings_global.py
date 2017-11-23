@@ -47,7 +47,7 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
 
-     #social logins
+    # social logins
     'social_django',
 
     # Apps from wger proper
@@ -130,7 +130,7 @@ MIDDLEWARE_CLASSES = (
     # Django mobile
     'django_mobile.middleware.MobileDetectionMiddleware',
     'django_mobile.middleware.SetFlavourMiddleware',
-    #social login
+    # social login
     'social_django.middleware.SocialAuthExceptionMiddleware',
 )
 
@@ -158,7 +158,7 @@ TEMPLATES = [
                 'django.template.context_processors.static',
                 'django.template.context_processors.tz',
                 'django.contrib.messages.context_processors.messages',
-                #social logins
+                # social logins
                 'social_django.context_processors.backends',
                 'social_django.context_processors.login_redirect',
 
