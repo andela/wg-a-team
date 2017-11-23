@@ -65,7 +65,6 @@ script:
   # Regular application
   - coverage run --source='.' ./manage.py test
 
-
   # Code coverage
   - coverage report
 notifications:
