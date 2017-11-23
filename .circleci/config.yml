@@ -9,11 +9,11 @@ jobs:
       # specify the version you desire here
       # use `-browsers` prefix for selenium tests, e.g. `3.6.1-browsers`
       - image: circleci/python:3.5
-      environment:
-        - TEST_MOBILE=True  DB=postgresql TRAVIS_NODE_VERSION="4"
-        - TEST_MOBILE=True  DB=sqlite     TRAVIS_NODE_VERSION="4"
-        - TEST_MOBILE=False DB=postgresql TRAVIS_NODE_VERSION="4"
-        - TEST_MOBILE=False DB=sqlite     TRAVIS_NODE_VERSION="4"
+        environment:
+          - TEST_MOBILE=True  DB=postgresql TRAVIS_NODE_VERSION="4"
+          - TEST_MOBILE=True  DB=sqlite     TRAVIS_NODE_VERSION="4"
+          - TEST_MOBILE=False DB=postgresql TRAVIS_NODE_VERSION="4"
+          - TEST_MOBILE=False DB=sqlite     TRAVIS_NODE_VERSION="4"
 
       
       # Specify service dependencies here if necessary
