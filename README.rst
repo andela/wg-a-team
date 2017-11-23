@@ -82,7 +82,7 @@ the comments in the documentation (development chapter) about this::
 
  $ python manage.py runserver
 
-## Enabling social media logins
+Enabling social media logins
 
  In order to enable users to login with facebook, twitter and google get the following keys and add as shown.
 
