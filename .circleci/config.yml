@@ -53,8 +53,7 @@ jobs:
           name: run tests
           command: |
             . venv-django/bin/activate
-            wger config_location
-            python manage.py test
+            python manage.py --settings=/home/circleci/.config/wger/settings.py test
       - store_artifacts:
           path: test-reports
           destination: test-reports
