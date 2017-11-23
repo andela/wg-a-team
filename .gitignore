@@ -62,3 +62,12 @@ target/
 # External Libraries 
 wger/core/static/bower_components
 node_modules
+
+#virtualenv
+venv-django/
+
+#statics
+**/static/**
+
+#vscode settings
+.vscode/
