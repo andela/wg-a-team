@@ -180,8 +180,10 @@ def trainer_login(request, user_pk):
         own = True
 
     # Note: it seems we have to manually set the authentication backend here
-    # - https://docs.djangoproject.com/en/1.6/topics/auth/default/#auth-web-requests
-    # - http://stackoverflow.com/questions/3807777/django-login-without-authenticating
+    # - https://docs.djangoproject.com/en/1.6/topics/auth/\
+    #   default/#auth-web-requests
+    # - http://stackoverflow.com/questions/3807777/django-l\
+    #   ogin-without-authenticating
     if own:
         del(request.session['trainer.identity'])
     user.backend = 'django.contrib.auth.backends.ModelBackend'

@@ -227,7 +227,7 @@ def create_or_reset_admin(context, settings_path=None):
     # the settings module during import
     from wger.manager.models import User
     try:
-        admin = User.objects.get(username="admin")
+        User.objects.get(username="admin")
         print("*** Password for user admin was reset to 'admin'")
     except User.DoesNotExist:
         print("*** Created default admin user")

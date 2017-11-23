@@ -91,7 +91,8 @@ def next_weekday(date, weekday):
     e.g. the first Monday after the 2013-12-05
 
     See link for more details:
-    * http://stackoverflow.com/questions/6558535/python-find-the-date-for-the-first-monday-after-a
+    * http://stackoverflow.com/questions/6558535/python-find-the-\
+        date-for-the-first-monday-after-a
 
     :param date: the start date
     :param weekday: weekday (0, Monday, 1 Tuesday, 2 Wednesday)

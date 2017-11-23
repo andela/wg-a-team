@@ -338,7 +338,8 @@ def reps_smart_text(settings, set_obj):
 class WorkoutCalendar(HTMLCalendar):
     '''
     A calendar renderer, see this blog entry for details:
-    * http://uggedal.com/journal/creating-a-flexible-monthly-calendar-in-django/
+    * http://uggedal.com/journal/creating-a-flexible-monthly-\
+        calendar-in-django/
     '''
 
     def __init__(self, workout_logs, *args, **kwargs):
