@@ -13,14 +13,24 @@ ADMINS = (
 MANAGERS = ADMINS
 
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': '/Users/vincentasantehokie/.local/share/wger/database.sqlite',
+#         'USER': '',
+#         'PASSWORD': '',
+#         'HOST': '',
+#         'PORT': '',
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': '/Users/vincentasantehokie/.local/share/wger/database.sqlite',
-        'USER': '',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'wger',
+        'USER': 'postgres',
         'PASSWORD': '',
-        'HOST': '',
-        'PORT': '',
+        'TEST': {'CHARSET': 'UTF8'}
     }
 }
 
