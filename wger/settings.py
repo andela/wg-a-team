@@ -79,7 +79,7 @@ WGER_SETTINGS['EMAIL_FROM'] = 'wger Workout Manager <wger@example.com>'
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 STATIC_ROOT = PROJECT_ROOT
-STATIC_URL = 'wger/static/'
+STATIC_URL = '/wger/static/'
 
 # Extra places for collectstatic to find static files.
 STATICFILES_DIRS = (
