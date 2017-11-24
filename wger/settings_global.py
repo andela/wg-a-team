@@ -62,6 +62,9 @@ INSTALLED_APPS = (
     'wger.gym',
     'wger.email',
 
+    # fitbit
+    'fitbit',
+
     # reCaptcha support, see https://github.com/praekelt/django-recaptcha
     'captcha',
 
