@@ -1,2 +1,1 @@
 web: gunicorn wger.wsgi
-release: wger create_settings --settings-path=~/wg-a-team/wger/settings.py
