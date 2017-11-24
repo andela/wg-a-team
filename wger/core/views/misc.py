@@ -95,7 +95,6 @@ def dashboard(request):
     if fitbit:
         fitbituser = FitbitUser()
         fitbituser.authenticate(request.user)
-        print(fitbit)
         fitbituser.completeAuth(fitbit)
         return HttpResponseRedirect(
             reverse('weight:overview',
