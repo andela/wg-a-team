@@ -190,7 +190,7 @@ urlpatterns = [
         name='index'),
 
     # The dashboard
-    url(r'^dashboard$',
+    url(r'^dashboard/$',
         misc.dashboard,
         name='dashboard'),
 
