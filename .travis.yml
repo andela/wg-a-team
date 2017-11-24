@@ -34,7 +34,6 @@ install:
   # Install requirements
   - pip install -r requirements_devel.txt
   - pip install wger
-  - npm install gulp
   - npm install
   - if [[ "$DB" = "postgresql" ]]; then pip install psycopg2; fi
   # Setup application
@@ -54,6 +53,7 @@ script:
   # Regular application
   - coverage run --source='.' ./manage.py test
   # Code coverage
+
   - coverage report
 notifications:
   slack: andela:OZefQdjnsTAbpFnQwexjb41q

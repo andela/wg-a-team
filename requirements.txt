@@ -30,6 +30,6 @@ djangorestframework>=3.2,<3.3
 django-filter
 django-tastypie
 django-cors-headers
-
+social-auth-app-django==2.0.0
 # Python3 compatibility
 six
