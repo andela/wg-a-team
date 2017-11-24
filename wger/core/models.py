@@ -16,6 +16,7 @@
 
 import datetime
 import decimal
+from wger.settings_global import WGER_SETTINGS as settings_global
 import fitbit
 from fitbit.exceptions import HTTPUnauthorized
 
@@ -659,8 +660,8 @@ class FitbitUser(models.Model):
 
   def authenticate(self, user):
     self.user = user
-    self.key = settings['FITBIT_CLIENT_ID']
-    self.secret = settings['FITBIT_CLIENT_SECRET']
+    self.key = settings_global['FITBIT_CLIENT_ID']
+    self.secret = settings_global['FITBIT_CLIENT_SECRET']
     is_authorized = self.isAuthenticated()
 
     if is_authorized:
