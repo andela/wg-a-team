@@ -13,6 +13,7 @@ ADMINS = (
 )
 MANAGERS = ADMINS
 
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
 # DATABASES = {
 #     'default': {
@@ -71,8 +72,16 @@ WGER_SETTINGS['EMAIL_FROM'] = 'wger Workout Manager <wger@example.com>'
 # Your twitter handle, if you have one for this instance.
 #WGER_SETTINGS['TWITTER'] = ''
 
-#
-# Django compressor
-#
-STATIC_ROOT = ''
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/1.9/howto/static-files/
+
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+
+STATIC_ROOT = PROJECT_ROOT
 STATIC_URL = '/static/'
+
+# Extra places for collectstatic to find static files.
+STATICFILES_DIRS = (
+    os.path.join(PROJECT_ROOT, 'static'),
+)
