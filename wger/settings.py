@@ -70,3 +70,9 @@ WGER_SETTINGS['EMAIL_FROM'] = 'wger Workout Manager <wger@example.com>'
 
 # Your twitter handle, if you have one for this instance.
 #WGER_SETTINGS['TWITTER'] = ''
+
+#
+# Django compressor
+#
+STATIC_ROOT = ''
+STATIC_URL = '/static/'
