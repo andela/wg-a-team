@@ -1,1 +1,1 @@
-gunicorn  --chdir=wger wger.wsgi
+web gunicorn  --chdir=wger wger.wsgi
