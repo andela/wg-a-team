@@ -196,7 +196,7 @@ urlpatterns = [
         misc.dashboard,
         name='dashboard'),
 
-    
+
 
     # Others
     url(r'^about$',
@@ -211,7 +211,7 @@ urlpatterns = [
         name='feedback'),
 
     url(r'^language/', include(patterns_language, namespace="language")),
-    url(r'^user/', include(patterns_user, namespace="user")), 
+    url(r'^user/', include(patterns_user, namespace="user")),
     url(r'^oauth/', include('social_django.urls', namespace='social')),
     url(r'^license/', include(patterns_license, namespace="license")),
     url(r'^repetition-unit/',
