@@ -223,7 +223,7 @@ def get_fitbit(user):
     result = fitbituser.authenticate(user)
     if result:
         weights = fitbituser.getWeightInfo()
-        if weights:
+        if isinstance(weights, list):
             weights = (True, weights)
         else:
             weights = (False, fitbituser.getUrl()[0])
