@@ -28,6 +28,7 @@ from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
+from django.utils.dateparse import parse_date
 from wger.gym.models import Gym
 
 from wger.utils.constants import TWOPLACES
