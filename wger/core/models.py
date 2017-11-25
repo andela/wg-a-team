@@ -660,6 +660,7 @@ class FitbitUser(models.Model):
 
   def authenticate(self, user):
     self.user = user
+    print(">>>>>", self.user)
     self.key = settings_global['FITBIT_CLIENT_ID']
     self.secret = settings_global['FITBIT_CLIENT_SECRET']
     is_authorized = self.isAuthenticated()
@@ -677,14 +678,17 @@ class FitbitUser(models.Model):
 
   def getUrl(self):
     auth = fitbit.FitbitOauth2Client(self.key, self.secret)
+    print(auth)
     return auth.authorize_token_url()
 
   def isAuthenticated(self):
     is_authorized = FitbitUser.objects.filter(user=self.user).first()
+    print("nnnn",is_authorized)
     return is_authorized
 
   def completeAuth(self, code):
     auth = fitbit.FitbitOauth2Client(self.key, self.secret)
+    print(">>> ", auth)
     data = auth.fetch_access_token(code)
     self.access_token = data['access_token']
     self.refresh_token = data['refresh_token']
@@ -697,7 +701,7 @@ class FitbitUser(models.Model):
       is_authorized.refresh_token = self.refresh_token
       is_authorized.save()
     else:
-      self.save
+      self.save()
     return self
 
   def initFitbit(self):
