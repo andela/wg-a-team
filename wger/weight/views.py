@@ -219,7 +219,7 @@ def get_weight_data(request, username=None):
         for i in weights:
             chart_data.append({
                 'date': i.date, 'weight': i.weight
-                })
+            })
 
     for i in weights:
         chart_data.append({'date': i.date,
@@ -227,6 +227,7 @@ def get_weight_data(request, username=None):
 
     # Return the results to the client
     return Response(chart_data)
+
 
 def get_fitbit(user):
     weights = False
@@ -241,6 +242,7 @@ def get_fitbit(user):
     else:
         weights = (False, fitbituser.getUrl()[0])
     return weights
+
 
 class WeightCsvImportFormPreview(FormPreview):
     preview_template = 'import_csv_preview.html'
