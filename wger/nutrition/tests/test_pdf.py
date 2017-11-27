@@ -10,7 +10,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
-# You should have received a copy of the GNU Affero General Public License
+# You should have received a copy of the GNU Affero General Public
+# License
 
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
@@ -34,15 +35,18 @@ class NutritionalPlanPdfExportTestCase(WorkoutManagerTestCase):
 
         user = User.objects.get(pk=2)
         uid, token = make_token(user)
-        response = self.client.get(reverse('nutrition:plan:export-pdf',
-                                   kwargs={'id': 4,
-                                           'uidb64': uid,
-                                           'token': token}))
+        response = self.client.get(
+            reverse(
+                'nutrition:plan:export-pdf',
+                kwargs={
+                    'id': 4,
+                    'uidb64': uid,
+                    'token': token}))
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response['Content-Type'], 'application/pdf')
         self.assertEqual(response['Content-Disposition'],
-                         'attachment; filename=nutritional-plan.pdf')
+                         'attachment;         filename=nutritional-plan.pdf')
 
         # Approximate size
         self.assertGreater(int(response['Content-Length']), 29000)
@@ -54,16 +58,22 @@ class NutritionalPlanPdfExportTestCase(WorkoutManagerTestCase):
         '''
 
         # Get a plan
-        response = self.client.get(reverse('nutrition:plan:export-pdf',
-                                   kwargs={'id': 4}))
+        response = self.client.get(
+            reverse(
+                'nutrition:plan:export-pdf',
+                kwargs={
+                    'id': 4}))
 
         if fail:
             self.assertIn(response.status_code, (404, 403))
         else:
             self.assertEqual(response.status_code, 200)
-            self.assertEqual(response['Content-Type'], 'application/pdf')
-            self.assertEqual(response['Content-Disposition'],
-                             'attachment; filename=nutritional-plan.pdf')
+            self.assertEqual(
+                response['Content-Type'],
+                'application/pdf')
+            self.assertEqual(
+                response['Content-Disposition'],
+                'attachment;         filename=nutritional-plan.pdf')
 
             # Approximate size
             self.assertGreater(int(response['Content-Length']), 29000)
@@ -76,16 +86,22 @@ class NutritionalPlanPdfExportTestCase(WorkoutManagerTestCase):
         plan.user = user
         plan.language = language
         plan.save()
-        response = self.client.get(reverse('nutrition:plan:export-pdf',
-                                   kwargs={'id': plan.id}))
+        response = self.client.get(
+            reverse(
+                'nutrition:plan:export-pdf',
+                kwargs={
+                    'id': plan.id}))
 
         if fail:
             self.assertIn(response.status_code, (404, 403))
         else:
             self.assertEqual(response.status_code, 200)
-            self.assertEqual(response['Content-Type'], 'application/pdf')
-            self.assertEqual(response['Content-Disposition'],
-                             'attachment; filename=nutritional-plan.pdf')
+            self.assertEqual(
+                response['Content-Type'],
+                'application/pdf')
+            self.assertEqual(
+                response['Content-Disposition'],
+                'attachment;         filename=nutritional-plan.pdf')
 
             # Approximate size
             self.assertGreater(int(response['Content-Length']), 29000)
@@ -110,7 +126,8 @@ class NutritionalPlanPdfExportTestCase(WorkoutManagerTestCase):
 
     def test_export_pdf_other(self):
         '''
-        Tests exporting a nutritional plan as a pdf as a logged user not owning the data
+        Tests exporting a nutritional plan as a pdf as a logged user
+        not owning the data
         '''
 
         self.user_login('admin')

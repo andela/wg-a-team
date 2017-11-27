@@ -13,7 +13,8 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU Affero General Public License
-# along with Workout Manager.  If not, see <http://www.gnu.org/licenses/>.
+# along with Workout Manager.  If not, see
+# <http://www.gnu.org/licenses/>.
 
 import datetime
 from calendar import HTMLCalendar
@@ -36,7 +37,12 @@ from wger.utils.helpers import normalize_decimal
 from wger.utils.pdf import styleSheet
 
 
-def render_workout_day(day, nr_of_weeks=7, images=False, comments=False, only_table=False):
+def render_workout_day(
+        day,
+        nr_of_weeks=7,
+        images=False,
+        comments=False,
+        only_table=False):
     '''
     Render a table with reportlab with the contents of the training day
 
@@ -72,22 +78,26 @@ def render_workout_day(day, nr_of_weeks=7, images=False, comments=False, only_ta
     set_count = 1
     day_markers.append(len(data))
 
-    p = Paragraph(u'<para align="center">%(days)s: %(description)s</para>' %
-                  {'days': day['days_of_week']['text'],
-                   'description': day['obj'].description},
-                  styleSheet["Bold"])
+    p = Paragraph(
+        u'<para align="center">%(days)s: %(description)s</para>' %
+        {
+            'days': day['days_of_week']['text'],
+            'description': day['obj'].description},
+        styleSheet["Bold"])
 
     data.append([p])
 
     # Note: the _('Date') will be on the 3rd cell, but since we make a span
     #       over 3 cells, the value has to be on the 1st one
     data.append([_('Date') + ' ', '', ''] + [''] * nr_of_weeks)
-    data.append([_('Nr.'), _('Exercise'), _('Reps')] + [_('Weight')] * nr_of_weeks)
+    data.append([_('Nr.'), _('Exercise'), _('Reps')] +
+                [_('Weight')] * nr_of_weeks)
 
     # Sets
     exercise_start = len(data)
     for set in day['set_list']:
-        group_exercise_marker[set['obj'].id] = {'start': len(data), 'end': len(data)}
+        group_exercise_marker[set['obj'].id] = {
+            'start': len(data), 'end': len(data)}
 
         # Exercises
         for exercise in set['exercise_list']:
@@ -97,22 +107,32 @@ def render_workout_day(day, nr_of_weeks=7, images=False, comments=False, only_ta
             if exercise['has_weight']:
                 setting_out = []
                 for i in exercise['setting_text'].split(u'–'):
-                    setting_out.append(Paragraph(i, styleSheet["Small"], bulletText=''))
+                    setting_out.append(
+                        Paragraph(
+                            i,
+                            styleSheet["Small"],
+                            bulletText=''))
             else:
-                setting_out = Paragraph(exercise['setting_text'], styleSheet["Small"])
+                setting_out = Paragraph(
+                    exercise['setting_text'], styleSheet["Small"])
 
             # Collect a list of the exercise comments
             item_list = [Paragraph('', styleSheet["Small"])]
             if comments:
-                item_list = [ListItem(Paragraph(i, style=styleSheet["ExerciseComments"]))
-                             for i in exercise['comment_list']]
+                item_list = [
+                    ListItem(
+                        Paragraph(
+                            i,
+                            style=styleSheet["ExerciseComments"])
+                    ) for i in exercise['comment_list']]
 
             # Add the exercise's main image
             image = Paragraph('', styleSheet["Small"])
             if images:
                 if exercise['obj'].main_image:
 
-                    # Make the images somewhat larger when printing only the workout and not
+                    # Make the images somewhat larger when printing
+                    # only the workout and not
                     # also the columns for weight logs
                     if only_table:
                         image_size = 2
@@ -120,19 +140,24 @@ def render_workout_day(day, nr_of_weeks=7, images=False, comments=False, only_ta
                         image_size = 1.5
 
                     image = Image(exercise['obj'].main_image.image)
-                    image.drawHeight = image_size * cm * image.drawHeight / image.drawWidth
+                    image.drawHeight = image_size * cm * \
+                        image.drawHeight / image.drawWidth
                     image.drawWidth = image_size * cm
 
             # Put the name and images and comments together
-            exercise_content = [Paragraph(exercise['obj'].name, styleSheet["Small"]),
-                                image,
-                                ListFlowable(item_list,
-                                             bulletType='bullet',
-                                             leftIndent=5,
-                                             spaceBefore=7,
-                                             bulletOffsetY=-3,
-                                             bulletFontSize=3,
-                                             start='square')]
+            exercise_content = [
+                Paragraph(
+                    exercise['obj'].name,
+                    styleSheet["Small"]),
+                image,
+                ListFlowable(
+                    item_list,
+                    bulletType='bullet',
+                    leftIndent=5,
+                    spaceBefore=7,
+                    bulletOffsetY=-3,
+                    bulletFontSize=3,
+                    start='square')]
 
             data.append([set_count,
                          exercise_content,
@@ -164,15 +189,18 @@ def render_workout_day(day, nr_of_weeks=7, images=False, comments=False, only_ta
         start_marker = group_exercise_marker[marker]['start']
         end_marker = group_exercise_marker[marker]['end']
 
-        table_style.append(('VALIGN', (0, start_marker), (0, end_marker), 'MIDDLE'))
-        table_style.append(('SPAN', (0, start_marker), (0, end_marker)))
+        table_style.append(
+            ('VALIGN', (0, start_marker), (0, end_marker), 'MIDDLE'))
+        table_style.append(
+            ('SPAN', (0, start_marker), (0, end_marker)))
 
     # Set an alternating background colour for rows with exercises.
-    # The rows with exercises range from exercise_start till the end of the data
-    # list
+    # The rows with exercises range from exercise_start till the
+    # end of the data list
     for i in range(exercise_start, len(data) + 1):
         if not i % 2:
-            table_style.append(('BACKGROUND', (1, i - 1), (-1, i - 1), colors.lavender))
+            table_style.append(
+                ('BACKGROUND', (1, i - 1), (-1, i - 1), colors.lavender))
 
     # Put everything together and manually set some of the widths
     t = Table(data, style=table_style)
@@ -195,8 +223,9 @@ def reps_smart_text(settings, set_obj):
 
     This is a human representation of the settings, in a way that humans
     would also write: e.g. "8 8 10 10" but "4 x 10" and not "10 10 10 10".
-    This helper also takes care to process, hide or show the different repetition
-    and weight units as appropriate, e.g. "8 x 2 Plates", "10, 20, 30, ∞"
+    This helper also takes care to process, hide or show the different
+    repetition and weight units as appropriate, e.g. "8 x 2 Plates",
+    "10, 20, 30, ∞"
 
     :param settings:
     :param set_obj:
@@ -262,12 +291,14 @@ def reps_smart_text(settings, set_obj):
         setting_list_text = u'{0} {1}'.format(reps, rep_unit).strip()
         if weight:
             setting_text += ' ({0} {1})'.format(weight, weight_unit)
-            setting_list_text += ' ({0} {1})'.format(weight, weight_unit)
+            setting_list_text += ' ({0} {1})'.format(weight,
+                                                     weight_unit)
 
         setting_list = [setting_list_text] * set_obj.sets
         reps_list = [settings[0].reps] * set_obj.sets
         weight_list = [weight] * set_obj.sets
-        repetition_units = [settings[0].repetition_unit] * set_obj.sets
+        repetition_units = [
+            settings[0].repetition_unit] * set_obj.sets
         weight_units = [settings[0].weight_unit] * set_obj.sets
 
     # There's more than one setting, each set can have a different combination
@@ -284,7 +315,8 @@ def reps_smart_text(settings, set_obj):
             reps = get_reps_reprentation(setting, rep_unit)
             weight = normalize_weight(setting)
             if weight:
-                reps += ' ({0} {1})'.format(weight, setting.weight_unit)
+                reps += ' ({0} {1})'.format(weight,
+                                            setting.weight_unit)
 
             tmp_reps_text.append(reps)
             tmp_reps.append(setting.reps)
@@ -299,14 +331,17 @@ def reps_smart_text(settings, set_obj):
         reps_list = tmp_reps
         weight_list = tmp_weight
 
-    return setting_text, setting_list, weight_list, reps_list, repetition_units, weight_units
+    return setting_text, setting_list, weight_list, reps_list, \
+        repetition_units, weight_units
 
 
 class WorkoutCalendar(HTMLCalendar):
     '''
     A calendar renderer, see this blog entry for details:
-    * http://uggedal.com/journal/creating-a-flexible-monthly-calendar-in-django/
+    * http://uggedal.com/journal/creating-a-flexible-monthly-\
+        calendar-in-django/
     '''
+
     def __init__(self, workout_logs, *args, **kwargs):
         super(WorkoutCalendar, self).__init__(*args, **kwargs)
         self.workout_logs = workout_logs
@@ -322,7 +357,8 @@ class WorkoutCalendar(HTMLCalendar):
         if datetime.date.today() == date_obj:
             cssclass += ' today'
 
-        # There are no logs for this day, doesn't need special attention
+        # There are no logs for this day, doesn't need special
+        # attention
         if date_obj not in self.workout_logs:
             return self.day_cell(cssclass, day)
 
@@ -330,8 +366,8 @@ class WorkoutCalendar(HTMLCalendar):
         entry = self.workout_logs.get(date_obj)
 
         # Note: due to circular imports we use can't import the workout session
-        # model to access the impression values directly, so they are hard coded
-        # here.
+        # model to access the impression values directly,
+        # so they are hard coded here.
         if entry['session']:
             # Bad
             if entry['session'].impression == '1':
@@ -346,14 +382,18 @@ class WorkoutCalendar(HTMLCalendar):
         else:
             background_css = 'btn-warning'
 
-        url = reverse('manager:log:log', kwargs={'pk': entry['workout'].id})
+        url = reverse(
+            'manager:log:log', kwargs={
+                'pk': entry['workout'].id})
         formatted_date = date_obj.strftime('%Y-%m-%d')
         body = []
-        body.append('<a href="{0}" '
-                    'data-log="log-{1}" '
-                    'class="btn btn-block {2} calendar-link">'.format(url,
-                                                                      formatted_date,
-                                                                      background_css))
+        body.append(
+            '<a href="{0}" '
+            'data-log="log-{1}" '
+            'class="btn btn-block {2} calendar-link">'.format(
+                url,
+                formatted_date,
+                background_css))
         body.append(repr(day))
         body.append('</a>')
         return self.day_cell(cssclass, '{0}'.format(''.join(body)))
@@ -380,4 +420,5 @@ class WorkoutCalendar(HTMLCalendar):
         '''
         Renders a day cell
         '''
-        return '<td class="{0}" style="vertical-align: middle;">{1}</td>'.format(cssclass, body)
+        return '<td class="{0}" style="vertical-align: middle;">{1}</td>'\
+            .format(cssclass, body)

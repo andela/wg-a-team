@@ -12,7 +12,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
-# You should have received a copy of the GNU Affero General Public License
+# You should have received a copy of the GNU Affero General Public
+# License
 
 import logging
 import bleach
@@ -38,8 +39,8 @@ logger = logging.getLogger(__name__)
 
 class WgerMultiplePermissionRequiredMixin(PermissionRequiredMixin):
     '''
-    A PermissionRequiredMixin that checks that the user has at least one permission
-    instead of all of them.
+    A PermissionRequiredMixin that checks that the user has at least
+    one permission instead of all of them.
     '''
 
     def has_permission(self):
@@ -61,8 +62,8 @@ class WgerPermissionMixin(object):
     '''
     The name of the permission required to access this class.
 
-    This can be a string or a tuple, in the latter case having any of the permissions
-    listed is enough to access the resource
+    This can be a string or a tuple, in the latter case having any of the
+    permissions listed is enough to access the resource
     '''
 
     login_required = False
@@ -77,8 +78,10 @@ class WgerPermissionMixin(object):
 
         if self.login_required or self.permission_required:
             if not request.user.is_authenticated():
-                return HttpResponseRedirect(reverse_lazy('core:user:login')
-                                            + '?next={0}'.format(request.path))
+                return HttpResponseRedirect(
+                    reverse_lazy('core:user:login') +
+                    '?next={0}'.format(
+                        request.path))
 
             if self.permission_required:
                 has_permission = False
@@ -90,10 +93,17 @@ class WgerPermissionMixin(object):
                     has_permission = True
 
                 if not has_permission:
-                    return HttpResponseForbidden('You are not allowed to access this object')
+                    return HttpResponseForbidden(
+                        'You are not allowed to access this object')
 
         # Dispatch normally
-        return super(WgerPermissionMixin, self).dispatch(request, *args, **kwargs)
+        return super(
+            WgerPermissionMixin,
+            self).dispatch(
+            request,
+            *
+            args,
+            **kwargs)
 
 
 # , PermissionRequiredMixin
@@ -144,13 +154,17 @@ class WgerFormMixin(ModelFormMixin):
         '''
 
         # Call the base implementation first to get a context
-        context = super(WgerFormMixin, self).get_context_data(**kwargs)
+        context = super(
+            WgerFormMixin,
+            self).get_context_data(
+            **kwargs)
 
         # CSRF token
         context.update(csrf(self.request))
 
         context['sidebar'] = self.sidebar
-        # TODO: change template so it iterates through form and not formfields
+        # TODO: change template so it iterates through form and not
+        # formfields
         context['form_fields'] = context['form']
 
         # Custom JS code on form (autocompleter, editor, etc.)
@@ -160,8 +174,9 @@ class WgerFormMixin(ModelFormMixin):
         # opening it on a modal dialog, we need to make sure the POST request
         # reaches the correct controller
         if self.form_action_urlname:
-            context['form_action'] = reverse(self.form_action_urlname,
-                                             kwargs={'pk': self.object.id})
+            context['form_action'] = reverse(
+                self.form_action_urlname, kwargs={
+                    'pk': self.object.id})
         elif self.form_action:
             context['form_action'] = self.form_action
 
@@ -173,7 +188,8 @@ class WgerFormMixin(ModelFormMixin):
 
         # Template to extend. For AJAX requests we don't need the rest of the
         # template, only the form
-        context['extend_template'] = 'base_empty.html' if self.request.is_ajax() else 'base.html'
+        context['extend_template'] = 'base_empty.html' if self.request.is_ajax(
+        ) else 'base.html'
 
         return context
 
@@ -195,7 +211,8 @@ class WgerFormMixin(ModelFormMixin):
             owner_object = self.owner_object['class'].objects.get(
                 pk=kwargs[self.owner_object['pk']])
         else:
-            # On CreateViews we don't have an object, so just ignore it
+            # On CreateViews we don't have an object, so just ignore
+            # it
             try:
                 owner_object = self.get_object().get_owner_object()
             except AttributeError:
@@ -203,10 +220,17 @@ class WgerFormMixin(ModelFormMixin):
 
         # Nothing to see, please move along
         if owner_object and owner_object.user != self.request.user:
-            return HttpResponseForbidden('You are not allowed to access this object')
+            return HttpResponseForbidden(
+                'You are not allowed to access this object')
 
         # Dispatch normally
-        return super(WgerFormMixin, self).dispatch(request, *args, **kwargs)
+        return super(
+            WgerFormMixin,
+            self).dispatch(
+            request,
+            *
+            args,
+            **kwargs)
 
     def get_messages(self):
         '''
@@ -232,11 +256,17 @@ class WgerFormMixin(ModelFormMixin):
         '''
 
         for field in self.clean_html:
-            setattr(form.instance, field, bleach.clean(getattr(form.instance, field),
-                                                       tags=HTML_TAG_WHITELIST,
-                                                       attributes=HTML_ATTRIBUTES_WHITELIST,
-                                                       styles=HTML_STYLES_WHITELIST,
-                                                       strip=True))
+            setattr(
+                form.instance,
+                field,
+                bleach.clean(
+                    getattr(
+                        form.instance,
+                        field),
+                    tags=HTML_TAG_WHITELIST,
+                    attributes=HTML_ATTRIBUTES_WHITELIST,
+                    styles=HTML_STYLES_WHITELIST,
+                    strip=True))
 
         if self.get_messages():
             messages.success(self.request, self.get_messages())
@@ -258,7 +288,10 @@ class WgerDeleteMixin(ModelFormMixin):
         '''
 
         # Call the base implementation first to get a context
-        context = super(WgerDeleteMixin, self).get_context_data(**kwargs)
+        context = super(
+            WgerDeleteMixin,
+            self).get_context_data(
+            **kwargs)
 
         # CSRF token
         context.update(csrf(self.request))
@@ -267,8 +300,9 @@ class WgerDeleteMixin(ModelFormMixin):
         # opening it on a modal dialog, we need to make sure the POST request
         # reaches the correct controller
         if self.form_action_urlname:
-            context['form_action'] = reverse(self.form_action_urlname,
-                                             kwargs={'pk': self.object.id})
+            context['form_action'] = reverse(
+                self.form_action_urlname, kwargs={
+                    'pk': self.object.id})
         elif self.form_action:
             context['form_action'] = self.form_action
 
@@ -280,7 +314,8 @@ class WgerDeleteMixin(ModelFormMixin):
 
         # Template to extend. For AJAX requests we don't need the rest of the
         # template, only the form
-        context['extend_template'] = 'base_empty.html' if self.request.is_ajax() else 'base.html'
+        context['extend_template'] = 'base_empty.html' if self.request.is_ajax(
+        ) else 'base.html'
 
         return context
 
@@ -303,7 +338,13 @@ class WgerDeleteMixin(ModelFormMixin):
             return HttpResponseForbidden()
 
         # Dispatch normally
-        return super(WgerDeleteMixin, self).dispatch(request, *args, **kwargs)
+        return super(
+            WgerDeleteMixin,
+            self).dispatch(
+            request,
+            *
+            args,
+            **kwargs)
 
     def get_messages(self):
         '''
@@ -318,21 +359,33 @@ class WgerDeleteMixin(ModelFormMixin):
         '''
         if self.get_messages():
             messages.success(request, self.get_messages())
-        return super(WgerDeleteMixin, self).delete(request, *args, **kwargs)
+        return super(
+            WgerDeleteMixin,
+            self).delete(
+            request,
+            *
+            args,
+            **kwargs)
 
 
 class TextTemplateView(TemplateView):
     '''
     A regular templateView that sets the mime type as text/plain
     '''
+
     def render_to_response(self, context, **response_kwargs):
         response_kwargs['content_type'] = 'text/plain'
-        return super(TextTemplateView, self).render_to_response(context, **response_kwargs)
+        return super(
+            TextTemplateView,
+            self).render_to_response(
+            context,
+            **response_kwargs)
 
 
 class WebappManifestView(TemplateView):
     '''
-    A regular templateView that sets the mime type as application/x-web-app-manifest+json
+    A regular templateView that sets the mime type as
+    application/x-web-app-manifest+json
 
     This is used in the mozilla market place
     '''
@@ -340,4 +393,8 @@ class WebappManifestView(TemplateView):
 
     def render_to_response(self, context, **response_kwargs):
         response_kwargs['content_type'] = 'application/x-web-app-manifest+json'
-        return super(WebappManifestView, self).render_to_response(context, **response_kwargs)
+        return super(
+            WebappManifestView,
+            self).render_to_response(
+            context,
+            **response_kwargs)

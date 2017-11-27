@@ -10,7 +10,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
-# You should have received a copy of the GNU Affero General Public License
+# You should have received a copy of the GNU Affero General Public
+# License
 
 import logging
 
@@ -30,7 +31,8 @@ class ChangePasswordTestCase(WorkoutManagerTestCase):
     def change_password(self, fail=True):
 
         # Fetch the change passwort page
-        response = self.client.get(reverse('core:user:change-password'))
+        response = self.client.get(
+            reverse('core:user:change-password'))
 
         if fail:
             self.assertEqual(response.status_code, 302)
@@ -42,7 +44,8 @@ class ChangePasswordTestCase(WorkoutManagerTestCase):
                      'new_password1': 'secret',
                      'new_password2': 'secret'}
 
-        response = self.client.post(reverse('core:user:change-password'), form_data)
+        response = self.client.post(
+            reverse('core:user:change-password'), form_data)
         self.assertEqual(response.status_code, 302)
 
         # Check the new password was accepted

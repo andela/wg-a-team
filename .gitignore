@@ -63,3 +63,12 @@ venv-django/
 # External Libraries
 wger/core/static/bower_components
 node_modules
+
+#virtual env
+venv-django/
+
+#vscode settings
+.vscode/
+
+#static files
+**/static/**

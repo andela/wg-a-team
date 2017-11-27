@@ -12,7 +12,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
-# You should have received a copy of the GNU Affero General Public License
+# You should have received a copy of the GNU Affero General Public
+# License
 
 import datetime
 
@@ -39,4 +40,5 @@ class Command(BaseCommand):
                 counter += 1
                 profile.user.delete()
 
-        self.stdout.write("Deleted {0} temporary users".format(counter))
+        self.stdout.write(
+            "Deleted {0} temporary users".format(counter))

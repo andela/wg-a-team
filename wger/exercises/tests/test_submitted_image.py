@@ -10,7 +10,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
-# You should have received a copy of the GNU Affero General Public License
+# You should have received a copy of the GNU Affero General Public
+# License
 
 from django.core import mail
 from django.core.urlresolvers import reverse
@@ -28,7 +29,11 @@ class ImagePendingDetailTestCase(WorkoutManagerTestCase):
         '''
         Helper function
         '''
-        response = self.client.get(reverse('exercise:exercise:view', kwargs={'id': 2}))
+        response = self.client.get(
+            reverse(
+                'exercise:exercise:view',
+                kwargs={
+                    'id': 2}))
         self.assertEqual(response.status_code, 200)
 
         if not fail:
@@ -42,7 +47,8 @@ class ImagePendingDetailTestCase(WorkoutManagerTestCase):
 
     def test_pending_view_admin(self):
         '''
-        Tests the detail page of an exercise with a pending image as an admin user
+        Tests the detail page of an exercise with a pending
+        image as an admin user
         '''
 
         self.user_login('admin')
@@ -50,7 +56,8 @@ class ImagePendingDetailTestCase(WorkoutManagerTestCase):
 
     def test_pending_view_user(self):
         '''
-        Tests the detail page of an exercise with a pending image as a regular user
+        Tests the detail page of an exercise with a pending
+        image as a regular user
         '''
 
         self.user_login('test')
@@ -58,7 +65,8 @@ class ImagePendingDetailTestCase(WorkoutManagerTestCase):
 
     def test_pending_view_logged_out(self):
         '''
-        Tests the detail page of an exercise with a pending image as a logged out user
+        Tests the detail page of an exercise with a pending image
+        as a logged out user
         '''
 
         self.pending_view(fail=True)
@@ -75,17 +83,25 @@ class ImageAcceptTestCase(WorkoutManagerTestCase):
         '''
         image = ExerciseImage.objects.get(pk=3)
         self.assertEqual(image.status, ExerciseImage.STATUS_PENDING)
-        response = self.client.get(reverse('exercise:image:accept', kwargs={'pk': 3}))
+        response = self.client.get(
+            reverse(
+                'exercise:image:accept',
+                kwargs={
+                    'pk': 3}))
         image = ExerciseImage.objects.get(pk=3)
         self.assertEqual(response.status_code, 302)
 
         if not fail:
-            self.assertEqual(image.status, ExerciseImage.STATUS_ACCEPTED)
+            self.assertEqual(
+                image.status,
+                ExerciseImage.STATUS_ACCEPTED)
             response = self.client.get(response['Location'])
             self.assertEqual(response.status_code, 200)
             self.assertEqual(len(mail.outbox), 0)
         else:
-            self.assertEqual(image.status, ExerciseImage.STATUS_PENDING)
+            self.assertEqual(
+                image.status,
+                ExerciseImage.STATUS_PENDING)
             self.assertEqual(len(mail.outbox), 0)
 
     def test_accept_admin(self):
@@ -123,17 +139,25 @@ class ImageRejectTestCase(WorkoutManagerTestCase):
         '''
         image = ExerciseImage.objects.get(pk=3)
         self.assertEqual(image.status, ExerciseImage.STATUS_PENDING)
-        response = self.client.get(reverse('exercise:image:decline', kwargs={'pk': 3}))
+        response = self.client.get(
+            reverse(
+                'exercise:image:decline',
+                kwargs={
+                    'pk': 3}))
         image = ExerciseImage.objects.get(pk=3)
         self.assertEqual(response.status_code, 302)
 
         if not fail:
-            self.assertEqual(image.status, ExerciseImage.STATUS_DECLINED)
+            self.assertEqual(
+                image.status,
+                ExerciseImage.STATUS_DECLINED)
             response = self.client.get(response['Location'])
             self.assertEqual(response.status_code, 200)
 
         else:
-            self.assertEqual(image.status, ExerciseImage.STATUS_PENDING)
+            self.assertEqual(
+                image.status,
+                ExerciseImage.STATUS_PENDING)
 
     def test_reject_admin(self):
         '''
