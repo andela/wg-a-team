@@ -12,7 +12,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
-# You should have received a copy of the GNU Affero General Public License
+# You should have received a copy of the GNU Affero General Public
+# License
 
 import logging
 import datetime
@@ -61,9 +62,11 @@ def overview(request):
     '''
 
     template_data = {}
-    template_data['schedules'] = (Schedule.objects
-                                  .filter(user=request.user)
-                                  .order_by('-is_active', '-start_date'))
+    template_data['schedules'] = (
+        Schedule.objects .filter(
+            user=request.user) .order_by(
+            '-is_active',
+            '-start_date'))
     return render(request, 'schedule/overview.html', template_data)
 
 
@@ -83,7 +86,8 @@ def view(request, pk):
 
     template_data['schedule'] = schedule
     if schedule.is_active:
-        template_data['active_workout'] = schedule.get_current_scheduled_workout()
+        template_data['active_workout'] = \
+            schedule.get_current_scheduled_workout()
     else:
         template_data['active_workout'] = False
 
@@ -98,7 +102,13 @@ def view(request, pk):
     return render(request, 'schedule/view.html', template_data)
 
 
-def export_pdf_log(request, pk, images=False, comments=False, uidb64=None, token=None):
+def export_pdf_log(
+        request,
+        pk,
+        images=False,
+        comments=False,
+        uidb64=None,
+        token=None):
     '''
     Show the workout schedule
     '''
@@ -121,34 +131,45 @@ def export_pdf_log(request, pk, images=False, comments=False, uidb64=None, token
     # Create the HttpResponse object with the appropriate PDF headers.
     # and use it to the create the PDF using it as a file like object
     response = HttpResponse(content_type='application/pdf')
-    doc = SimpleDocTemplate(response,
-                            pagesize=A4,
-                            leftMargin=cm,
-                            rightMargin=cm,
-                            topMargin=0.5 * cm,
-                            bottomMargin=0.5 * cm,
-                            title=_('Workout'),
-                            author='wger Workout Manager',
-                            subject='Schedule for {0}'.format(request.user.username))
+    doc = SimpleDocTemplate(
+        response,
+        pagesize=A4,
+        leftMargin=cm,
+        rightMargin=cm,
+        topMargin=0.5 * cm,
+        bottomMargin=0.5 * cm,
+        title=_('Workout'),
+        author='wger Workout Manager',
+        subject='Schedule for {0}'.format(
+            request.user.username))
 
     # container for the 'Flowable' objects
     elements = []
 
     # Set the title
-    p = Paragraph(u'<para align="center">{0}</para>'.format(schedule), styleSheet["HeaderBold"])
+    p = Paragraph(
+        u'<para align="center">{0}</para>'.format(schedule),
+        styleSheet["HeaderBold"])
     elements.append(p)
     elements.append(Spacer(10 * cm, 0.5 * cm))
 
     # Iterate through the Workout and render the training days
     for step in schedule.schedulestep_set.all():
-        p = Paragraph(u'<para>{0} {1}</para>'.format(step.duration, _('Weeks')),
-                      styleSheet["HeaderBold"])
+        p = Paragraph(
+            u'<para>{0} {1}</para>'.format(
+                step.duration,
+                _('Weeks')),
+            styleSheet["HeaderBold"])
         elements.append(p)
         elements.append(Spacer(10 * cm, 0.5 * cm))
 
         for day in step.workout.canonical_representation['day_list']:
             elements.append(
-                render_workout_day(day, images=images, comments=comments, nr_of_weeks=7))
+                render_workout_day(
+                    day,
+                    images=images,
+                    comments=comments,
+                    nr_of_weeks=7))
             elements.append(Spacer(10 * cm, 0.5 * cm))
 
     # Footer, date and info
@@ -158,12 +179,19 @@ def export_pdf_log(request, pk, images=False, comments=False, uidb64=None, token
 
     # write the document and send the response to the browser
     doc.build(elements)
-    response['Content-Disposition'] = 'attachment; filename=Schedule-{0}-log.pdf'.format(pk)
+    response['Content-Disposition'] = \
+        'attachment; filename=Schedule-{0}-log.pdf'.format(pk)
     response['Content-Length'] = len(response.content)
     return response
 
 
-def export_pdf_table(request, pk, images=False, comments=False, uidb64=None, token=None):
+def export_pdf_table(
+        request,
+        pk,
+        images=False,
+        comments=False,
+        uidb64=None,
+        token=None):
     '''
     Show the workout schedule
     '''
@@ -186,35 +214,46 @@ def export_pdf_table(request, pk, images=False, comments=False, uidb64=None, tok
     # Create the HttpResponse object with the appropriate PDF headers.
     # and use it to the create the PDF using it as a file like object
     response = HttpResponse(content_type='application/pdf')
-    doc = SimpleDocTemplate(response,
-                            pagesize=A4,
-                            leftMargin=cm,
-                            rightMargin=cm,
-                            topMargin=0.5 * cm,
-                            bottomMargin=0.5 * cm,
-                            title=_('Workout'),
-                            author='wger Workout Manager',
-                            subject='Schedule for {0}'.format(request.user.username))
+    doc = SimpleDocTemplate(
+        response,
+        pagesize=A4,
+        leftMargin=cm,
+        rightMargin=cm,
+        topMargin=0.5 * cm,
+        bottomMargin=0.5 * cm,
+        title=_('Workout'),
+        author='wger Workout Manager',
+        subject='Schedule for {0}'.format(
+            request.user.username))
 
     # container for the 'Flowable' objects
     elements = []
 
     # Set the title
-    p = Paragraph(u'<para align="center">{0}</para>'.format(schedule), styleSheet["HeaderBold"])
+    p = Paragraph(
+        u'<para align="center">{0}</para>'.format(schedule),
+        styleSheet["HeaderBold"])
     elements.append(p)
     elements.append(Spacer(10 * cm, 0.5 * cm))
 
     # Iterate through the Workout and render the training days
     for step in schedule.schedulestep_set.all():
-        p = Paragraph(u'<para>{0} {1}</para>'.format(step.duration, _('Weeks')),
-                      styleSheet["HeaderBold"])
+        p = Paragraph(
+            u'<para>{0} {1}</para>'.format(
+                step.duration,
+                _('Weeks')),
+            styleSheet["HeaderBold"])
         elements.append(p)
         elements.append(Spacer(10 * cm, 0.5 * cm))
 
         for day in step.workout.canonical_representation['day_list']:
             elements.append(
-                render_workout_day(day, images=images, comments=comments, nr_of_weeks=7,
-                                   only_table=True))
+                render_workout_day(
+                    day,
+                    images=images,
+                    comments=comments,
+                    nr_of_weeks=7,
+                    only_table=True))
             elements.append(Spacer(10 * cm, 0.5 * cm))
 
     # Footer, date and info
@@ -224,7 +263,8 @@ def export_pdf_table(request, pk, images=False, comments=False, uidb64=None, tok
 
     # write the document and send the response to the browser
     doc.build(elements)
-    response['Content-Disposition'] = 'attachment; filename=Schedule-{0}-table.pdf'.format(pk)
+    response['Content-Disposition'] = \
+        'attachment; filename=Schedule-{0}-table.pdf'.format(pk)
     response['Content-Length'] = len(response.content)
     return response
 
@@ -242,10 +282,17 @@ def start(request, pk):
     schedule.is_active = True
     schedule.start_date = datetime.date.today()
     schedule.save()
-    return HttpResponseRedirect(reverse('manager:schedule:view', kwargs={'pk': schedule.id}))
+    return HttpResponseRedirect(
+        reverse(
+            'manager:schedule:view',
+            kwargs={
+                'pk': schedule.id}))
 
 
-class ScheduleCreateView(WgerFormMixin, CreateView, PermissionRequiredMixin):
+class ScheduleCreateView(
+        WgerFormMixin,
+        CreateView,
+        PermissionRequiredMixin):
     '''
     Creates a new workout schedule
     '''
@@ -262,10 +309,15 @@ class ScheduleCreateView(WgerFormMixin, CreateView, PermissionRequiredMixin):
         return super(ScheduleCreateView, self).form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy('manager:schedule:view', kwargs={'pk': self.object.id})
+        return reverse_lazy(
+            'manager:schedule:view', kwargs={
+                'pk': self.object.id})
 
 
-class ScheduleDeleteView(WgerDeleteMixin, DeleteView, PermissionRequiredMixin):
+class ScheduleDeleteView(
+        WgerDeleteMixin,
+        DeleteView,
+        PermissionRequiredMixin):
     '''
     Generic view to delete a schedule
     '''
@@ -280,12 +332,18 @@ class ScheduleDeleteView(WgerDeleteMixin, DeleteView, PermissionRequiredMixin):
         '''
         Send some additional data to the template
         '''
-        context = super(ScheduleDeleteView, self).get_context_data(**kwargs)
+        context = super(
+            ScheduleDeleteView,
+            self).get_context_data(
+            **kwargs)
         context['title'] = _(u'Delete {0}?').format(self.object)
         return context
 
 
-class ScheduleEditView(WgerFormMixin, UpdateView, PermissionRequiredMixin):
+class ScheduleEditView(
+        WgerFormMixin,
+        UpdateView,
+        PermissionRequiredMixin):
     '''
     Generic view to update an existing workout routine
     '''
@@ -298,6 +356,9 @@ class ScheduleEditView(WgerFormMixin, UpdateView, PermissionRequiredMixin):
         '''
         Send some additional data to the template
         '''
-        context = super(ScheduleEditView, self).get_context_data(**kwargs)
+        context = super(
+            ScheduleEditView,
+            self).get_context_data(
+            **kwargs)
         context['title'] = _(u'Edit {0}').format(self.object)
         return context

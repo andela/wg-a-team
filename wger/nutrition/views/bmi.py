@@ -13,7 +13,8 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU Affero General Public License
-# along with Workout Manager.  If not, see <http://www.gnu.org/licenses/>.
+# along with Workout Manager.  If not, see
+# <http://www.gnu.org/licenses/>.
 
 import logging
 import json
@@ -58,7 +59,8 @@ def calculate(request):
         form.save()
 
         # Create a new weight entry as needed
-        request.user.userprofile.user_bodyweight(form.cleaned_data['weight'])
+        request.user.userprofile.user_bodyweight(
+            form.cleaned_data['weight'])
 
         bmi = request.user.userprofile.calculate_bmi()
         result = {'bmi': '{0:.2f}'.format(bmi),

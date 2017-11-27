@@ -10,7 +10,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
-# You should have received a copy of the GNU Affero General Public License
+# You should have received a copy of the GNU Affero General Public
+# License
 
 import logging
 
@@ -64,13 +65,17 @@ def load_item_languages(item, language_code=None):
     '''
 
     language = load_language(language_code)
-    languages = cache.get(cache_mapper.get_language_config_key(language, item))
+    languages = cache.get(
+        cache_mapper.get_language_config_key(
+            language, item))
 
-    # Load the configurations we are interested in and return the languages
+    # Load the configurations we are interested in and return the
+    # languages
     if not languages:
         languages = []
 
-        config = LanguageConfig.objects.filter(language=language, item=item, show=True)
+        config = LanguageConfig.objects.filter(
+            language=language, item=item, show=True)
         if not config:
             languages.append(Language.objects.get(short_name="en"))
             return languages
@@ -78,7 +83,9 @@ def load_item_languages(item, language_code=None):
         for i in config:
             languages.append(i.language_target)
 
-        cache.set(cache_mapper.get_language_config_key(language, item), languages)
+        cache.set(
+            cache_mapper.get_language_config_key(
+                language, item), languages)
 
     return languages
 
@@ -87,24 +94,27 @@ def load_ingredient_languages(request):
     '''
     Filter the ingredients the user will see by its language.
 
-    Additionally, if the user has selected on his preference page that he wishes
-    to also see the ingredients in English (from the US Department of Agriculture),
-    show those too.
+    Additionally, if the user has selected on his preference page that he
+    wishes to also see the ingredients in English (from the US Department of
+    Agriculture), show those too.
 
     This only makes sense if the user's language isn't English, as he will be
     presented those in that case anyway, so also do a check for this.
     '''
 
     language = load_language()
-    languages = load_item_languages(LanguageConfig.SHOW_ITEM_INGREDIENTS)
+    languages = load_item_languages(
+        LanguageConfig.SHOW_ITEM_INGREDIENTS)
 
     # Only registered users have a profile
     if request.user.is_authenticated():
         profile = request.user.userprofile
         show_english = profile.show_english_ingredients
 
-        # If the user's language is not english and has the preference, add english to the list
+        # If the user's language is not english and has the
+        # preference, add english to the list
         if show_english and language.short_name != 'en':
-            languages = list(set(languages + [Language.objects.get(pk=2)]))
+            languages = list(
+                set(languages + [Language.objects.get(pk=2)]))
 
     return languages

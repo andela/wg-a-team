@@ -12,10 +12,12 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
-# You should have received a copy of the GNU Affero General Public License
+# You should have received a copy of the GNU Affero General Public
+# License
 import logging
 
-from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
+from django.contrib.auth.mixins import (
+    PermissionRequiredMixin, LoginRequiredMixin)
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.utils.translation import ugettext_lazy
 from django.utils.translation import ugettext as _
@@ -43,7 +45,10 @@ Exercise equipment
 '''
 
 
-class EquipmentListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
+class EquipmentListView(
+        LoginRequiredMixin,
+        PermissionRequiredMixin,
+        ListView):
     '''
     Generic view to list all equipments
     '''
@@ -56,7 +61,11 @@ class EquipmentListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     permission_required = 'exercises.change_equipment'
 
 
-class EquipmentEditView(WgerFormMixin, LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+class EquipmentEditView(
+        WgerFormMixin,
+        LoginRequiredMixin,
+        PermissionRequiredMixin,
+        UpdateView):
     '''
     Generic view to update an existing equipment item
     '''
@@ -68,15 +77,23 @@ class EquipmentEditView(WgerFormMixin, LoginRequiredMixin, PermissionRequiredMix
 
     # Send some additional data to the template
     def get_context_data(self, **kwargs):
-        context = super(EquipmentEditView, self).get_context_data(**kwargs)
+        context = super(
+            EquipmentEditView,
+            self).get_context_data(
+            **kwargs)
         context['title'] = _('Edit {0}').format(self.object)
-        context['form_action'] = reverse('exercise:equipment:edit',
-                                         kwargs={'pk': self.object.id})
+        context['form_action'] = reverse(
+            'exercise:equipment:edit', kwargs={
+                'pk': self.object.id})
 
         return context
 
 
-class EquipmentAddView(WgerFormMixin, LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+class EquipmentAddView(
+        WgerFormMixin,
+        LoginRequiredMixin,
+        PermissionRequiredMixin,
+        CreateView):
     '''
     Generic view to add a new equipment item
     '''
@@ -91,13 +108,20 @@ class EquipmentAddView(WgerFormMixin, LoginRequiredMixin, PermissionRequiredMixi
         '''
         Send some additional data to the template
         '''
-        context = super(EquipmentAddView, self).get_context_data(**kwargs)
+        context = super(
+            EquipmentAddView,
+            self).get_context_data(
+            **kwargs)
         context['form_action'] = reverse('exercise:equipment:add')
 
         return context
 
 
-class EquipmentDeleteView(WgerDeleteMixin, LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+class EquipmentDeleteView(
+        WgerDeleteMixin,
+        LoginRequiredMixin,
+        PermissionRequiredMixin,
+        DeleteView):
     '''
     Generic view to delete an existing exercise image
     '''
@@ -113,7 +137,10 @@ class EquipmentDeleteView(WgerDeleteMixin, LoginRequiredMixin, PermissionRequire
         Send some additional data to the template
         '''
         pk = self.kwargs['pk']
-        context = super(EquipmentDeleteView, self).get_context_data(**kwargs)
+        context = super(
+            EquipmentDeleteView,
+            self).get_context_data(
+            **kwargs)
 
         context['title'] = _('Delete equipment?')
         context['form_action'] = reverse('exercise:equipment:delete',
@@ -135,10 +162,15 @@ class EquipmentOverviewView(ListView):
         '''
         Send some additional data to the template
         '''
-        context = super(EquipmentOverviewView, self).get_context_data(**kwargs)
-        context['exercise_languages'] = load_item_languages(LanguageConfig.SHOW_ITEM_EXERCISES)
+        context = super(
+            EquipmentOverviewView,
+            self).get_context_data(
+            **kwargs)
+        context['exercise_languages'] = load_item_languages(
+            LanguageConfig.SHOW_ITEM_EXERCISES)
         for equipment in context['equipment_list']:
             equipment.name = _(equipment.name)
-        context['equipment_list'] = sorted(context['equipment_list'], key=lambda e: e.name)
+        context['equipment_list'] = sorted(
+            context['equipment_list'], key=lambda e: e.name)
         context['show_shariff'] = True
         return context

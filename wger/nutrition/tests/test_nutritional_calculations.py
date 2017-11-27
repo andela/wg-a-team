@@ -11,7 +11,8 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU Affero General Public License
-# along with Workout Manager.  If not, see <http://www.gnu.org/licenses/>.
+# along with Workout Manager.  If not, see
+# <http://www.gnu.org/licenses/>.
 
 import logging
 from decimal import Decimal
@@ -52,7 +53,12 @@ class NutritionalValuesCalculationsTestCase(WorkoutManagerTestCase):
         result_item = item.get_nutritional_values()
 
         for i in result_item:
-            self.assertEqual(result_item[i], Decimal(getattr(ingredient, i)).quantize(TWOPLACES))
+            self.assertEqual(
+                result_item[i],
+                Decimal(
+                    getattr(
+                        ingredient,
+                        i)).quantize(TWOPLACES))
 
         result_meal = meal.get_nutritional_values()
         self.assertEqual(result_item, result_meal)
@@ -73,8 +79,13 @@ class NutritionalValuesCalculationsTestCase(WorkoutManagerTestCase):
         result_item = item.get_nutritional_values()
 
         for i in result_item:
-            self.assertEqual(result_item[i],
-                             (getattr(ingredient, i) * Decimal(12.0) / 100).quantize(TWOPLACES))
+            self.assertEqual(
+                result_item[i],
+                (getattr(
+                    ingredient,
+                    i) *
+                    Decimal(12.0) /
+                    100).quantize(TWOPLACES))
 
         result_meal = meal.get_nutritional_values()
         self.assertEqual(result_item, result_meal)
@@ -95,7 +106,12 @@ class NutritionalValuesCalculationsTestCase(WorkoutManagerTestCase):
 
         result_total = {}
         for i in result_item2:
-            self.assertEqual(result_item2[i], 2 * getattr(ingredient2, i))
+            self.assertEqual(
+                result_item2[i],
+                2 *
+                getattr(
+                    ingredient2,
+                    i))
             result_total[i] = result_item[i] + result_item2[i]
 
         result_meal = meal.get_nutritional_values()
@@ -116,8 +132,13 @@ class NutritionalValuesCalculationsTestCase(WorkoutManagerTestCase):
         result_item3 = item3.get_nutritional_values()
 
         for i in result_item3:
-            self.assertEqual(result_item3[i],
-                             (getattr(ingredient3, i) * Decimal(20.0) / 100).quantize(TWOPLACES))
+            self.assertEqual(
+                result_item3[i],
+                (getattr(
+                    ingredient3,
+                    i) *
+                    Decimal(20.0) /
+                    100).quantize(TWOPLACES))
             result_total[i] = result_total[i] + result_item3[i]
 
         result_meal = meal.get_nutritional_values()
@@ -135,10 +156,22 @@ class NutritionalValuesCalculationsTestCase(WorkoutManagerTestCase):
         plan = models.NutritionPlan.objects.get(pk=4)
         values = plan.get_nutritional_values()
 
-        self.assertEqual(values['percent']['carbohydrates'], Decimal(29.79).quantize(TWOPLACES))
-        self.assertEqual(values['percent']['fat'], Decimal(20.36).quantize(TWOPLACES))
-        self.assertEqual(values['percent']['protein'], Decimal(26.06).quantize(TWOPLACES))
+        self.assertEqual(
+            values['percent']['carbohydrates'],
+            Decimal(29.79).quantize(TWOPLACES))
+        self.assertEqual(
+            values['percent']['fat'],
+            Decimal(20.36).quantize(TWOPLACES))
+        self.assertEqual(
+            values['percent']['protein'],
+            Decimal(26.06).quantize(TWOPLACES))
 
-        self.assertEqual(values['per_kg']['carbohydrates'], Decimal(4.96).quantize(TWOPLACES))
-        self.assertEqual(values['per_kg']['fat'], Decimal(1.51).quantize(TWOPLACES))
-        self.assertEqual(values['per_kg']['protein'], Decimal(4.33).quantize(TWOPLACES))
+        self.assertEqual(
+            values['per_kg']['carbohydrates'],
+            Decimal(4.96).quantize(TWOPLACES))
+        self.assertEqual(
+            values['per_kg']['fat'],
+            Decimal(1.51).quantize(TWOPLACES))
+        self.assertEqual(
+            values['per_kg']['protein'],
+            Decimal(4.33).quantize(TWOPLACES))

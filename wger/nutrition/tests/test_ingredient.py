@@ -11,7 +11,8 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU Affero General Public License
-# along with Workout Manager.  If not, see <http://www.gnu.org/licenses/>.
+# along with Workout Manager.  If not, see
+# <http://www.gnu.org/licenses/>.
 
 import datetime
 import json
@@ -42,7 +43,11 @@ class IngredientRepresentationTestCase(WorkoutManagerTestCase):
         '''
         Test that the representation of an object is correct
         '''
-        self.assertEqual("{0}".format(Ingredient.objects.get(pk=1)), 'Test ingredient 1')
+        self.assertEqual(
+            "{0}".format(
+                Ingredient.objects.get(
+                    pk=1)),
+            'Test ingredient 1')
 
 
 class DeleteIngredientTestCase(WorkoutManagerDeleteTestCase):
@@ -81,7 +86,9 @@ class EditIngredientTestCase(WorkoutManagerEditTestCase):
         '''
         if self.current_user == 'admin':
             ingredient = Ingredient.objects.get(pk=1)
-            self.assertEqual(ingredient.update_date, datetime.date.today())
+            self.assertEqual(
+                ingredient.update_date,
+                datetime.date.today())
 
 
 class AddIngredientTestCase(WorkoutManagerAddTestCase):
@@ -110,11 +117,17 @@ class AddIngredientTestCase(WorkoutManagerAddTestCase):
         '''
         if self.current_user == 'admin':
             ingredient = Ingredient.objects.get(pk=self.pk_after)
-            self.assertEqual(ingredient.creation_date, datetime.date.today())
-            self.assertEqual(ingredient.status, Ingredient.INGREDIENT_STATUS_ADMIN)
+            self.assertEqual(
+                ingredient.creation_date,
+                datetime.date.today())
+            self.assertEqual(
+                ingredient.status,
+                Ingredient.INGREDIENT_STATUS_ADMIN)
         elif self.current_user == 'test':
             ingredient = Ingredient.objects.get(pk=self.pk_after)
-            self.assertEqual(ingredient.status, Ingredient.INGREDIENT_STATUS_PENDING)
+            self.assertEqual(
+                ingredient.status,
+                Ingredient.INGREDIENT_STATUS_PENDING)
 
 
 class IngredientDetailTestCase(WorkoutManagerTestCase):
@@ -127,11 +140,17 @@ class IngredientDetailTestCase(WorkoutManagerTestCase):
         Tests the ingredient details page
         '''
 
-        response = self.client.get(reverse('nutrition:ingredient:view', kwargs={'id': 6}))
+        response = self.client.get(
+            reverse(
+                'nutrition:ingredient:view',
+                kwargs={
+                    'id': 6}))
         self.assertEqual(response.status_code, 200)
 
         # Correct tab is selected
-        self.assertEqual(response.context['active_tab'], NUTRITION_TAB)
+        self.assertEqual(
+            response.context['active_tab'],
+            NUTRITION_TAB)
         self.assertTrue(response.context['ingredient'])
 
         # Only authorized users see the edit links
@@ -145,12 +164,17 @@ class IngredientDetailTestCase(WorkoutManagerTestCase):
             self.assertNotContains(response, 'pending review')
 
         # Non-existent ingredients throw a 404.
-        response = self.client.get(reverse('nutrition:ingredient:view', kwargs={'id': 42}))
+        response = self.client.get(
+            reverse(
+                'nutrition:ingredient:view',
+                kwargs={
+                    'id': 42}))
         self.assertEqual(response.status_code, 404)
 
     def test_ingredient_detail_editor(self):
         '''
-        Tests the ingredient details page as a logged in user with editor rights
+        Tests the ingredient details page as a logged in user with
+        editor rights
         '''
 
         self.user_login('admin')
@@ -158,7 +182,8 @@ class IngredientDetailTestCase(WorkoutManagerTestCase):
 
     def test_ingredient_detail_non_editor(self):
         '''
-        Tests the ingredient details page as a logged in user without editor rights
+        Tests the ingredient details page as a logged in user without
+        editor rights
         '''
 
         self.user_login('test')
@@ -183,15 +208,22 @@ class IngredientSearchTestCase(WorkoutManagerTestCase):
         '''
 
         kwargs = {'HTTP_X_REQUESTED_WITH': 'XMLHttpRequest'}
-        response = self.client.get(reverse('ingredient-search'), {'term': 'test'}, **kwargs)
+        response = self.client.get(
+            reverse('ingredient-search'), {'term': 'test'}, **kwargs)
         self.assertEqual(response.status_code, 200)
         result = json.loads(response.content.decode('utf8'))
         self.assertEqual(len(result['suggestions']), 2)
-        self.assertEqual(result['suggestions'][0]['value'], 'Ingredient, test, 2, organic, raw')
-        self.assertEqual(result['suggestions'][1]['value'], 'Test ingredient 1')
+        self.assertEqual(
+            result['suggestions'][0]['value'],
+            'Ingredient, test, 2, organic, raw')
+        self.assertEqual(
+            result['suggestions'][1]['value'],
+            'Test ingredient 1')
 
-        # Search for an ingredient pending review (0 hits, "Pending ingredient")
-        response = self.client.get(reverse('ingredient-search'), {'term': 'Pending'}, **kwargs)
+        # Search for an ingredient pending review (0 hits, "Pending
+        # ingredient")
+        response = self.client.get(
+            reverse('ingredient-search'), {'term': 'Pending'}, **kwargs)
         self.assertEqual(response.status_code, 200)
         result = json.loads(response.content.decode('utf8'))
         self.assertEqual(len(result['suggestions']), 0)
@@ -223,10 +255,11 @@ class IngredientValuesTestCase(WorkoutManagerTestCase):
         '''
 
         # Get the nutritional values in 1 gram of product
-        response = self.client.get(reverse('api-ingredient-get-values', kwargs={'pk': 1}),
-                                   {'amount': 1,
-                                    'ingredient': 1,
-                                    'unit': ''})
+        response = self.client.get(
+            reverse(
+                'api-ingredient-get-values', kwargs={
+                    'pk': 1}), {
+                'amount': 1, 'ingredient': 1, 'unit': ''})
 
         self.assertEqual(response.status_code, 200)
         result = json.loads(response.content.decode('utf8'))
@@ -241,10 +274,11 @@ class IngredientValuesTestCase(WorkoutManagerTestCase):
                                   u'carbohydrates': u'0.00'})
 
         # Get the nutritional values in 1 unit of product
-        response = self.client.get(reverse('api-ingredient-get-values', kwargs={'pk': 1}),
-                                   {'amount': 1,
-                                    'ingredient': 1,
-                                    'unit': 2})
+        response = self.client.get(
+            reverse(
+                'api-ingredient-get-values', kwargs={
+                    'pk': 1}), {
+                'amount': 1, 'ingredient': 1, 'unit': 2})
 
         self.assertEqual(response.status_code, 200)
         result = json.loads(response.content.decode('utf8'))
@@ -278,6 +312,7 @@ class IngredientTestCase(WorkoutManagerTestCase):
     '''
     Tests other ingredient functions
     '''
+
     def test_compare(self):
         '''
         Tests the custom compare method based on values

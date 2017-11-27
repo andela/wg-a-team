@@ -12,7 +12,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
-# You should have received a copy of the GNU Affero General Public License
+# You should have received a copy of the GNU Affero General Public
+# License
 
 import datetime
 
@@ -24,7 +25,6 @@ from django.template.loader import render_to_string
 from django.conf import settings
 
 from wger.gym.helpers import is_any_gym_admin
-from wger.gym.helpers import get_user_last_activity
 from wger.gym.models import Gym
 
 
@@ -32,7 +32,8 @@ class Command(BaseCommand):
     '''
     Sends overviews of inactive users to gym trainers
     '''
-    help = 'Send out emails to trainers with users that have not shown recent activity'
+    help = 'Send out emails to trainers with users that have\
+        not shown recent activity'
 
     def handle(self, **options):
         '''
@@ -43,7 +44,8 @@ class Command(BaseCommand):
 
         for gym in Gym.objects.all():
             if int(options['verbosity']) >= 2:
-                self.stdout.write("* Processing gym '{}' ".format(gym))
+                self.stdout.write(
+                    "* Processing gym '{}' ".format(gym))
 
             user_list = []
             trainer_list = []
@@ -52,13 +54,15 @@ class Command(BaseCommand):
 
             if not weeks:
                 if int(options['verbosity']) >= 2:
-                    self.stdout.write("  Reminders deactivatd, skipping")
+                    self.stdout.write(
+                        "  Reminders deactivatd, skipping")
                 continue
 
             for profile in gym.userprofile_set.all():
                 user = profile.user
 
-                # check if the account was deactivated (user can't login)
+                # check if the account was deactivated (user can't
+                # login)
                 if not user.is_active:
                     continue
 
@@ -76,9 +80,11 @@ class Command(BaseCommand):
 
                 last_activity = user.usercache.last_activity
                 if not last_activity:
-                    user_list_no_activity.append({'user': user, 'last_activity': last_activity})
+                    user_list_no_activity.append(
+                        {'user': user, 'last_activity': last_activity})
                 elif today - last_activity > datetime.timedelta(weeks=weeks):
-                    user_list.append({'user': user, 'last_activity': last_activity})
+                    user_list.append(
+                        {'user': user, 'last_activity': last_activity})
 
             if user_list or user_list_no_activity:
                 for trainer in trainer_list:
@@ -91,16 +97,19 @@ class Command(BaseCommand):
                     if not trainer.gymadminconfig.overview_inactive:
                         continue
 
-                    translation.activate(trainer.userprofile.notification_language.short_name)
+                    translation.activate(
+                        trainer.userprofile.notification_language.short_name)
                     subject = _('Reminder of inactive members')
                     context = {
                         'weeks': weeks,
                         'user_list': user_list,
                         'user_list_no_activity': user_list_no_activity
                     }
-                    message = render_to_string('gym/email_inactive_members.html', context)
-                    mail.send_mail(subject,
-                                   message,
-                                   settings.WGER_SETTINGS['EMAIL_FROM'],
-                                   [trainer.email],
-                                   fail_silently=True)
+                    message = render_to_string(
+                        'gym/email_inactive_members.html', context)
+                    mail.send_mail(
+                        subject,
+                        message,
+                        settings.WGER_SETTINGS['EMAIL_FROM'],
+                        [trainer.email],
+                        fail_silently=True)

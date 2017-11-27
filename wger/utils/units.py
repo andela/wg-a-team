@@ -10,7 +10,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
-# You should have received a copy of the GNU Affero General Public License
+# You should have received a copy of the GNU Affero General Public
+# License
 
 import logging
 from decimal import Decimal
@@ -44,7 +45,8 @@ class AbstractWeight(object):
     def __init__(self, weight, mode='kg'):
         '''
         :param weight: the numerical weight
-        :param mode: the mode, values 'kg' (default), 'g', 'lb' and 'oz' are supported
+        :param mode: the mode, values 'kg' (default), 'g', 'lb' and
+            'oz' are supported
         '''
         weight = self.normalize(weight)
 
