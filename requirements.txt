@@ -34,10 +34,6 @@ Babel==2.5.1
 certifi==2017.11.5
 chardet==3.0.4
 django-appconf==1.0.2
-django-cors-headers==2.1.0
-django-filter==1.1.0
-django-tastypie==0.14.0
-djangorestframework==3.2.5
 docutils==0.14
 fitbit==0.3.0
 html5lib==1.0b10
@@ -53,7 +49,6 @@ pytz==2017.3
 rcssmin==1.0.6
 requests-oauthlib==0.8.0
 rjsmin==1.0.12
-six==1.11.0
 snowballstemmer==1.2.1
 sphinxcontrib-websupport==1.0.1
 sqlparse==0.2.4
