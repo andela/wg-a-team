@@ -1,5 +1,4 @@
 language: python
-
 # Cache the pip files
 cache:
   directories:
@@ -7,17 +6,14 @@ cache:
     - $HOME/.nvm
     - node_modules
     - wger/node_modules
-
 # Use container infrastructure
 # http://blog.travis-ci.com/2014-12-17-faster-builds-with-container-based-infrastructure/
 sudo: false
-
 # Python versions to test
 python:
   - "2.7"
   - "3.4"
   - "3.5"
-
 # Manually define here the combinations environment variables to test
 # https://github.com/travis-ci/travis-ci/issues/1519
 env:
@@ -25,7 +21,6 @@ env:
   - TEST_MOBILE=True  DB=sqlite     TRAVIS_NODE_VERSION="4"
   - TEST_MOBILE=False DB=postgresql TRAVIS_NODE_VERSION="4"
   - TEST_MOBILE=False DB=sqlite     TRAVIS_NODE_VERSION="4"
-
 # Install the application
 install:
   # Update nvm and set wanted Node version.
@@ -36,38 +31,36 @@ install:
   - . $HOME/.nvm/nvm.sh
   - nvm install $TRAVIS_NODE_VERSION
   - nvm use $TRAVIS_NODE_VERSION
-
   # Install requirements
   - pip install -r requirements_devel.txt
   - pip install wger
   - npm install
   - if [[ "$DB" = "postgresql" ]]; then pip install psycopg2; fi
-
   # Setup application
   - if [[ "$DB" = "sqlite" ]]; then wger create_settings; fi
   - if [[ "$DB" = "postgresql" ]]; then wger create_settings --database-type postgresql; fi
-
 # Create test databases
 before_script:
   - npm install gulp
   - if [[ "$DB" = "postgresq" ]]; then psql -c 'DROP DATABASE IF EXISTS test_wger;' -U postgres; fi
   - if [[ "$DB" = "postgresql" ]]; then psql -c 'CREATE DATABASE test_wger;' -U postgres; fi
-
 # Do the tests
 script:
   # Formatting
   - pep8 wger
-
   # Javascript linting
   - ./node_modules/.bin/gulp lint
-
   # Regular application
   - coverage run --source='.' ./manage.py test
-
   # Code coverage
 
   - coverage report
 notifications:
   slack: andela:OZefQdjnsTAbpFnQwexjb41q
 
-
+deploy:
+  provider: heroku
+  api_key:
+    secure: "H+SBOzoB/5G25E+Q/28xiYDpC3piCRPoDCdbI3cCHzNNF03Qz+DCwj95kBfiAy/r6eQX+gJDYPsnowNMuqiQZkJUTTI2tH3UPf14xoqR+VdCyLKKGjUxJWgOEdTp85rSEQNB1SfCtZSlyCcbNRqkaMEzSe7jiOClf/+jstl5rDuPumgA9TXjo/syLfaOnILUPZ0nxsWVcSzt5L6DJ3s6ivYAv+kbM5LqFi7Xh0EKsvBp09X9+dCrdhqDAiXIZ4XS1AXesj0o4ywaUsgxLHd2rrV9gUJnQuBPD9Bl+VHjaKilSY6GIW6M6YkessjaVdT8XkJwFSCbIO4j0H1EG+RcQJwqmGJbCFRdjCv5C/k+v8waMlYmy4Bj3x38vlBLTOnjzJcxMt8HItYyQHppTgfupixmvATt1DeoxjZzAuxbz++fpj/VKDtbf6aThzsyprdQYTqI3Fpc9X9G0GDDpFp5JSAmpkp0qW9r83KK/5vP3yEIYv/hRj3HO9nM5NLQQ9opETRPyA6AzoOIZk3Hn9NjcJB4bTEMAb91bgzNg/37FN6eeqLHj4TbUGC3y6Q0IbfJppDzv8WRCr5dn2WDrYo8yTUa9Ct/9l3tMFrOus4s/f9X3melCfKHZ6z3HaFzVRaLzlPWuA0KC8ZAzgk5ye6D3cBPH53XmO1N/dDs7Uxi818="
+  app: wger-a-team
+  on: develop

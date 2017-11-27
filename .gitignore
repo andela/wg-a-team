@@ -47,6 +47,7 @@ coverage.xml
 # Django stuff:
 *.log
 settings*.py
+!settings.py
 *.sqlite
 /CACHE
 
@@ -64,11 +65,11 @@ venv-django/
 wger/core/static/bower_components
 node_modules
 
-#virtual env
+#virtualenv
 venv-django/
+
+#statics
+**/static/**
 
 #vscode settings
 .vscode/
-
-#static files
-**/static/**
