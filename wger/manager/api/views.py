@@ -13,7 +13,8 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU Affero General Public License
-# along with Workout Manager.  If not, see <http://www.gnu.org/licenses/>.
+# along with Workout Manager.  If not, see
+# <http://www.gnu.org/licenses/>.
 
 import datetime
 
@@ -75,7 +76,8 @@ class WorkoutViewSet(viewsets.ModelViewSet):
         This is basically the same form as used in the application
         '''
 
-        out = WorkoutCanonicalFormSerializer(self.get_object().canonical_representation).data
+        out = WorkoutCanonicalFormSerializer(
+            self.get_object().canonical_representation).data
         return Response(out)
 
 
@@ -129,7 +131,8 @@ class ScheduleStepViewSet(WgerOwnerObjectModelViewSet):
         '''
         Only allow access to appropriate objects
         '''
-        return ScheduleStep.objects.filter(schedule__user=self.request.user)
+        return ScheduleStep.objects.filter(
+            schedule__user=self.request.user)
 
     def get_owner_objects(self):
         '''
@@ -204,7 +207,8 @@ class SetViewSet(WgerOwnerObjectModelViewSet):
         '''
         Only allow access to appropriate objects
         '''
-        return Set.objects.filter(exerciseday__training__user=self.request.user)
+        return Set.objects.filter(
+            exerciseday__training__user=self.request.user)
 
     def get_owner_objects(self):
         '''
@@ -231,7 +235,8 @@ class SettingViewSet(WgerOwnerObjectModelViewSet):
         '''
         Only allow access to appropriate objects
         '''
-        return Setting.objects.filter(set__exerciseday__training__user=self.request.user)
+        return Setting.objects.filter(
+            set__exerciseday__training__user=self.request.user)
 
     def perform_create(self, serializer):
         '''

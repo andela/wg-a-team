@@ -13,7 +13,8 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU Affero General Public License
-# along with Workout Manager.  If not, see <http://www.gnu.org/licenses/>.
+# along with Workout Manager.  If not, see
+# <http://www.gnu.org/licenses/>.
 
 import six
 import uuid
@@ -22,7 +23,8 @@ import bleach
 
 from django.db import models
 from django.template.loader import render_to_string
-from django.template.defaultfilters import slugify  # django.utils.text.slugify in django 1.5!
+# django.utils.text.slugify in django 1.5!
+from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
 from django.utils.translation import ugettext_lazy as _
@@ -54,9 +56,8 @@ class Muscle(models.Model):
     Muscle an exercise works out
     '''
 
-    name = models.CharField(max_length=50,
-                            verbose_name=_('Name'),
-                            help_text=_('In latin, e.g. "Pectoralis major"'))
+    name = models.CharField(max_length=50, verbose_name=_(
+        'Name'), help_text=_('In latin, e.g. "Pectoralis major"'))
 
     # Whether to use the front or the back image for background
     is_front = models.BooleanField(default=1)
@@ -140,22 +141,29 @@ class ExerciseCategory(models.Model):
 
         # Cached template fragments
         for language in Language.objects.all():
-            delete_template_fragment_cache('exercise-overview', language.id)
-            delete_template_fragment_cache('exercise-overview-mobile', language.id)
+            delete_template_fragment_cache(
+                'exercise-overview', language.id)
+            delete_template_fragment_cache(
+                'exercise-overview-mobile', language.id)
 
     def delete(self, *args, **kwargs):
         '''
         Reset all cached infos
         '''
         for language in Language.objects.all():
-            delete_template_fragment_cache('exercise-overview', language.id)
-            delete_template_fragment_cache('exercise-overview-mobile', language.id)
+            delete_template_fragment_cache(
+                'exercise-overview', language.id)
+            delete_template_fragment_cache(
+                'exercise-overview-mobile', language.id)
 
         super(ExerciseCategory, self).delete(*args, **kwargs)
 
 
 @python_2_unicode_compatible
-class Exercise(AbstractSubmissionModel, AbstractLicenseModel, models.Model):
+class Exercise(
+        AbstractSubmissionModel,
+        AbstractLicenseModel,
+        models.Model):
     '''
     Model for an exercise
     '''
@@ -165,9 +173,11 @@ class Exercise(AbstractSubmissionModel, AbstractLicenseModel, models.Model):
 
     category = models.ForeignKey(ExerciseCategory,
                                  verbose_name=_('Category'))
-    description = models.TextField(max_length=2000,
-                                   verbose_name=_('Description'),
-                                   validators=[MinLengthValidator(40)])
+    description = models.TextField(
+        max_length=2000,
+        verbose_name=_('Description'),
+        validators=[
+            MinLengthValidator(40)])
     '''Description on how to perform the exercise'''
 
     name = models.CharField(max_length=200,
@@ -179,15 +189,12 @@ class Exercise(AbstractSubmissionModel, AbstractLicenseModel, models.Model):
                                      default='')
     '''The exercise's name, as entered by the user'''
 
-    muscles = models.ManyToManyField(Muscle,
-                                     blank=True,
-                                     verbose_name=_('Primary muscles'))
+    muscles = models.ManyToManyField(
+        Muscle, blank=True, verbose_name=_('Primary muscles'))
     '''Main muscles trained by the exercise'''
 
-    muscles_secondary = models.ManyToManyField(Muscle,
-                                               verbose_name=_('Secondary muscles'),
-                                               related_name='secondary_muscles',
-                                               blank=True)
+    muscles_secondary = models.ManyToManyField(Muscle, verbose_name=_(
+        'Secondary muscles'), related_name='secondary_muscles', blank=True)
     '''Secondary muscles trained by the exercise'''
 
     equipment = models.ManyToManyField(Equipment,
@@ -223,7 +230,12 @@ class Exercise(AbstractSubmissionModel, AbstractLicenseModel, models.Model):
         '''
         Returns the canonical URL to view an exercise
         '''
-        return reverse('exercise:exercise:view', kwargs={'id': self.id, 'slug': slugify(self.name)})
+        return reverse(
+            'exercise:exercise:view',
+            kwargs={
+                'id': self.id,
+                'slug': slugify(
+                    self.name)})
 
     def save(self, *args, **kwargs):
         '''
@@ -237,10 +249,14 @@ class Exercise(AbstractSubmissionModel, AbstractLicenseModel, models.Model):
 
         # Cached template fragments
         for language in Language.objects.all():
-            delete_template_fragment_cache('muscle-overview', language.id)
-            delete_template_fragment_cache('exercise-overview', language.id)
-            delete_template_fragment_cache('exercise-overview-mobile', language.id)
-            delete_template_fragment_cache('equipment-overview', language.id)
+            delete_template_fragment_cache(
+                'muscle-overview', language.id)
+            delete_template_fragment_cache(
+                'exercise-overview', language.id)
+            delete_template_fragment_cache(
+                'exercise-overview-mobile', language.id)
+            delete_template_fragment_cache(
+                'equipment-overview', language.id)
 
         # Cached workouts
         for set in self.set_set.all():
@@ -256,10 +272,14 @@ class Exercise(AbstractSubmissionModel, AbstractLicenseModel, models.Model):
 
         # Cached template fragments
         for language in Language.objects.all():
-            delete_template_fragment_cache('muscle-overview', language.id)
-            delete_template_fragment_cache('exercise-overview', language.id)
-            delete_template_fragment_cache('exercise-overview-mobile', language.id)
-            delete_template_fragment_cache('equipment-overview', language.id)
+            delete_template_fragment_cache(
+                'muscle-overview', language.id)
+            delete_template_fragment_cache(
+                'exercise-overview', language.id)
+            delete_template_fragment_cache(
+                'exercise-overview-mobile', language.id)
+            delete_template_fragment_cache(
+                'equipment-overview', language.id)
 
         # Cached workouts
         for set in self.set_set.all():
@@ -307,15 +327,18 @@ class Exercise(AbstractSubmissionModel, AbstractLicenseModel, models.Model):
         except User.DoesNotExist:
             return
         if self.license_author and user.email:
-            translation.activate(user.userprofile.notification_language.short_name)
+            translation.activate(
+                user.userprofile.notification_language.short_name)
             url = request.build_absolute_uri(self.get_absolute_url())
-            subject = _('Exercise was successfully added to the general database')
+            subject = _(
+                'Exercise was successfully added to the general database')
             context = {
                 'exercise': self.name,
                 'url': url,
                 'site': Site.objects.get_current().domain
             }
-            message = render_to_string('exercise/email_new.tpl', context)
+            message = render_to_string(
+                'exercise/email_new.tpl', context)
             mail.send_mail(subject,
                            message,
                            settings.WGER_SETTINGS['EMAIL_FROM'],
@@ -337,8 +360,8 @@ class Exercise(AbstractSubmissionModel, AbstractLicenseModel, models.Model):
                 self.license_author = request.user.username
 
             subject = _('New user submitted exercise')
-            message = _(u'The user {0} submitted a new exercise "{1}".').format(
-                request.user.username, self.name)
+            message = _(u'The user {0} submitted a new exercise "{1}".')\
+                .format(request.user.username, self.name)
             mail.mail_admins(six.text_type(subject),
                              six.text_type(message),
                              fail_silently=True)
@@ -348,10 +371,14 @@ def exercise_image_upload_dir(instance, filename):
     '''
     Returns the upload target for exercise images
     '''
-    return "exercise-images/{0}/{1}".format(instance.exercise.id, filename)
+    return "exercise-images/{0}/{1}".format(
+        instance.exercise.id, filename)
 
 
-class ExerciseImage(AbstractSubmissionModel, AbstractLicenseModel, models.Model):
+class ExerciseImage(
+        AbstractSubmissionModel,
+        AbstractLicenseModel,
+        models.Model):
     '''
     Model for an exercise image
     '''
@@ -363,17 +390,18 @@ class ExerciseImage(AbstractSubmissionModel, AbstractLicenseModel, models.Model)
                                  verbose_name=_('Exercise'))
     '''The exercise the image belongs to'''
 
-    image = models.ImageField(verbose_name=_('Image'),
-                              help_text=_('Only PNG and JPEG formats are supported'),
-                              upload_to=exercise_image_upload_dir)
+    image = models.ImageField(
+        verbose_name=_('Image'),
+        help_text=_('Only PNG and JPEG formats are supported'),
+        upload_to=exercise_image_upload_dir)
     '''Uploaded image'''
 
-    is_main = models.BooleanField(verbose_name=_('Main picture'),
-                                  default=False,
-                                  help_text=_("Tick the box if you want to set this image as the "
-                                              "main one for the exercise (will be shown e.g. in "
-                                              "the search). The first image is automatically "
-                                              "marked by the system."))
+    is_main = models.BooleanField(
+        verbose_name=_('Main picture'), default=False, help_text=_(
+            "Tick the box if you want to set this image as the "
+            "main one for the exercise (will be shown e.g. in "
+            "the search). The first image is automatically "
+            "marked by the system."))
     '''A flag indicating whether the image is the exercise's main image'''
 
     class Meta:
@@ -387,23 +415,31 @@ class ExerciseImage(AbstractSubmissionModel, AbstractLicenseModel, models.Model)
         Only one image can be marked as main picture at a time
         '''
         if self.is_main:
-            ExerciseImage.objects.filter(exercise=self.exercise).update(is_main=False)
+            ExerciseImage.objects.filter(
+                exercise=self.exercise).update(
+                is_main=False)
             self.is_main = True
         else:
-            if ExerciseImage.objects.accepted().filter(exercise=self.exercise).count() == 0 \
-               or not ExerciseImage.objects.accepted() \
-                            .filter(exercise=self.exercise, is_main=True)\
-                            .count():
+            if (
+                ExerciseImage.objects.accepted()
+                .filter(exercise=self.exercise)
+                .count() == 0 or not ExerciseImage.objects.accepted()
+                .filter(exercise=self.exercise, is_main=True) .count()
+            ):
                 self.is_main = True
 
         #
         # Reset all cached infos
         #
         for language in Language.objects.all():
-            delete_template_fragment_cache('muscle-overview', language.id)
-            delete_template_fragment_cache('exercise-overview', language.id)
-            delete_template_fragment_cache('exercise-overview-mobile', language.id)
-            delete_template_fragment_cache('equipment-overview', language.id)
+            delete_template_fragment_cache(
+                'muscle-overview', language.id)
+            delete_template_fragment_cache(
+                'exercise-overview', language.id)
+            delete_template_fragment_cache(
+                'exercise-overview-mobile', language.id)
+            delete_template_fragment_cache(
+                'equipment-overview', language.id)
 
         # And go on
         super(ExerciseImage, self).save(*args, **kwargs)
@@ -415,23 +451,26 @@ class ExerciseImage(AbstractSubmissionModel, AbstractLicenseModel, models.Model)
         super(ExerciseImage, self).delete(*args, **kwargs)
 
         for language in Language.objects.all():
-            delete_template_fragment_cache('muscle-overview', language.id)
-            delete_template_fragment_cache('exercise-overview', language.id)
-            delete_template_fragment_cache('exercise-overview-mobile', language.id)
-            delete_template_fragment_cache('equipment-overview', language.id)
+            delete_template_fragment_cache(
+                'muscle-overview', language.id)
+            delete_template_fragment_cache(
+                'exercise-overview', language.id)
+            delete_template_fragment_cache(
+                'exercise-overview-mobile', language.id)
+            delete_template_fragment_cache(
+                'equipment-overview', language.id)
 
         # Make sure there is always a main image
-        if not ExerciseImage.objects.accepted() \
-                .filter(exercise=self.exercise, is_main=True).count() \
-           and ExerciseImage.objects.accepted() \
-                .filter(exercise=self.exercise) \
-                .filter(is_main=False) \
-                .count():
+        if not ExerciseImage.objects.accepted() .filter(
+            exercise=self.exercise,
+            is_main=True).count() and ExerciseImage.objects.accepted() .filter(
+            exercise=self.exercise) .filter(
+                is_main=False) .count():
 
-                image = ExerciseImage.objects.accepted() \
-                    .filter(exercise=self.exercise, is_main=False)[0]
-                image.is_main = True
-                image.save()
+            image = ExerciseImage.objects.accepted() \
+                .filter(exercise=self.exercise, is_main=False)[0]
+            image.is_main = True
+            image.save()
 
     def get_owner_object(self):
         '''
@@ -455,10 +494,9 @@ class ExerciseImage(AbstractSubmissionModel, AbstractLicenseModel, models.Model)
                 self.license_author = request.user.username
 
             subject = _('New user submitted image')
-            message = _(u'The user {0} submitted a new image "{1}" for exercise {2}.').format(
-                request.user.username,
-                self.name,
-                self.exercise)
+            message = _(
+                u'The user {0} submitted a new image "{1}" for exercise {2}.')\
+                .format(request.user.username, self.name, self.exercise)
             mail.mail_admins(six.text_type(subject),
                              six.text_type(message),
                              fail_silently=True)
@@ -472,9 +510,10 @@ class ExerciseComment(models.Model):
     exercise = models.ForeignKey(Exercise,
                                  verbose_name=_('Exercise'),
                                  editable=False)
-    comment = models.CharField(max_length=200,
-                               verbose_name=_('Comment'),
-                               help_text=_('A comment about how to correctly do this exercise.'))
+    comment = models.CharField(
+        max_length=200,
+        verbose_name=_('Comment'),
+        help_text=_('A comment about how to correctly do this exercise.'))
 
     def __str__(self):
         '''

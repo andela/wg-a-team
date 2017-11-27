@@ -13,7 +13,8 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU Affero General Public License
-# along with Workout Manager.  If not, see <http://www.gnu.org/licenses/>.
+# along with Workout Manager.  If not, see
+# <http://www.gnu.org/licenses/>.
 
 import logging
 
@@ -37,7 +38,8 @@ class LanguageConfig(models.Model):
     '''
     Configuration for languages
 
-    Allows to specify what exercises and ingredients are shown for each language
+    Allows to specify what exercises and ingredients
+    are shown for each language
     '''
     SHOW_ITEM_EXERCISES = '1'
     SHOW_ITEM_INGREDIENTS = '2'
@@ -49,9 +51,8 @@ class LanguageConfig(models.Model):
     language = models.ForeignKey(Language,
                                  related_name='language_source',
                                  editable=False)
-    language_target = models.ForeignKey(Language,
-                                        related_name='language_target',
-                                        editable=False)
+    language_target = models.ForeignKey(
+        Language, related_name='language_target', editable=False)
     item = models.CharField(max_length=2,
                             choices=SHOW_ITEM_LIST,
                             editable=False)
@@ -77,11 +78,15 @@ class LanguageConfig(models.Model):
         super(LanguageConfig, self).save(*args, **kwargs)
 
         # Cached objects
-        cache.delete(cache_mapper.get_language_config_key(self.language, self.item))
+        cache.delete(
+            cache_mapper.get_language_config_key(
+                self.language, self.item))
 
         # Cached template fragments
-        delete_template_fragment_cache('muscle-overview', self.language_id)
-        delete_template_fragment_cache('exercise-overview', self.language_id)
+        delete_template_fragment_cache(
+            'muscle-overview', self.language_id)
+        delete_template_fragment_cache(
+            'exercise-overview', self.language_id)
 
     def delete(self, *args, **kwargs):
         '''
@@ -89,11 +94,15 @@ class LanguageConfig(models.Model):
         '''
 
         # Cached objects
-        cache.delete(cache_mapper.get_language_config_key(self.language, self.item))
+        cache.delete(
+            cache_mapper.get_language_config_key(
+                self.language, self.item))
 
         # Cached template fragments
-        delete_template_fragment_cache('muscle-overview', self.language_id)
-        delete_template_fragment_cache('exercise-overview', self.language_id)
+        delete_template_fragment_cache(
+            'muscle-overview', self.language_id)
+        delete_template_fragment_cache(
+            'exercise-overview', self.language_id)
 
         super(LanguageConfig, self).delete(*args, **kwargs)
 
@@ -107,14 +116,12 @@ class GymConfig(models.Model):
     TODO: close registration (users can only become members thorough an admin)
     '''
 
-    default_gym = models.ForeignKey(Gym,
-                                    verbose_name=_('Default gym'),
-                                    help_text=_('Select the default gym for this installation. '
-                                                'This will assign all new registered users to this '
-                                                'gym and update all existing users without a '
-                                                'gym.'),
-                                    null=True,
-                                    blank=True)
+    default_gym = models.ForeignKey(
+        Gym, verbose_name=_('Default gym'), help_text=_(
+            'Select the default gym for this installation. '
+            'This will assign all new registered users to this '
+            'gym and update all existing users without a '
+            'gym.'), null=True, blank=True)
     '''
     Default gym for the wger installation
     '''
@@ -132,10 +139,13 @@ class GymConfig(models.Model):
         if self.default_gym:
 
             # All users that have no gym set in the profile are edited
-            UserProfile.objects.filter(gym=None).update(gym=self.default_gym)
+            UserProfile.objects.filter(
+                gym=None).update(
+                gym=self.default_gym)
 
             # All users in the gym must have a gym config
-            for profile in UserProfile.objects.filter(gym=self.default_gym):
+            for profile in UserProfile.objects.filter(
+                    gym=self.default_gym):
                 user = profile.user
                 if not is_any_gym_admin(user):
                     try:
@@ -145,6 +155,8 @@ class GymConfig(models.Model):
                         config.gym = self.default_gym
                         config.user = user
                         config.save()
-                        logger.debug('Creating GymUserConfig for user {0}'.format(user.username))
+                        logger.debug(
+                            'Creating GymUserConfig for user {0}'.format(
+                                user.username))
 
         return super(GymConfig, self).save(*args, **kwargs)

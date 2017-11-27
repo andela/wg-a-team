@@ -12,7 +12,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
-# You should have received a copy of the GNU Affero General Public License
+# You should have received a copy of the GNU Affero General Public
+# License
 import uuid
 import logging
 from itertools import chain
@@ -103,7 +104,8 @@ class ExerciseAjaxSelect(SelectMultiple):
             value = []
 
         output = [u'<div>']
-        output.append(u'<input type="text" id="exercise-search" class="form-control">')
+        output.append(
+            u'<input type="text" id="exercise-search" class="form-control">')
         output.append(u'</div>')
 
         output.append('<div id="exercise-search-log">')
@@ -116,13 +118,23 @@ class ExerciseAjaxSelect(SelectMultiple):
 
     def render_options(self, choices, selected_choices):
         # Normalize to strings.
-        selected_choices = set(force_text(v) for v in selected_choices)
+        selected_choices = set(force_text(v)
+                               for v in selected_choices)
         output = []
-        for option_value, option_label in chain(self.choices, choices):
-            output.append(self.render_option(selected_choices, option_value, option_label))
+        for option_value, option_label in chain(
+                self.choices, choices):
+            output.append(
+                self.render_option(
+                    selected_choices,
+                    option_value,
+                    option_label))
         return u'\n'.join(output)
 
-    def render_option(self, selected_choices, option_value, option_label):
+    def render_option(
+            self,
+            selected_choices,
+            option_value,
+            option_label):
         option_value = force_text(option_value)
         if option_value in selected_choices:
 
@@ -155,7 +167,14 @@ class CheckboxChoiceInputTranslated(CheckboxChoiceInput):
     def __init__(self, name, value, attrs, choice, index):
         choice = (choice[0], _(choice[1]))
 
-        super(CheckboxChoiceInputTranslated, self).__init__(name, value, attrs, choice, index)
+        super(
+            CheckboxChoiceInputTranslated,
+            self).__init__(
+            name,
+            value,
+            attrs,
+            choice,
+            index)
 
 
 class CheckboxChoiceInputTranslatedOriginal(CheckboxChoiceInput):
@@ -169,15 +188,21 @@ class CheckboxChoiceInputTranslatedOriginal(CheckboxChoiceInput):
 
     def __init__(self, name, value, attrs, choice, index):
         if _(choice[1]) != choice[1]:
-            choice = (choice[0], u"{0} ({1})".format(choice[1], _(choice[1])))
+            choice = (
+                choice[0], u"{0} ({1})".format(
+                    choice[1], _(
+                        choice[1])))
         else:
             choice = (choice[0], _(choice[1]))
 
-        super(CheckboxChoiceInputTranslatedOriginal, self).__init__(name,
-                                                                    value,
-                                                                    attrs,
-                                                                    choice,
-                                                                    index)
+        super(
+            CheckboxChoiceInputTranslatedOriginal,
+            self).__init__(
+            name,
+            value,
+            attrs,
+            choice,
+            index)
 
 
 class CheckboxFieldRendererTranslated(ChoiceFieldRenderer):
@@ -193,7 +218,8 @@ class CheckboxBootstrapRenderer(CheckboxFieldRendererTranslated):
     inner_html = u'<div class="checkbox">{choice_value}{sub_widgets}</div>'
 
 
-class CheckboxBootstrapRendererTranslatedOriginal(CheckboxFieldRendererTranslatedOriginal):
+class CheckboxBootstrapRendererTranslatedOriginal(
+        CheckboxFieldRendererTranslatedOriginal):
     outer_html = u'<div{id_attr}>{content}</div>'
     inner_html = u'<div class="checkbox">{choice_value}{sub_widgets}</div>'
 
@@ -202,7 +228,8 @@ class BootstrapSelectMultiple(CheckboxSelectMultiple):
     renderer = CheckboxBootstrapRenderer
 
 
-class BootstrapSelectMultipleTranslatedOriginal(CheckboxSelectMultiple):
+class BootstrapSelectMultipleTranslatedOriginal(
+        CheckboxSelectMultiple):
     renderer = CheckboxBootstrapRendererTranslatedOriginal
 
 
@@ -213,7 +240,8 @@ class TranslatedSelectMultiple(BootstrapSelectMultiple):
     pass
 
 
-class TranslatedOriginalSelectMultiple(BootstrapSelectMultipleTranslatedOriginal):
+class TranslatedOriginalSelectMultiple(
+        BootstrapSelectMultipleTranslatedOriginal):
     '''
     A SelectMultiple widget that translates the options, showing the original
     string as well. This is currently only used in the muscle list, where the
@@ -227,7 +255,14 @@ class TranslatedSelect(Select):
     A Select widget that translates the options
     '''
 
-    def render_option(self, selected_choices, option_value, option_label):
-        return super(TranslatedSelect, self).render_option(selected_choices,
-                                                           option_value,
-                                                           _(option_label))
+    def render_option(
+            self,
+            selected_choices,
+            option_value,
+            option_label):
+        return super(
+            TranslatedSelect,
+            self).render_option(
+            selected_choices,
+            option_value,
+            _(option_label))

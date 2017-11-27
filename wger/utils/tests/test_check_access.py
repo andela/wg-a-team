@@ -10,7 +10,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
-# You should have received a copy of the GNU Affero General Public License
+# You should have received a copy of the GNU Affero General Public
+# License
 
 from django.contrib.auth.models import User, AnonymousUser
 from django.http import Http404
@@ -38,18 +39,45 @@ class CheckAccessTestCase(WorkoutManagerTestCase):
         anon = AnonymousUser()
 
         # Logged out user
-        self.assertEqual(check_access(anon, 'admin'), (False, user_share))
+        self.assertEqual(
+            check_access(
+                anon, 'admin'), (False, user_share))
         self.assertRaises(Http404, check_access, anon, 'test')
-        self.assertRaises(Http404, check_access, anon, 'not_a_username')
+        self.assertRaises(
+            Http404,
+            check_access,
+            anon,
+            'not_a_username')
         self.assertRaises(Http404, check_access, anon)
 
         # Logged in user
-        self.assertEqual(check_access(user_share, 'admin'), (True, user_share))
+        self.assertEqual(
+            check_access(
+                user_share, 'admin'), (True, user_share))
         self.assertRaises(Http404, check_access, user_share, 'test')
         self.assertEqual(check_access(user_share), (True, user_share))
-        self.assertRaises(Http404, check_access, user_share, 'not_a_username')
+        self.assertRaises(
+            Http404,
+            check_access,
+            user_share,
+            'not_a_username')
 
-        self.assertEqual(check_access(user_no_share, 'admin'), (False, user_share))
-        self.assertEqual(check_access(user_no_share, 'test'), (True, user_no_share))
-        self.assertEqual(check_access(user_no_share), (True, user_no_share))
-        self.assertRaises(Http404, check_access, user_no_share, 'not_a_username')
+        self.assertEqual(
+            check_access(
+                user_no_share,
+                'admin'),
+            (False,
+             user_share))
+        self.assertEqual(
+            check_access(
+                user_no_share,
+                'test'),
+            (True,
+             user_no_share))
+        self.assertEqual(check_access(user_no_share),
+                         (True, user_no_share))
+        self.assertRaises(
+            Http404,
+            check_access,
+            user_no_share,
+            'not_a_username')

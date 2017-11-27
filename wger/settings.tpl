@@ -38,11 +38,13 @@ NOCAPTCHA = True
 SITE_URL = '{siteurl}'
 
 # Path to uploaded files
-# Absolute filesystem path to the directory that will hold user-uploaded files.
+# Absolute filesystem path to the directory that will hold
+# user-uploaded files.
 MEDIA_ROOT = {media_folder_path}
 MEDIA_URL = '/media/'
 
-# Allow all hosts to access the application. Change if used in production.
+# Allow all hosts to access the application. Change if used in
+# production.
 ALLOWED_HOSTS = '*'
 
 # This might be a good idea if you setup memcached

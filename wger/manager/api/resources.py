@@ -12,7 +12,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
-# You should have received a copy of the GNU Affero General Public License
+# You should have received a copy of the GNU Affero General Public
+# License
 
 from tastypie import fields
 from tastypie.authentication import (
@@ -43,7 +44,9 @@ class WorkoutResource(ModelResource):
     Resource for workouts
     '''
 
-    days = fields.ToManyField('wger.manager.api.resources.DayResource', 'day_set')
+    days = fields.ToManyField(
+        'wger.manager.api.resources.DayResource',
+        'day_set')
 
     def authorized_read_list(self, object_list, bundle):
         '''
@@ -65,7 +68,8 @@ class WorkoutSessionResource(ModelResource):
     Resource for workout sessions
     '''
 
-    workout = fields.ToOneField('wger.manager.api.resources.WorkoutResource', 'workout')
+    workout = fields.ToOneField(
+        'wger.manager.api.resources.WorkoutResource', 'workout')
 
     def authorized_read_list(self, object_list, bundle):
         '''
@@ -75,7 +79,8 @@ class WorkoutSessionResource(ModelResource):
 
     class Meta:
         queryset = WorkoutSession.objects.all()
-        authentication = MultiAuthentication(SessionAuthentication(), ApiKeyAuthentication())
+        authentication = MultiAuthentication(
+            SessionAuthentication(), ApiKeyAuthentication())
         authorization = UserObjectsOnlyAuthorization()
         filtering = {'id': ALL,
                      "date": ALL,
@@ -89,7 +94,9 @@ class ScheduleStepResource(ModelResource):
     '''
 
     workout = fields.ToOneField(WorkoutResource, 'workout')
-    schedule = fields.ToOneField('wger.manager.api.resources.ScheduleResource', 'schedule')
+    schedule = fields.ToOneField(
+        'wger.manager.api.resources.ScheduleResource',
+        'schedule')
 
     def authorized_read_list(self, object_list, bundle):
         '''
@@ -111,7 +118,9 @@ class ScheduleResource(ModelResource):
     Resource for schedules
     '''
 
-    steps = fields.ToManyField(ScheduleStepResource, 'schedulestep_set')
+    steps = fields.ToManyField(
+        ScheduleStepResource,
+        'schedulestep_set')
 
     def authorized_read_list(self, object_list, bundle):
         '''
@@ -164,7 +173,8 @@ class SetResource(ModelResource):
         '''
         Filter to own objects
         '''
-        return object_list.filter(exerciseday__training__user=bundle.request.user)
+        return object_list.filter(
+            exerciseday__training__user=bundle.request.user)
 
     class Meta:
         queryset = Set.objects.all()
@@ -188,7 +198,8 @@ class SettingResource(ModelResource):
         '''
         Filter to own objects
         '''
-        return object_list.filter(set__exerciseday__training__user=bundle.request.user)
+        return object_list.filter(
+            set__exerciseday__training__user=bundle.request.user)
 
     class Meta:
         queryset = Setting.objects.all()

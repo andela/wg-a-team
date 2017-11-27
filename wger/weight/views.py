@@ -12,7 +12,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
-# You should have received a copy of the GNU Affero General Public License
+# You should have received a copy of the GNU Affero General Public
+# License
 
 import logging
 import csv
@@ -24,7 +25,6 @@ from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth.decorators import login_required
-from django.utils import formats
 from django.utils.translation import ugettext as _
 from django.utils.translation import ugettext_lazy
 from django.db.models import Min
@@ -77,7 +77,9 @@ class WeightAddView(WgerFormMixin, CreateView):
         '''
         Return to overview with username
         '''
-        return reverse('weight:overview', kwargs={'username': self.object.user.username})
+        return reverse(
+            'weight:overview', kwargs={
+                'username': self.object.user.username})
 
 
 class WeightUpdateView(WgerFormMixin, UpdateView):
@@ -88,9 +90,15 @@ class WeightUpdateView(WgerFormMixin, UpdateView):
     form_class = WeightForm
 
     def get_context_data(self, **kwargs):
-        context = super(WeightUpdateView, self).get_context_data(**kwargs)
-        context['form_action'] = reverse('weight:edit', kwargs={'pk': self.object.id})
-        context['title'] = _('Edit weight entry for the %s') % self.object.date
+        context = super(
+            WeightUpdateView,
+            self).get_context_data(
+            **kwargs)
+        context['form_action'] = reverse(
+            'weight:edit', kwargs={
+                'pk': self.object.id})
+        context['title'] = _(
+            'Edit weight entry for the %s') % self.object.date
 
         return context
 
@@ -98,7 +106,9 @@ class WeightUpdateView(WgerFormMixin, UpdateView):
         '''
         Return to overview with username
         '''
-        return reverse('weight:overview', kwargs={'username': self.object.user.username})
+        return reverse(
+            'weight:overview', kwargs={
+                'username': self.object.user.username})
 
 
 @login_required
@@ -114,7 +124,8 @@ def export_csv(request):
     writer = csv.writer(response)
 
     weights = WeightEntry.objects.filter(user=request.user)
-    writer.writerow([_('Weight').encode('utf8'), _('Date').encode('utf8')])
+    writer.writerow([_('Weight').encode('utf8'),
+                     _('Date').encode('utf8')])
 
     for entry in weights:
         writer.writerow([entry.weight, entry.date])
@@ -142,12 +153,12 @@ def overview(request, username=None):
     max_date = WeightEntry.objects.filter(user=user).\
         aggregate(Max('date'))['date__max']
     if min_date:
-        template_data['min_date'] = 'new Date(%(year)s, %(month)s, %(day)s)' % \
+        template_data['min_date'] = 'new Date(%(year)s, %(month)s, %(day)s)' %\
                                     {'year': min_date.year,
                                      'month': min_date.month,
                                      'day': min_date.day}
     if max_date:
-        template_data['max_date'] = 'new Date(%(year)s, %(month)s, %(day)s)' % \
+        template_data['max_date'] = 'new Date(%(year)s, %(month)s, %(day)s)' %\
                                     {'year': max_date.year,
                                      'month': max_date.month,
                                      'day': max_date.day}
@@ -173,8 +184,8 @@ def get_weight_data(request, username=None):
     date_max = request.GET.get('date_max', True)
 
     if date_min and date_max:
-        weights = WeightEntry.objects.filter(user=user,
-                                             date__range=(date_min, date_max))
+        weights = WeightEntry.objects.filter(
+            user=user, date__range=(date_min, date_max))
     else:
         weights = WeightEntry.objects.filter(user=user)
 
@@ -203,12 +214,15 @@ class WeightCsvImportFormPreview(FormPreview):
                 'form_action': reverse('weight:import-csv')}
 
     def process_preview(self, request, form, context):
-        context['weight_list'], context['error_list'] = helpers.parse_weight_csv(request,
-                                                                                 form.cleaned_data)
+        context['weight_list'], context['error_list'] = \
+            helpers.parse_weight_csv(request, form.cleaned_data)
         return context
 
     def done(self, request, cleaned_data):
-        weight_list, error_list = helpers.parse_weight_csv(request, cleaned_data)
+        weight_list, error_list = helpers.parse_weight_csv(
+            request, cleaned_data)
         WeightEntry.objects.bulk_create(weight_list)
-        return HttpResponseRedirect(reverse('weight:overview',
-                                            kwargs={'username': request.user.username}))
+        return HttpResponseRedirect(
+            reverse(
+                'weight:overview', kwargs={
+                    'username': request.user.username}))

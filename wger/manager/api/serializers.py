@@ -13,7 +13,8 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU Affero General Public License
-# along with Workout Manager.  If not, see <http://www.gnu.org/licenses/>.
+# along with Workout Manager.  If not, see
+# <http://www.gnu.org/licenses/>.
 
 from rest_framework import serializers
 
@@ -110,7 +111,8 @@ class SettingSerializer(serializers.ModelSerializer):
 #
 # Custom helper serializers for the canonical form of a workout
 #
-class WorkoutCanonicalFormExerciseListSerializer(serializers.Serializer):
+class WorkoutCanonicalFormExerciseListSerializer(
+        serializers.Serializer):
     '''
     Serializer for settings in the canonical form of a workout
     '''
@@ -131,7 +133,8 @@ class WorkoutCanonicalFormExerciseSerializer(serializers.Serializer):
     Serializer for an exercise in the canonical form of a workout
     '''
     obj = SetSerializer()
-    exercise_list = WorkoutCanonicalFormExerciseListSerializer(many=True)
+    exercise_list = WorkoutCanonicalFormExerciseListSerializer(
+        many=True)
     has_settings = serializers.BooleanField()
     is_superset = serializers.BooleanField()
     muscles = serializers.ReadOnlyField()
