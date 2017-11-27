@@ -31,7 +31,6 @@ social-auth-app-django==2.0.0
 six
 alabaster==0.7.10
 Babel==2.5.1
-bleach==2.1.1
 certifi==2017.11.5
 chardet==3.0.4
 Django==1.9.13
