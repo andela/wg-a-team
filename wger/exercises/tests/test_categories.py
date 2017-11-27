@@ -10,7 +10,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
-# You should have received a copy of the GNU Affero General Public License
+# You should have received a copy of the GNU Affero General Public
+# License
 
 from django.core.cache import cache
 from django.core.urlresolvers import reverse
@@ -35,7 +36,10 @@ class ExerciseCategoryRepresentationTestCase(WorkoutManagerTestCase):
         '''
         Test that the representation of an object is correct
         '''
-        self.assertEqual("{0}".format(ExerciseCategory.objects.get(pk=1)), 'Category')
+        self.assertEqual(
+            "{0}".format(
+                ExerciseCategory.objects.get(
+                    pk=1)), 'Category')
 
 
 class CategoryOverviewTestCase(WorkoutManagerAccessTestCase):
@@ -103,34 +107,59 @@ class ExerciseCategoryCacheTestCase(WorkoutManagerTestCase):
         '''
 
         self.client.get(reverse('exercise:exercise:overview'))
-        self.client.get(reverse('exercise:exercise:view', kwargs={'id': 2}))
+        self.client.get(
+            reverse(
+                'exercise:exercise:view',
+                kwargs={
+                    'id': 2}))
 
-        old_exercise_overview = cache.get(get_template_cache_name('exercise-overview', 2))
-        old_exercise_overview_mobile = cache.get(get_template_cache_name('exercise-overview-mobile',
-                                                                         2))
+        old_exercise_overview = cache.get(
+            get_template_cache_name(
+                'exercise-overview', 2))
+        old_exercise_overview_mobile = cache.get(
+            get_template_cache_name('exercise-overview-mobile', 2))
 
         category = ExerciseCategory.objects.get(pk=2)
         category.name = 'Cool category'
         category.save()
 
-        self.assertFalse(cache.get(get_template_cache_name('exercise-overview', 2)))
-        self.assertFalse(cache.get(get_template_cache_name('exercise-overview-mobile', 2)))
+        self.assertFalse(
+            cache.get(
+                get_template_cache_name(
+                    'exercise-overview',
+                    2)))
+        self.assertFalse(
+            cache.get(
+                get_template_cache_name(
+                    'exercise-overview-mobile',
+                    2)))
 
         self.client.get(reverse('exercise:exercise:overview'))
         self.client.get(reverse('exercise:muscle:overview'))
-        self.client.get(reverse('exercise:exercise:view', kwargs={'id': 2}))
+        self.client.get(
+            reverse(
+                'exercise:exercise:view',
+                kwargs={
+                    'id': 2}))
 
-        new_exercise_overview = cache.get(get_template_cache_name('exercise-overview', 2))
-        new_exercise_overview_mobile = cache.get(get_template_cache_name('exercise-overview-mobile',
-                                                                         2))
+        new_exercise_overview = cache.get(
+            get_template_cache_name(
+                'exercise-overview', 2))
+        new_exercise_overview_mobile = cache.get(
+            get_template_cache_name('exercise-overview-mobile', 2))
 
         if not self.is_mobile:
-            self.assertNotEqual(old_exercise_overview, new_exercise_overview)
+            self.assertNotEqual(
+                old_exercise_overview,
+                new_exercise_overview)
         else:
-            self.assertNotEqual(old_exercise_overview_mobile, new_exercise_overview_mobile)
+            self.assertNotEqual(
+                old_exercise_overview_mobile,
+                new_exercise_overview_mobile)
 
 
-class ExerciseCategoryApiTestCase(api_base_test.ApiBaseResourceTestCase):
+class ExerciseCategoryApiTestCase(
+        api_base_test.ApiBaseResourceTestCase):
     '''
     Tests the exercise category overview resource
     '''

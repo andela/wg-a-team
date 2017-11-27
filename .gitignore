@@ -48,6 +48,10 @@ venv-django/
 
 # Django stuff:
 *.log
+
+settings*.py
+!settings.py
+
 *.sqlite
 /CACHE
 
@@ -59,7 +63,17 @@ target/
 
 # IDE
 .idea/
+venv-django/
 
-# External Libraries 
+# External Libraries
 wger/core/static/bower_components
 node_modules
+
+#virtualenv
+venv-django/
+
+#statics
+**/static/**
+
+#vscode settings
+.vscode/

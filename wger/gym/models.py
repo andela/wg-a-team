@@ -12,7 +12,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
-# You should have received a copy of the GNU Affero General Public License
+# You should have received a copy of the GNU Affero General Public
+# License
 
 import uuid
 import datetime
@@ -96,7 +97,8 @@ class Gym(m.Model):
         Make sure that there are no users with this gym in their profiles
         '''
 
-        # Not accessing the profile directly to avoid cyclic import problems
+        # Not accessing the profile directly to avoid cyclic import
+        # problems
         for user in User.objects.filter(userprofile__gym=self).all():
             user.userprofile.gym = None
             user.userprofile.save()
@@ -128,10 +130,10 @@ class GymConfig(m.Model):
     Gym this configuration belongs to
     '''
 
-    weeks_inactive = m.PositiveIntegerField(verbose_name=_('Reminder of inactive members'),
-                                            help_text=_('Number of weeks since the last time a '
-                                            'user logged his presence to be considered inactive'),
-                                            default=4)
+    weeks_inactive = m.PositiveIntegerField(
+        verbose_name=_('Reminder of inactive members'), help_text=_(
+            'Number of weeks since the last time a '
+            'user logged his presence to be considered inactive'), default=4)
     '''
     Reminder of inactive members
     '''
@@ -181,9 +183,10 @@ class GymAdminConfig(AbstractGymUserConfigModel, m.Model):
         Only one entry per user and gym
         '''
 
-    overview_inactive = m.BooleanField(verbose_name=_('Overview of inactive members'),
-                                       help_text=_('Receive email overviews of inactive members'),
-                                       default=True)
+    overview_inactive = m.BooleanField(
+        verbose_name=_('Overview of inactive members'),
+        help_text=_('Receive email overviews of inactive members'),
+        default=True)
     '''
     Reminder of inactive members
     '''
@@ -206,10 +209,10 @@ class GymUserConfig(AbstractGymUserConfigModel, m.Model):
         Only one entry per user and gym
         '''
 
-    include_inactive = m.BooleanField(verbose_name=_('Include in inactive overview'),
-                                      help_text=_('Include this user in the email list with '
-                                      'inactive members'),
-                                      default=True)
+    include_inactive = m.BooleanField(
+        verbose_name=_('Include in inactive overview'), help_text=_(
+            'Include this user in the email list with '
+            'inactive members'), default=True)
     '''
     Include user in inactive overview
     '''
@@ -274,9 +277,10 @@ def gym_document_upload_dir(instance, filename):
     '''
     Returns the upload target for documents
     '''
-    return "gym/documents/{0}/{1}/{2}".format(instance.member.userprofile.gym.id,
-                                              instance.member.id,
-                                              uuid.uuid4())
+    return "gym/documents/{0}/{1}/{2}".format(
+        instance.member.userprofile.gym.id,
+        instance.member.id,
+        uuid.uuid4())
 
 
 @python_2_unicode_compatible
@@ -327,10 +331,8 @@ class UserDocument(m.Model):
     Original document name when uploaded
     '''
 
-    name = m.CharField(max_length=60,
-                       verbose_name=_('Name'),
-                       help_text=_('Will use file name if nothing provided'),
-                       blank=True)
+    name = m.CharField(max_length=60, verbose_name=_('Name'), help_text=_(
+        'Will use file name if nothing provided'), blank=True)
     '''
     Name or description
     '''
@@ -530,11 +532,12 @@ class Contract(m.Model):
     The amount to pay
     '''
 
-    payment = m.CharField(verbose_name=_('Payment type'),
-                          max_length=2,
-                          choices=AMOUNT_TYPE,
-                          default=AMOUNT_TYPE_MONTHLY,
-                          help_text=_('How often the amount will be charged to the member'))
+    payment = m.CharField(
+        verbose_name=_('Payment type'),
+        max_length=2,
+        choices=AMOUNT_TYPE,
+        default=AMOUNT_TYPE_MONTHLY,
+        help_text=_('How often the amount will be charged to the member'))
     '''
     How often the amount will be charged to the member
     '''

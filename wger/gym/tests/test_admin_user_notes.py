@@ -10,7 +10,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 # GNU General Public License for more details.
 #
-# You should have received a copy of the GNU Affero General Public License
+# You should have received a copy of the GNU Affero General Public
+# License
 
 from django.core.urlresolvers import reverse_lazy
 
@@ -74,7 +75,8 @@ class EditAdminNoteTestCase(WorkoutManagerEditTestCase):
                  'trainer4',
                  'general_manager1',
                  'general_manager2')
-    data = {'note': 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr'}
+    data = {
+        'note': 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr'}
 
 
 class DeleteAdminNoteTestCase(WorkoutManagerDeleteTestCase):
@@ -94,5 +96,6 @@ class DeleteAdminNoteTestCase(WorkoutManagerDeleteTestCase):
                  'trainer4',
                  'general_manager1',
                  'general_manager2')
+
 
 delete_testcase_add_methods(DeleteAdminNoteTestCase)
