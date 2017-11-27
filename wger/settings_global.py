@@ -380,7 +380,7 @@ IGNORABLE_404_URLS = (
 #
 # Application specific configuration options
 #
-# Consult docs/settings.rst for more information
+# Consult docs/settings.rst for more informationadsdasd
 #
 WGER_SETTINGS = {
     'USE_RECAPTCHA': False,
