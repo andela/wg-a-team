@@ -12,12 +12,14 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
-# You should have received a copy of the GNU Affero General Public License
+# You should have received a copy of the GNU Affero General Public
+# License
 import logging
 
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.utils.translation import ugettext_lazy, ugettext as _
-from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
+from django.contrib.auth.mixins import (
+    PermissionRequiredMixin, LoginRequiredMixin)
 
 from django.views.generic import (
     DeleteView,
@@ -99,7 +101,10 @@ class WeightUnitDeleteView(WgerDeleteMixin,
         '''
         Send some additional data to the template
         '''
-        context = super(WeightUnitDeleteView, self).get_context_data(**kwargs)
+        context = super(
+            WeightUnitDeleteView,
+            self).get_context_data(
+            **kwargs)
         context['title'] = _(u'Delete {0}?').format(self.object)
         return context
 
@@ -124,6 +129,9 @@ class WeightUnitUpdateView(WgerFormMixin,
         '''
         Send some additional data to the template
         '''
-        context = super(WeightUnitUpdateView, self).get_context_data(**kwargs)
+        context = super(
+            WeightUnitUpdateView,
+            self).get_context_data(
+            **kwargs)
         context['title'] = _(u'Edit {0}').format(self.object)
         return context

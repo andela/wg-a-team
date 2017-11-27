@@ -10,7 +10,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
-# You should have received a copy of the GNU Affero General Public License
+# You should have received a copy of the GNU Affero General Public
+# License
 
 
 from django.core.cache import cache
@@ -36,7 +37,11 @@ class MuscleRepresentationTestCase(WorkoutManagerTestCase):
         '''
         Test that the representation of an object is correct
         '''
-        self.assertEqual("{0}".format(Muscle.objects.get(pk=1)), 'Anterior testoid')
+        self.assertEqual(
+            "{0}".format(
+                Muscle.objects.get(
+                    pk=1)),
+            'Anterior testoid')
 
 
 class MuscleAdminOverviewTest(WorkoutManagerAccessTestCase):
@@ -123,9 +128,17 @@ class MuscleCacheTestCase(WorkoutManagerTestCase):
         '''
 
         if not self.is_mobile:
-            self.assertFalse(cache.get(get_template_cache_name('muscle-overview', 2)))
+            self.assertFalse(
+                cache.get(
+                    get_template_cache_name(
+                        'muscle-overview',
+                        2)))
             self.client.get(reverse('exercise:muscle:overview'))
-            self.assertTrue(cache.get(get_template_cache_name('muscle-overview', 2)))
+            self.assertTrue(
+                cache.get(
+                    get_template_cache_name(
+                        'muscle-overview',
+                        2)))
 
 
 class MuscleOverviewTestCase(WorkoutManagerAccessTestCase):

@@ -13,7 +13,8 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU Affero General Public License
-# along with Workout Manager.  If not, see <http://www.gnu.org/licenses/>.
+# along with Workout Manager.  If not, see
+# <http://www.gnu.org/licenses/>.
 
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
@@ -29,20 +30,24 @@ class WeightEntry(models.Model):
     Model for a weight point
     '''
     date = models.DateField(verbose_name=_('Date'))
-    weight = models.DecimalField(verbose_name=_('Weight'),
-                                 max_digits=5,
-                                 decimal_places=2,
-                                 validators=[MinValueValidator(30), MaxValueValidator(600)])
+    weight = models.DecimalField(
+        verbose_name=_('Weight'),
+        max_digits=5,
+        decimal_places=2,
+        validators=[
+            MinValueValidator(30),
+            MaxValueValidator(600)])
     user = models.ForeignKey(User,
                              verbose_name=_('User'))
     '''
     The user the weight entry belongs to.
 
     NOTE: this field is neither marked as editable false nor is it excluded in
-    the form. This is done intentionally because otherwise it's *very* difficult
-    and ugly to validate the uniqueness of unique_together fields and one field
-    is excluded from the form. This does not pose any security risk because the
-    value from the form is ignored and the request's user always used.
+    the form. This is done intentionally because otherwise it's *very*
+    difficult and ugly to validate the uniqueness of unique_together
+    fields and one field is excluded from the form. This does not pose
+    any security risk because the value from the form is ignored and
+    the request's user always used.
     '''
 
     class Meta:

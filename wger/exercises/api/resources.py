@@ -12,7 +12,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
-# You should have received a copy of the GNU Affero General Public License
+# You should have received a copy of the GNU Affero General Public
+# License
 
 from tastypie import fields
 from tastypie.resources import ModelResource
@@ -33,21 +34,28 @@ from wger.exercises.models import (
 
 
 class ExerciseResource(ModelResource):
-    category = fields.ToOneField('wger.exercises.api.resources.ExerciseCategoryResource',
-                                 'category')
-    muscles = fields.ToManyField('wger.exercises.api.resources.MuscleResource', 'muscles')
-    muscles_secondary = fields.ToManyField('wger.exercises.api.resources.MuscleResource',
-                                           'muscles_secondary')
-    comments = fields.ToManyField('wger.exercises.api.resources.ExerciseCommentResource',
-                                  'exercisecomment_set')
-    images = fields.ToManyField('wger.exercises.api.resources.ExerciseImageResource',
-                                'exerciseimage_set')
-    equipment = fields.ToManyField('wger.exercises.api.resources.EquipmentResource',
-                                   'equipment')
+    category = fields.ToOneField(
+        'wger.exercises.api.resources.ExerciseCategoryResource',
+        'category')
+    muscles = fields.ToManyField(
+        'wger.exercises.api.resources.MuscleResource', 'muscles')
+    muscles_secondary = fields.ToManyField(
+        'wger.exercises.api.resources.MuscleResource',
+        'muscles_secondary')
+    comments = fields.ToManyField(
+        'wger.exercises.api.resources.ExerciseCommentResource',
+        'exercisecomment_set')
+    images = fields.ToManyField(
+        'wger.exercises.api.resources.ExerciseImageResource',
+        'exerciseimage_set')
+    equipment = fields.ToManyField(
+        'wger.exercises.api.resources.EquipmentResource',
+        'equipment')
     language = fields.ToOneField(LanguageResource, 'language')
     license = fields.ToOneField(LicenseResource, 'license')
 
-    creation_date = fields.DateField(attribute='creation_date', null=True)
+    creation_date = fields.DateField(
+        attribute='creation_date', null=True)
 
     class Meta:
         queryset = Exercise.objects.all()
@@ -82,7 +90,9 @@ class ExerciseCategoryResource(ModelResource):
 
 
 class ExerciseImageResource(ModelResource):
-    exercise = fields.ToOneField('wger.exercises.api.resources.ExerciseResource', 'exercise')
+    exercise = fields.ToOneField(
+        'wger.exercises.api.resources.ExerciseResource',
+        'exercise')
     license = fields.ToOneField(LicenseResource, 'license')
 
     class Meta:
@@ -100,15 +110,19 @@ class ExerciseImageResource(ModelResource):
         thumbnails = {}
         for alias in aliases.all():
             t = get_thumbnailer(bundle.obj.image)
-            thumbnails[alias] = {'url': t.get_thumbnail(aliases.get(alias)).url,
-                                 'settings': aliases.get(alias)}
+            thumbnails[alias] = {
+                'url': t.get_thumbnail(
+                    aliases.get(alias)).url,
+                'settings': aliases.get(alias)}
 
         bundle.data['thumbnails'] = thumbnails
         return bundle
 
 
 class ExerciseCommentResource(ModelResource):
-    exercise = fields.ToOneField('wger.exercises.api.resources.ExerciseResource', 'exercise')
+    exercise = fields.ToOneField(
+        'wger.exercises.api.resources.ExerciseResource',
+        'exercise')
 
     class Meta:
         queryset = ExerciseComment.objects.all()

@@ -13,7 +13,9 @@ def convert_logs(apps, schema_editor):
     UserProfile = apps.get_model('core', 'UserProfile')
 
     for profile in UserProfile.objects.filter(weight_unit='lb'):
-        WorkoutLog.objects.filter(user=profile.user).update(weight_unit=2)
+        WorkoutLog.objects.filter(
+            user=profile.user).update(
+            weight_unit=2)
 
 
 def convert_settings(apps, schema_editor):
@@ -32,6 +34,9 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunPython(convert_logs, reverse_code=migrations.RunPython.noop),
-        migrations.RunPython(convert_settings, reverse_code=migrations.RunPython.noop),
+        migrations.RunPython(convert_logs,
+                             reverse_code=migrations.RunPython.noop),
+        migrations.RunPython(
+            convert_settings,
+            reverse_code=migrations.RunPython.noop),
     ]

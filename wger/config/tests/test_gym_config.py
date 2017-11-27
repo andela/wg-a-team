@@ -13,7 +13,8 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU Affero General Public License
-# along with Workout Manager.  If not, see <http://www.gnu.org/licenses/>.
+# along with Workout Manager.  If not, see
+# <http://www.gnu.org/licenses/>.
 
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
@@ -45,7 +46,9 @@ class GymConfigTestCase(WorkoutManagerTestCase):
                              'password2': 'secret',
                              'email': 'my.email@example.com',
                              'g-recaptcha-response': 'PASSED', }
-        self.client.post(reverse('core:user:registration'), registration_data)
+        self.client.post(
+            reverse('core:user:registration'),
+            registration_data)
         new_user = User.objects.all().last()
 
         self.assertEqual(new_user.userprofile.gym, gym)
@@ -66,11 +69,16 @@ class GymConfigTestCase(WorkoutManagerTestCase):
                              'password2': 'secret',
                              'email': 'my.email@example.com',
                              'g-recaptcha-response': 'PASSED', }
-        self.client.post(reverse('core:user:registration'), registration_data)
+        self.client.post(
+            reverse('core:user:registration'),
+            registration_data)
 
         new_user = User.objects.all().last()
         self.assertEqual(new_user.userprofile.gym_id, None)
-        self.assertRaises(GymUserConfig.DoesNotExist, GymUserConfig.objects.get, user=new_user)
+        self.assertRaises(
+            GymUserConfig.DoesNotExist,
+            GymUserConfig.objects.get,
+            user=new_user)
 
     def test_update_userprofile(self):
         '''
@@ -79,7 +87,9 @@ class GymConfigTestCase(WorkoutManagerTestCase):
 
         UserProfile.objects.update(gym=None)
         GymUserConfig.objects.all().delete()
-        self.assertEqual(UserProfile.objects.exclude(gym=None).count(), 0)
+        self.assertEqual(
+            UserProfile.objects.exclude(
+                gym=None).count(), 0)
 
         gym = Gym.objects.get(pk=2)
         gym_config = GymConfig.objects.get(pk=1)
@@ -87,7 +97,11 @@ class GymConfigTestCase(WorkoutManagerTestCase):
         gym_config.save()
 
         # 24 users in total
-        self.assertEqual(UserProfile.objects.filter(gym=gym).count(), 24)
+        self.assertEqual(
+            UserProfile.objects.filter(
+                gym=gym).count(), 24)
 
         # 13 non-managers
-        self.assertEqual(GymUserConfig.objects.filter(gym=gym).count(), 13)
+        self.assertEqual(
+            GymUserConfig.objects.filter(
+                gym=gym).count(), 13)

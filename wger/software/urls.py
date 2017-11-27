@@ -12,7 +12,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
-# You should have received a copy of the GNU Affero General Public License
+# You should have received a copy of the GNU Affero General Public
+# License
 
 from django.conf.urls import url
 from django.views.generic import TemplateView, RedirectView
@@ -37,7 +38,9 @@ urlpatterns = [
         name='license'),
 
     url(r'^code$',
-        RedirectView.as_view(permanent=True, url='https://github.com/wger-project/wger'),
+        RedirectView.as_view(
+            permanent=True,
+            url='https://github.com/wger-project/wger'),
         name='code'),
 
     url(r'^contribute$',

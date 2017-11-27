@@ -10,7 +10,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
-# You should have received a copy of the GNU Affero General Public License
+# You should have received a copy of the GNU Affero General Public
+# License
 
 import logging
 
@@ -26,7 +27,8 @@ class UserObjectsOnlyAuthorization(ReadOnlyAuthorization):
 
     def read_detail(self, object_list, bundle):
 
-        # For models such as userprofile where we don't have an owner function
+        # For models such as userprofile where we don't have an owner
+        # function
         if hasattr(bundle.obj, 'user'):
             return bundle.obj.user == bundle.request.user
 

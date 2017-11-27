@@ -12,7 +12,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
-# You should have received a copy of the GNU Affero General Public License
+# You should have received a copy of the GNU Affero General Public
+# License
 
 from tastypie import fields
 from tastypie.authentication import ApiKeyAuthentication
@@ -82,7 +83,9 @@ class NutritionPlanResource(ModelResource):
     Resource for nutritional plans
     '''
 
-    meals = fields.ToManyField('wger.nutrition.api.resources.MealResource', 'meal_set')
+    meals = fields.ToManyField(
+        'wger.nutrition.api.resources.MealResource',
+        'meal_set')
 
     def authorized_read_list(self, object_list, bundle):
         '''
@@ -113,7 +116,9 @@ class MealResource(ModelResource):
     '''
 
     plan = fields.ToOneField(NutritionPlanResource, 'plan')
-    meal_items = fields.ToManyField('wger.nutrition.api.resources.MealItemResource', 'mealitem_set')
+    meal_items = fields.ToManyField(
+        'wger.nutrition.api.resources.MealItemResource',
+        'mealitem_set')
 
     def authorized_read_list(self, object_list, bundle):
         '''
@@ -145,13 +150,15 @@ class MealItemResource(ModelResource):
 
     meal = fields.ToOneField(MealResource, 'meal')
     ingredient = fields.ToOneField(IngredientResource, 'ingredient')
-    weight_unit = fields.ToOneField(WeightUnitResource, 'weight_unit', null=True)
+    weight_unit = fields.ToOneField(
+        WeightUnitResource, 'weight_unit', null=True)
 
     def authorized_read_list(self, object_list, bundle):
         '''
         Filter to own objects
         '''
-        return object_list.filter(meal__plan__user=bundle.request.user)
+        return object_list.filter(
+            meal__plan__user=bundle.request.user)
 
     def dehydrate(self, bundle):
         '''

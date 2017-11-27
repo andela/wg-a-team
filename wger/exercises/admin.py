@@ -10,7 +10,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
-# You should have received a copy of the GNU Affero General Public License
+# You should have received a copy of the GNU Affero General Public
+# License
 
 from django.contrib import admin
 from wger.core.models import Language
@@ -21,7 +22,8 @@ from wger.exercises.models import ExerciseCategory
 from wger.exercises.models import Muscle
 
 
-class ExerciseCommentInline(admin.TabularInline):  # admin.StackedInline
+class ExerciseCommentInline(
+        admin.TabularInline):  # admin.StackedInline
     model = ExerciseComment
     extra = 1
 
@@ -29,6 +31,7 @@ class ExerciseCommentInline(admin.TabularInline):  # admin.StackedInline
 class ExerciseAdmin(admin.ModelAdmin):
 
     inlines = [ExerciseCommentInline]
+
 
 admin.site.register(Exercise, ExerciseAdmin)
 admin.site.register(ExerciseCategory)

@@ -11,7 +11,8 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU Affero General Public License
-# along with Workout Manager.  If not, see <http://www.gnu.org/licenses/>.
+# along with Workout Manager.  If not, see
+# <http://www.gnu.org/licenses/>.
 
 from django.db import models
 from django.db.models.query import QuerySet
@@ -28,10 +29,12 @@ Custom managers and querysets
 
 class SubmissionQuerySet(QuerySet):
     def accepted(self):
-        return self.filter(status=AbstractSubmissionModel.STATUS_ACCEPTED)
+        return self.filter(
+            status=AbstractSubmissionModel.STATUS_ACCEPTED)
 
     def pending(self):
-        return self.filter(status=AbstractSubmissionModel.STATUS_PENDING)
+        return self.filter(
+            status=AbstractSubmissionModel.STATUS_PENDING)
 
 
 class SubmissionManager(models.Manager):
