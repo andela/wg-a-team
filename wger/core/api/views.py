@@ -27,6 +27,7 @@ from wger.core.models import (
     License,
     RepetitionUnit,
     WeightUnit)
+
 from wger.core.api.serializers import (
     UsernameSerializer,
     LanguageSerializer,
@@ -39,15 +40,17 @@ from wger.core.api.serializers import (
 from wger.core.api.serializers import UserprofileSerializer
 from wger.utils.permissions import UpdateOnlyPermission, WgerPermission
 
+
 # class RegisterUserViewSet(viewsets.ModelViewSet):
-class RegisterUserViewSet(mixins.CreateModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
+class RegisterUserViewSet(
+        mixins.CreateModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
 
     '''
     API endpoint for user registration
     '''
     queryset = User.objects.all()
     serializer_class = RegisteruserSerializer
-    
+
     def get_queryset(self):
         return User.objects.filter(username=self.request.user.username)
 
@@ -67,9 +70,10 @@ class RegisterUserViewSet(mixins.CreateModelMixin, mixins.RetrieveModelMixin, vi
             profile.added_by = request.user.username
             profile.save()
 
-            return Response ({'Message': 'profile created'}, status=status.HTTP_201_CREATED)
+            return Response({'Message': 'profile created'}, status=status.HTTP_201_CREATED)
         return Response({
-            'Message':'You have no permissions to create a user'}, status= status.HTTP_403_FORBIDDEN )
+            'Message': 'You have no permissions to create a user'},
+            status=status.HTTP_403_FORBIDDEN)
 
 
 class UserProfileViewSet(viewsets.ModelViewSet):
