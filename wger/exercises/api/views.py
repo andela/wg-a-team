@@ -218,7 +218,8 @@ class ExerciseInfoView(viewsets.ModelViewSet):
     serializer_class = ExerciseInfoSerializer
     permission_classes = (IsAuthenticatedOrReadOnly, CreateOnlyPermission)
     ordering_fields = '__all__'
-    filter_fields = ('category',
+    filter_fields = (
+        'category',
         'creation_date',
         'description',
         'language',
