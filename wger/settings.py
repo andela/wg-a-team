@@ -29,12 +29,12 @@ DATABASES = {
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = '_v8g)fs!n_+95g1&*n%tjk7v+&beqv4^m^ri-4ff5l6szzh^9c'
 
-SOCIAL_AUTH_TWITTER_KEY=os.getenv("SOCIAL_AUTH_TWITTER_KEY")
-SOCIAL_AUTH_TWITTER_SECRET=os.getenv("SOCIAL_AUTH_TWITTER_SECRET")
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY=os.getenv("SOCIAL_AUTH_GOOGLE_OAUTH2_KEY")
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET=os.getenv("SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET")
-SOCIAL_AUTH_FACEBOOK_KEY=os.getenv("SOCIAL_AUTH_FACEBOOK_KEY")
-SOCIAL_AUTH_FACEBOOK_SECRET=os.getenv("SOCIAL_AUTH_FACEBOOK_SECRET")  # App Secret
+SOCIAL_AUTH_TWITTER_KEY = os.getenv("SOCIAL_AUTH_TWITTER_KEY")
+SOCIAL_AUTH_TWITTER_SECRET = s.getenv("SOCIAL_AUTH_TWITTER_SECRET")
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.getenv("SOCIAL_AUTH_GOOGLE_OAUTH2_KEY")
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = .getenv("SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET")
+SOCIAL_AUTH_FACEBOOK_KEY = os.getenv("SOCIAL_AUTH_FACEBOOK_KEY")
+SOCIAL_AUTH_FACEBOOK_SECRET = os.getenv("SOCIAL_AUTH_FACEBOOK_SECRET")  # App Secret
 # Your reCaptcha keys
 RECAPTCHA_PUBLIC_KEY = ''
 RECAPTCHA_PRIVATE_KEY = ''
@@ -54,7 +54,7 @@ MEDIA_URL = '/media/'
 ALLOWED_HOSTS = '*'
 
 # This might be a good idea if you setup memcached
-#SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+# SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 
 # Configure a real backend in production
 if DEBUG:
@@ -64,4 +64,4 @@ if DEBUG:
 WGER_SETTINGS['EMAIL_FROM'] = 'wger Workout Manager <wger@example.com>'
 
 # Your twitter handle, if you have one for this instance.
-#WGER_SETTINGS['TWITTER'] = ''
+# WGER_SETTINGS['TWITTER'] = ''
