@@ -708,13 +708,13 @@ class FitbitUser(models.Model):
         self.secret = settings_global['FITBIT_CLIENT_SECRET']
         is_authorized = self.isAuthenticated()
 
-    if is_authorized:
-        self.access_token = is_authorized.access_token
-        self.refresh_token = is_authorized.refresh_token
-        self.authenticated = True
-        return self.authenticated
+        if is_authorized:
+            self.access_token = is_authorized.access_token
+            self.refresh_token = is_authorized.refresh_token
+            self.authenticated = True
+            return self.authenticated
 
-    return False
+        return False
 
     def refresh(self, token):
         print(token)
