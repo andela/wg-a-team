@@ -16,7 +16,7 @@
 # along with Workout Manager.  If not, see <http://www.gnu.org/licenses/>.
 
 from django.contrib.auth.models import User
-from rest_framework import viewsets, mixins
+from rest_framework import viewsets, mixins, status
 from rest_framework.response import Response
 from rest_framework.decorators import detail_route
 
@@ -47,6 +47,29 @@ class RegisterUserViewSet(mixins.CreateModelMixin, mixins.RetrieveModelMixin, vi
     '''
     queryset = User.objects.all()
     serializer_class = RegisteruserSerializer
+    
+    def get_queryset(self):
+        return User.objects.filter(username=self.request.user.username)
+
+    def create(self, request, *args, **kwargs):
+        if UserProfile.objects.get(user=request.user).can_add_user:
+            serializer = RegisteruserSerializer(data=request.data)
+
+            if not serializer.is_valid():
+                return Response(serializer.errors, status=status.HTTP_404_NOT_FOUND)
+
+            serializer.save()
+            new_profile = User.objects.get(
+                username=request.data.get('username'))
+            new_profile.save()
+
+            profile = UserProfile.objects.get(user=new_profile)
+            profile.added_by = request.user.username
+            profile.save()
+
+            return Response ({'Message': 'profile created'}, status=status.HTTP_201_CREATED)
+        return Response({
+            'Message':'You have no permissions to create a user'}, status= status.HTTP_403_FORBIDDEN )
 
 
 class UserProfileViewSet(viewsets.ModelViewSet):
