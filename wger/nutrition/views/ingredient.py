@@ -12,7 +12,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
-# You should have received a copy of the GNU Affero General Public License
+# You should have received a copy of the GNU Affero General Public
+# License
 import logging
 
 from django.shortcuts import render, get_object_or_404
@@ -20,7 +21,8 @@ from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.core import mail
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.core.cache import cache
-from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
+from django.contrib.auth.mixins import (
+    PermissionRequiredMixin, LoginRequiredMixin)
 from django.contrib.auth.decorators import permission_required
 from django.contrib import messages
 from django.utils.translation import ugettext_lazy, ugettext as _
@@ -61,19 +63,25 @@ class IngredientListView(ListView):
         '''
         Filter the ingredients the user will see by its language
 
-        (the user can also want to see ingredients in English, in addition to his
-        native language, see load_ingredient_languages)
+        (the user can also want to see ingredients in English, in addition to
+        his native language, see load_ingredient_languages)
         '''
         languages = load_ingredient_languages(self.request)
-        return (Ingredient.objects.filter(language__in=languages)
-                                  .filter(status__in=Ingredient.INGREDIENT_STATUS_OK)
-                                  .only('id', 'name'))
+        return (
+            Ingredient.objects.filter(
+                language__in=languages) .filter(
+                status__in=Ingredient.INGREDIENT_STATUS_OK) .only(
+                'id',
+                'name'))
 
     def get_context_data(self, **kwargs):
         '''
         Pass additional data to the template
         '''
-        context = super(IngredientListView, self).get_context_data(**kwargs)
+        context = super(
+            IngredientListView,
+            self).get_context_data(
+            **kwargs)
         context['show_shariff'] = True
         return context
 
@@ -84,11 +92,15 @@ def view(request, id, slug=None):
     ingredient = cache.get(cache_mapper.get_ingredient_key(int(id)))
     if not ingredient:
         ingredient = get_object_or_404(Ingredient, pk=id)
-        cache.set(cache_mapper.get_ingredient_key(ingredient), ingredient)
+        cache.set(
+            cache_mapper.get_ingredient_key(ingredient),
+            ingredient)
     template_data['ingredient'] = ingredient
-    template_data['form'] = UnitChooserForm(data={'ingredient_id': ingredient.id,
-                                                  'amount': 100,
-                                                  'unit': None})
+    template_data['form'] = UnitChooserForm(
+        data={
+            'ingredient_id': ingredient.id,
+            'amount': 100,
+            'unit': None})
     template_data['show_shariff'] = True
 
     return render(request, 'ingredient/view.html', template_data)
@@ -119,11 +131,15 @@ class IngredientDeleteView(WgerDeleteMixin,
 
     # Send some additional data to the template
     def get_context_data(self, **kwargs):
-        context = super(IngredientDeleteView, self).get_context_data(**kwargs)
+        context = super(
+            IngredientDeleteView,
+            self).get_context_data(
+            **kwargs)
 
         context['title'] = _(u'Delete {0}?').format(self.object)
-        context['form_action'] = reverse('nutrition:ingredient:delete',
-                                         kwargs={'pk': self.object.id})
+        context['form_action'] = reverse(
+            'nutrition:ingredient:delete', kwargs={
+                'pk': self.object.id})
 
         return context
 
@@ -146,7 +162,11 @@ class IngredientMixin(WgerFormMixin):
               'license_author']
 
 
-class IngredientEditView(IngredientMixin, LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+class IngredientEditView(
+        IngredientMixin,
+        LoginRequiredMixin,
+        PermissionRequiredMixin,
+        UpdateView):
     '''
     Generic view to update an existing ingredient
     '''
@@ -159,7 +179,10 @@ class IngredientEditView(IngredientMixin, LoginRequiredMixin, PermissionRequired
         '''
         Send some additional data to the template
         '''
-        context = super(IngredientEditView, self).get_context_data(**kwargs)
+        context = super(
+            IngredientEditView,
+            self).get_context_data(
+            **kwargs)
         context['title'] = _(u'Edit {0}').format(self.object)
         return context
 
@@ -182,8 +205,10 @@ class IngredientCreateView(IngredientMixin, CreateView):
             form.instance.status = Ingredient.INGREDIENT_STATUS_ADMIN
         else:
             subject = _('New user submitted ingredient')
-            message = _(u'''The user {0} submitted a new ingredient "{1}".'''.format(
-                        self.request.user.username, form.instance.name))
+            message = _(
+                u'''The user {0} submitted a new ingredient "{1}".'''.format(
+                    self.request.user.username,
+                    form.instance.name))
             mail.mail_admins(subject,
                              message,
                              fail_silently=True)
@@ -197,10 +222,19 @@ class IngredientCreateView(IngredientMixin, CreateView):
         '''
         if request.user.userprofile.is_temporary:
             return HttpResponseForbidden()
-        return super(IngredientCreateView, self).dispatch(request, *args, **kwargs)
+        return super(
+            IngredientCreateView,
+            self).dispatch(
+            request,
+            *
+            args,
+            **kwargs)
 
 
-class PendingIngredientListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
+class PendingIngredientListView(
+        LoginRequiredMixin,
+        PermissionRequiredMixin,
+        ListView):
     '''
     List all ingredients pending review
     '''
@@ -214,7 +248,8 @@ class PendingIngredientListView(LoginRequiredMixin, PermissionRequiredMixin, Lis
         '''
         Only show ingredients pending review
         '''
-        return Ingredient.objects.filter(status=Ingredient.INGREDIENT_STATUS_PENDING) \
+        return Ingredient.objects.filter(
+            status=Ingredient.INGREDIENT_STATUS_PENDING)\
             .order_by('-creation_date')
 
 
@@ -227,7 +262,9 @@ def accept(request, pk):
     ingredient.status = Ingredient.INGREDIENT_STATUS_ACCEPTED
     ingredient.save()
     ingredient.send_email(request)
-    messages.success(request, _('Ingredient was successfully added to the general database'))
+    messages.success(
+        request,
+        _('Ingredient was successfully added to the general database'))
 
     return HttpResponseRedirect(ingredient.get_absolute_url())
 
@@ -240,5 +277,7 @@ def decline(request, pk):
     ingredient = get_object_or_404(Ingredient, pk=pk)
     ingredient.status = Ingredient.INGREDIENT_STATUS_DECLINED
     ingredient.save()
-    messages.success(request, _('Ingredient was successfully marked as rejected'))
+    messages.success(
+        request,
+        _('Ingredient was successfully marked as rejected'))
     return HttpResponseRedirect(ingredient.get_absolute_url())

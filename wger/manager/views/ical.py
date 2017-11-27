@@ -12,7 +12,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
-# You should have received a copy of the GNU Affero General Public License
+# You should have received a copy of the GNU Affero General Public
+# License
 
 import six
 import logging
@@ -84,16 +85,27 @@ def get_events_workout(calendar, workout, duration, start_date=None):
         description_list = []
         for set in day['set_list']:
             for exercise in set['exercise_list']:
-                description_list.append(six.text_type(exercise['obj']))
-        description = ', '.join(description_list) if description_list else day['obj'].description
+                description_list.append(
+                    six.text_type(exercise['obj']))
+        description = ', '.join(
+            description_list) if description_list else day['obj'].description
 
         # Make an event for each weekday
         for weekday in day['days_of_week']['day_list']:
             event = Event()
             event.add('summary', day['obj'].description)
             event.add('description', description)
-            event.add('dtstart', next_weekday(start_date, weekday.id - 1))
-            event.add('dtend', next_weekday(start_date, weekday.id - 1))
+            event.add(
+                'dtstart',
+                next_weekday(
+                    start_date,
+                    weekday.id - 1))
+            event.add(
+                'dtend',
+                next_weekday(
+                    start_date,
+                    weekday.id -
+                    1))
             event.add('rrule', {'freq': 'weekly', 'until': end_date})
             event['uid'] = generator.uid(host_name=site.domain)
             event.add('priority', 5)
@@ -121,12 +133,16 @@ def export(request, pk, uidb64=None, token=None):
     calendar = get_calendar()
 
     # Create the events and add them to the calendar
-    get_events_workout(calendar, workout, workout.user.userprofile.workout_duration)
+    get_events_workout(
+        calendar,
+        workout,
+        workout.user.userprofile.workout_duration)
 
     # Send the file to the user
     response = HttpResponse(content_type='text/calendar')
     response['Content-Disposition'] = \
-        'attachment; filename=Calendar-workout-{0}.ics'.format(workout.pk)
+        'attachment; filename=Calendar-workout-{0}.ics'.format(
+            workout.pk)
     response.write(calendar.to_ical())
     response['Content-Length'] = len(response.content)
     return response
@@ -146,7 +162,8 @@ def export_schedule(request, pk, uidb64=None, token=None):
     else:
         if request.user.is_anonymous():
             return HttpResponseForbidden()
-        schedule = get_object_or_404(Schedule, pk=pk, user=request.user)
+        schedule = get_object_or_404(
+            Schedule, pk=pk, user=request.user)
 
     # Create the calendar
     calendar = get_calendar()
@@ -154,13 +171,19 @@ def export_schedule(request, pk, uidb64=None, token=None):
     # Create the events and add them to the calendar
     start_date = datetime.date.today()
     for step in schedule.schedulestep_set.all():
-        get_events_workout(calendar, step.workout, step.duration, start_date)
-        start_date = start_date + datetime.timedelta(weeks=step.duration)
+        get_events_workout(
+            calendar,
+            step.workout,
+            step.duration,
+            start_date)
+        start_date = start_date + \
+            datetime.timedelta(weeks=step.duration)
 
     # Send the file to the user
     response = HttpResponse(content_type='text/calendar')
     response['Content-Disposition'] = \
-        'attachment; filename=Calendar-schedule-{0}.ics'.format(schedule.pk)
+        'attachment; filename=Calendar-schedule-{0}.ics'.format(
+            schedule.pk)
     response.write(calendar.to_ical())
     response['Content-Length'] = len(response.content)
     return response

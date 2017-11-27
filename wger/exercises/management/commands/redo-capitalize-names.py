@@ -12,7 +12,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
-# You should have received a copy of the GNU Affero General Public License
+# You should have received a copy of the GNU Affero General Public
+# License
 
 from django.core.management.base import BaseCommand
 
@@ -35,8 +36,11 @@ class Command(BaseCommand):
         exercises = Exercise.objects.all()
         for exercise in exercises:
             if options['verbosity'] > 1:
-                self.stdout.write('#{} {} -> {}'.format(exercise.id,
-                                                        exercise.name,
-                                                        smart_capitalize(exercise.name_original)))
+                self.stdout.write(
+                    '#{} {} -> {}'.format(
+                        exercise.id,
+                        exercise.name,
+                        smart_capitalize(
+                            exercise.name_original)))
             exercise.name = smart_capitalize(exercise.name_original)
             exercise.save()

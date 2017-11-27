@@ -10,7 +10,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
-# You should have received a copy of the GNU Affero General Public License
+# You should have received a copy of the GNU Affero General Public
+# License
 
 from decimal import Decimal
 
@@ -31,7 +32,8 @@ class WeightConversionTestCase(WorkoutManagerTestCase):
 
         tmp = AbstractWeight(10)
         self.assertEqual(tmp.kg, 10)
-        self.assertEqual(tmp.lb, Decimal(22.0462).quantize(FOURPLACES))
+        self.assertEqual(tmp.lb, Decimal(
+            22.0462).quantize(FOURPLACES))
 
         tmp = AbstractWeight(10, 'lb')
         self.assertEqual(tmp.lb, 10)
@@ -42,11 +44,13 @@ class WeightConversionTestCase(WorkoutManagerTestCase):
         self.assertEqual(tmp.kg, Decimal(0.4536).quantize(FOURPLACES))
 
         tmp = AbstractWeight(80)
-        self.assertEqual(tmp.lb, Decimal(176.3698).quantize(FOURPLACES))
+        self.assertEqual(tmp.lb, Decimal(
+            176.3698).quantize(FOURPLACES))
         self.assertEqual(tmp.kg, 80)
 
         tmp = AbstractWeight(80, 'kg')
-        self.assertEqual(tmp.lb, Decimal(176.3698).quantize(FOURPLACES))
+        self.assertEqual(tmp.lb, Decimal(
+            176.3698).quantize(FOURPLACES))
         self.assertEqual(tmp.kg, 80)
 
     def test_conversion_subunits(self):
@@ -90,7 +94,8 @@ class WeightConversionTestCase(WorkoutManagerTestCase):
         weight1 = AbstractWeight(80, 'kg')
         weight2 = AbstractWeight(10, 'lb')
         sum = weight1 + weight2
-        self.assertEqual(sum.kg, Decimal(84.5359).quantize(FOURPLACES))
+        self.assertEqual(sum.kg, Decimal(
+            84.5359).quantize(FOURPLACES))
 
         weight1 = AbstractWeight(80, 'lb')
         weight2 = AbstractWeight(10, 'lb')

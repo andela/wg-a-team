@@ -10,3 +10,4 @@ pep8
 social-auth-app-django==2.0.0
 django-debug-toolbar
 coverage
+flake8

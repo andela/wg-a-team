@@ -10,7 +10,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
-# You should have received a copy of the GNU Affero General Public License
+# You should have received a copy of the GNU Affero General Public
+# License
 
 import datetime
 import decimal
@@ -46,18 +47,20 @@ class PreferencesTestCase(WorkoutManagerTestCase):
         self.assertTemplateUsed('preferences.html')
 
         # Change some preferences
-        response = self.client.post(reverse('core:user:preferences'),
-                                    {'show_comments': True,
-                                     'show_english_ingredients': True,
-                                     'email': 'my-new-email@example.com',
-                                     'workout_reminder_active': True,
-                                     'workout_reminder': '30',
-                                     'workout_duration': 12,
-                                     'notification_language': 2,
-                                     'timer_active': False,
-                                     'timer_pause': 100,
-                                     'num_days_weight_reminder': 10,
-                                     'weight_unit': 'kg'})
+        response = self.client.post(
+            reverse('core:user:preferences'),
+            {
+                'show_comments': True,
+                'show_english_ingredients': True,
+                'email': 'my-new-email@example.com',
+                'workout_reminder_active': True,
+                'workout_reminder': '30',
+                'workout_duration': 12,
+                'notification_language': 2,
+                'timer_active': False,
+                'timer_pause': 100,
+                'num_days_weight_reminder': 10,
+                'weight_unit': 'kg'})
 
         self.assertEqual(response.status_code, 302)
         response = self.client.get(reverse('core:user:preferences'))
@@ -66,7 +69,10 @@ class PreferencesTestCase(WorkoutManagerTestCase):
         self.assertTrue(profile.workout_reminder_active)
         self.assertEqual(profile.workout_reminder, 30)
         self.assertEqual(profile.workout_duration, 12)
-        self.assertEqual(User.objects.get(username='test').email, 'my-new-email@example.com')
+        self.assertEqual(
+            User.objects.get(
+                username='test').email,
+            'my-new-email@example.com')
 
         # Change some preferences
         response = self.client.post(reverse('core:user:preferences'),
@@ -195,6 +201,7 @@ class PreferencesCalculationsTestCase(WorkoutManagerTestCase):
     '''
     Tests the different calculation method in the user profile
     '''
+
     def test_last_weight_entry(self):
         '''
         Tests that the last weight entry is correctly returned
@@ -229,9 +236,8 @@ class PreferencesCalculationsTestCase(WorkoutManagerTestCase):
 
         user = User.objects.get(pk=2)
         bmi = user.userprofile.calculate_bmi()
-        self.assertEqual(bmi,
-                         user.userprofile.weight.quantize(TWOPLACES) /
-                         decimal.Decimal(1.80 * 1.80).quantize(TWOPLACES))
+        self.assertEqual(bmi, user.userprofile.weight.quantize(
+            TWOPLACES) / decimal.Decimal(1.80 * 1.80).quantize(TWOPLACES))
 
     def test_basal_metabolic_rate(self):
         '''

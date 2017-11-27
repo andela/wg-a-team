@@ -12,7 +12,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
-# You should have received a copy of the GNU Affero General Public License
+# You should have received a copy of the GNU Affero General Public
+# License
 import logging
 
 from django.shortcuts import get_object_or_404
@@ -43,7 +44,11 @@ def delete_meal_item(request, item_id):
     # Only delete if the user is the owner
     if plan.user == request.user:
         item.delete()
-        return HttpResponseRedirect(reverse('nutrition:plan:view', kwargs={'id': plan.id}))
+        return HttpResponseRedirect(
+            reverse(
+                'nutrition:plan:view',
+                kwargs={
+                    'id': plan.id}))
     else:
         return HttpResponseForbidden()
 
@@ -64,21 +69,34 @@ class MealItemCreateView(WgerFormMixin, CreateView):
         meal = get_object_or_404(Meal, pk=kwargs['meal_id'])
         if meal.plan.user == request.user:
             self.meal = meal
-            return super(MealItemCreateView, self).dispatch(request, *args, **kwargs)
+            return super(
+                MealItemCreateView,
+                self).dispatch(
+                request,
+                *
+                args,
+                **kwargs)
         else:
             return HttpResponseForbidden()
 
     def get_success_url(self):
-        return reverse('nutrition:plan:view', kwargs={'id': self.meal.plan.id})
+        return reverse(
+            'nutrition:plan:view', kwargs={
+                'id': self.meal.plan.id})
 
     def get_context_data(self, **kwargs):
         '''
         Send some additional data to the template
         '''
-        context = super(MealItemCreateView, self).get_context_data(**kwargs)
-        context['form_action'] = reverse('nutrition:meal_item:add',
-                                         kwargs={'meal_id': self.meal.id})
-        context['ingredient_searchfield'] = self.request.POST.get('ingredient_searchfield', '')
+        context = super(
+            MealItemCreateView,
+            self).get_context_data(
+            **kwargs)
+        context['form_action'] = reverse(
+            'nutrition:meal_item:add', kwargs={
+                'meal_id': self.meal.id})
+        context['ingredient_searchfield'] = self.request.POST.get(
+            'ingredient_searchfield', '')
         return context
 
     def form_valid(self, form):
@@ -102,12 +120,17 @@ class MealItemEditView(WgerFormMixin, UpdateView):
     template_name = 'meal_item/edit.html'
 
     def get_success_url(self):
-        return reverse('nutrition:plan:view', kwargs={'id': self.object.meal.plan.id})
+        return reverse(
+            'nutrition:plan:view', kwargs={
+                'id': self.object.meal.plan.id})
 
     def get_context_data(self, **kwargs):
         '''
         Send some additional data to the template
         '''
-        context = super(MealItemEditView, self).get_context_data(**kwargs)
+        context = super(
+            MealItemEditView,
+            self).get_context_data(
+            **kwargs)
         context['ingredient_searchfield'] = self.object.ingredient.name
         return context

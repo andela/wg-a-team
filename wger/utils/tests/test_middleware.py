@@ -10,7 +10,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
-# You should have received a copy of the GNU Affero General Public License
+# You should have received a copy of the GNU Affero General Public
+# License
 
 from django.core.urlresolvers import reverse
 
@@ -30,10 +31,12 @@ class RobotsExclusionMiddlewareTestCase(WorkoutManagerTestCase):
         response = self.client.get(reverse('core:dashboard'))
         self.assertTrue(response.get('X-Robots-Tag'))
 
-        response = self.client.get(reverse('manager:workout:overview'))
+        response = self.client.get(
+            reverse('manager:workout:overview'))
         self.assertFalse(response.get('X-Robots-Tag'))
 
-        response = self.client.get(reverse('manager:schedule:overview'))
+        response = self.client.get(
+            reverse('manager:schedule:overview'))
         self.assertFalse(response.get('X-Robots-Tag'))
 
         response = self.client.get(reverse('core:feedback'))
@@ -50,8 +53,14 @@ class RobotsExclusionMiddlewareTestCase(WorkoutManagerTestCase):
         Test the middleware on URLs from software app
         '''
 
-        for i in ('features', 'issues', 'license', 'code', 'contribute'):
-            response = self.client.get(reverse('software:{0}'.format(i)))
+        for i in (
+            'features',
+            'issues',
+            'license',
+            'code',
+                'contribute'):
+            response = self.client.get(
+                reverse('software:{0}'.format(i)))
             self.assertFalse(response.get('X-Robots-Tag'))
 
     def test_middleware_nutrition(self):
@@ -59,10 +68,15 @@ class RobotsExclusionMiddlewareTestCase(WorkoutManagerTestCase):
         Test the middleware on URLs from nutrition app
         '''
 
-        response = self.client.get(reverse('nutrition:ingredient:list'))
+        response = self.client.get(
+            reverse('nutrition:ingredient:list'))
         self.assertFalse(response.get('X-Robots-Tag'))
 
-        response = self.client.get(reverse('nutrition:ingredient:view', kwargs={'id': 1}))
+        response = self.client.get(
+            reverse(
+                'nutrition:ingredient:view',
+                kwargs={
+                    'id': 1}))
         self.assertFalse(response.get('X-Robots-Tag'))
 
         response = self.client.get(reverse('nutrition:plan:overview'))
@@ -73,11 +87,17 @@ class RobotsExclusionMiddlewareTestCase(WorkoutManagerTestCase):
         Test the middleware on URLs from exercises app
         '''
 
-        response = self.client.get(reverse('exercise:exercise:overview'))
+        response = self.client.get(
+            reverse('exercise:exercise:overview'))
         self.assertFalse(response.get('X-Robots-Tag'))
 
-        response = self.client.get(reverse('exercise:exercise:view', kwargs={'id': 1}))
+        response = self.client.get(
+            reverse(
+                'exercise:exercise:view',
+                kwargs={
+                    'id': 1}))
         self.assertFalse(response.get('X-Robots-Tag'))
 
-        response = self.client.get(reverse('exercise:muscle:overview'))
+        response = self.client.get(
+            reverse('exercise:muscle:overview'))
         self.assertFalse(response.get('X-Robots-Tag'))

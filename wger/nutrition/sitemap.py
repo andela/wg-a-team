@@ -12,7 +12,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
-# You should have received a copy of the GNU Affero General Public License
+# You should have received a copy of the GNU Affero General Public
+# License
 
 from django.contrib.sitemaps import Sitemap
 
@@ -25,5 +26,7 @@ class NutritionSitemap(Sitemap):
     priority = 0.5
 
     def items(self):
-        return (Ingredient.objects.filter(language=load_language())
-                                  .filter(status__in=Ingredient.INGREDIENT_STATUS_OK))
+        return (
+            Ingredient.objects.filter(
+                language=load_language()) .filter(
+                status__in=Ingredient.INGREDIENT_STATUS_OK))
