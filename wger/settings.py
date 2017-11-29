@@ -1,4 +1,5 @@
-#!/usr/bin/env python
+
+# !/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 from wger.settings_global import *
@@ -15,17 +16,6 @@ MANAGERS = ADMINS
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': '/app/database.sqlite',
-#         'USER': '',
-#         'PASSWORD': '',
-#         'HOST': '',
-#         'PORT': '',
-#     }
-# }
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -39,7 +29,14 @@ DATABASES = {
 }
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = 'mkj!4--wke3jp#)boeb#9a($e(7j9xle&j^w_-%63(n8u%=8e8'
+SECRET_KEY = '_v8g)fs!n_+95g1&*n%tjk7v+&beqv4^m^ri-4ff5l6szzh^9c'
+
+SOCIAL_AUTH_TWITTER_KEY = os.getenv("SOCIAL_AUTH_TWITTER_KEY")
+SOCIAL_AUTH_TWITTER_SECRET = os.getenv("SOCIAL_AUTH_TWITTER_SECRET")
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.getenv("SOCIAL_AUTH_GOOGLE_OAUTH2_KEY")
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.getenv("SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET")
+SOCIAL_AUTH_FACEBOOK_KEY = os.getenv("SOCIAL_AUTH_FACEBOOK_KEY")
+SOCIAL_AUTH_FACEBOOK_SECRET = os.getenv("SOCIAL_AUTH_FACEBOOK_SECRET")  # App Secret
 
 # Your reCaptcha keys
 RECAPTCHA_PUBLIC_KEY = ''
@@ -53,7 +50,9 @@ SITE_URL = 'http://localhost:8000'
 
 # Path to uploaded files
 # Absolute filesystem path to the directory that will hold user-uploaded files.
-MEDIA_ROOT = '/Users/vincentasantehokie/.local/share/wger/media'
+
+MEDIA_ROOT = '/Users/muthomi/.local/share/wger/media'
+
 MEDIA_URL = '/media/'
 
 # Allow all hosts to access the application. Change if used in production.
@@ -71,7 +70,6 @@ WGER_SETTINGS['EMAIL_FROM'] = 'wger Workout Manager <wger@example.com>'
 
 # Your twitter handle, if you have one for this instance.
 # WGER_SETTINGS['TWITTER'] = ''
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
