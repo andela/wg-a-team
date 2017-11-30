@@ -24,11 +24,7 @@
     "gulp-eslint": "^3.0.1"
   },
   "dependencies": {
-<<<<<<< HEAD
-    "bower": "^1.8.2"
-=======
     "bower": "^1.8.2",
     "gulp": "^3.9.1"
->>>>>>> 62512c19487fcdf4a761ffe61da4a4782f808409
   }
 }
