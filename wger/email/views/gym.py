@@ -12,7 +12,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
-# You should have received a copy of the GNU Affero General Public License
+# You should have received a copy of the GNU Affero General Public
+# License
 
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.conf import settings
@@ -53,16 +54,26 @@ class EmailLogListView(PermissionRequiredMixin, generic.ListView):
         if not request.user.is_authenticated():
             return HttpResponseForbidden()
 
-        if request.user.userprofile.gym_id != int(self.kwargs['gym_pk']):
+        if request.user.userprofile.gym_id != int(
+                self.kwargs['gym_pk']):
             return HttpResponseForbidden()
 
-        return super(EmailLogListView, self).dispatch(request, *args, **kwargs)
+        return super(
+            EmailLogListView,
+            self).dispatch(
+            request,
+            *
+            args,
+            **kwargs)
 
     def get_context_data(self, **kwargs):
         '''
         Pass additional data to the template
         '''
-        context = super(EmailLogListView, self).get_context_data(**kwargs)
+        context = super(
+            EmailLogListView,
+            self).get_context_data(
+            **kwargs)
         context['gym'] = self.gym
         return context
 
@@ -91,10 +102,16 @@ class EmailListFormPreview(FormPreview):
                 not request.user.has_perms('core.change_emailcron'):
             return HttpResponseForbidden()
 
-        context = super(EmailListFormPreview, self).get_context(request, form)
+        context = super(
+            EmailListFormPreview,
+            self).get_context(
+            request,
+            form)
         context['gym'] = self.gym
-        context['form_action'] = reverse('email:email:add-gym',
-                                         kwargs={'gym_pk': self.gym.pk})
+        context['form_action'] = reverse(
+            'email:email:add-gym',
+            kwargs={
+                'gym_pk': self.gym.pk})
 
         return context
 
@@ -134,6 +151,11 @@ class EmailListFormPreview(FormPreview):
         email_log.save()
 
         # ...and bulk create cron entries
-        CronEntry.objects.bulk_create([CronEntry(log=email_log, email=email) for email in emails])
+        CronEntry.objects.bulk_create(
+            [CronEntry(log=email_log, email=email) for email in emails])
 
-        return HttpResponseRedirect(reverse('gym:gym:user-list', kwargs={'pk': self.gym.pk}))
+        return HttpResponseRedirect(
+            reverse(
+                'gym:gym:user-list',
+                kwargs={
+                    'pk': self.gym.pk}))

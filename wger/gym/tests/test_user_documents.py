@@ -10,11 +10,13 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
-# You should have received a copy of the GNU Affero General Public License
+# You should have received a copy of the GNU Affero General Public
+# License
 
 from django.core.urlresolvers import reverse
 
-from wger.core.tests.base_testcase import WorkoutManagerAccessTestCase, delete_testcase_add_methods
+from wger.core.tests.base_testcase import (
+    WorkoutManagerAccessTestCase, delete_testcase_add_methods)
 from wger.core.tests.base_testcase import WorkoutManagerAddTestCase
 from wger.core.tests.base_testcase import WorkoutManagerDeleteTestCase
 from wger.core.tests.base_testcase import WorkoutManagerEditTestCase
@@ -94,5 +96,6 @@ class DeleteDocumentTestCase(WorkoutManagerDeleteTestCase):
                  'trainer4',
                  'manager3',
                  'general_manager1')
+
 
 delete_testcase_add_methods(DeleteDocumentTestCase)

@@ -10,7 +10,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
-# You should have received a copy of the GNU Affero General Public License
+# You should have received a copy of the GNU Affero General Public
+# License
 
 from django.core.urlresolvers import reverse
 
@@ -89,10 +90,12 @@ class DeleteContractOptionTestCase(WorkoutManagerDeleteTestCase):
                  'member4',
                  'member5')
 
+
 delete_testcase_add_methods(DeleteContractOptionTestCase)
 
 
-class AccessContractOptionOverviewTestCase(WorkoutManagerAccessTestCase):
+class AccessContractOptionOverviewTestCase(
+        WorkoutManagerAccessTestCase):
     '''
     Test accessing the contract option page
     '''

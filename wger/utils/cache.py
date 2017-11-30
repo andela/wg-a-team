@@ -10,7 +10,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
-# You should have received a copy of the GNU Affero General Public License
+# You should have received a copy of the GNU Affero General Public
+# License
 
 import logging
 import hashlib
@@ -83,7 +84,8 @@ class CacheKeyMapper(object):
         '''
         Return the exercise muscle background cache key
         '''
-        return self.EXERCISE_CACHE_KEY_MUSCLE_BG.format(self.get_pk(param))
+        return self.EXERCISE_CACHE_KEY_MUSCLE_BG.format(
+            self.get_pk(param))
 
     def get_language_key(self, param):
         '''
@@ -95,7 +97,8 @@ class CacheKeyMapper(object):
         '''
         Return the language cache key
         '''
-        return self.LANGUAGE_CONFIG_CACHE_KEY.format(self.get_pk(param), item)
+        return self.LANGUAGE_CONFIG_CACHE_KEY.format(
+            self.get_pk(param), item)
 
     def get_ingredient_key(self, param):
         '''
@@ -107,12 +110,14 @@ class CacheKeyMapper(object):
         '''
         Return the workout canonical representation
         '''
-        return self.WORKOUT_CANONICAL_REPRESENTATION.format(self.get_pk(param))
+        return self.WORKOUT_CANONICAL_REPRESENTATION.format(
+            self.get_pk(param))
 
     def get_workout_log_list(self, hash_value):
         '''
         Return the workout canonical representation
         '''
         return self.WORKOUT_LOG_LIST.format(hash_value)
+
 
 cache_mapper = CacheKeyMapper()

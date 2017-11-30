@@ -10,7 +10,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
-# You should have received a copy of the GNU Affero General Public License
+# You should have received a copy of the GNU Affero General Public
+# License
 
 from django.core.files import File
 from django.core.urlresolvers import reverse
@@ -40,8 +41,10 @@ class MainImageTestCase(WorkoutManagerTestCase):
         image.status = ExerciseImage.STATUS_ACCEPTED
         image.image.save(
             filename,
-            File(open('wger/exercises/tests/{0}'.format(filename), 'rb'))
-        )
+            File(
+                open(
+                    'wger/exercises/tests/{0}'.format(filename),
+                    'rb')))
         image.save()
         return(image.pk)
 
@@ -109,9 +112,12 @@ class AddExerciseImageTestCase(WorkoutManagerAddTestCase):
     object_class = ExerciseImage
     url = reverse('exercise:image:add', kwargs={'exercise_pk': 1})
     user_fail = False
-    data = {'is_main': True,
-            'image': open('wger/exercises/tests/protestschwein.jpg', 'rb'),
-            'license': 1}
+    data = {
+        'is_main': True,
+        'image': open(
+            'wger/exercises/tests/protestschwein.jpg',
+            'rb'),
+        'license': 1}
 
 
 class EditExerciseImageTestCase(WorkoutManagerEditTestCase):
@@ -132,7 +138,11 @@ class DeleteExerciseImageTestCase(WorkoutManagerDeleteTestCase):
     '''
 
     object_class = ExerciseImage
-    url = reverse('exercise:image:delete', kwargs={'exercise_pk': 1, 'pk': 1})
+    url = reverse(
+        'exercise:image:delete',
+        kwargs={
+            'exercise_pk': 1,
+            'pk': 1})
     pk = 1
 
 

@@ -14,6 +14,12 @@
     {% trans 'Login' as submit_text %}
     {% render_form_fields form submit_text %}
 </form>
+<p style="margin-left: 420px;">or log in with</p>
+<div style="margin-left: 200px" class="social">
+<a href="{% url 'core:social:begin' 'twitter' %}" class="btn btn-default" style="background-color: #1DA1F2; display: inline-block; width: 162px"><i class="fa fa-twitter"></i>Twitter</a>
+<a href="{% url 'core:social:begin' 'google-oauth2' %}" class="btn btn-default" style="background-color: #DB4437; display: inline-block;width: 162px; margin-left: 20px;"><i class="fa fa-google"></i> Google+</a>
+<a href="{% url 'core:social:begin' 'facebook' %}" class="btn btn-default" style="background-color: #3B5998; display: inline-block; width: 162px; margin-left: 20px;"><i class="fa fa-facebook"></i> Facebook</a>
+</div>
 {% endblock %}
 
 

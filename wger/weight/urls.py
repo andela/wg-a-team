@@ -13,9 +13,10 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU Affero General Public License
-# along with Workout Manager.  If not, see <http://www.gnu.org/licenses/>.
+# along with Workout Manager.  If not, see
+# <http://www.gnu.org/licenses/>.
 
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 from django.contrib.auth.decorators import login_required
 
 from wger.weight.forms import WeightCsvImportForm
@@ -35,7 +36,8 @@ urlpatterns = [
         views.export_csv,
         name='export-csv'),
     url(r'^import-csv/$',
-        login_required(views.WeightCsvImportFormPreview(WeightCsvImportForm)),
+        login_required(
+            views.WeightCsvImportFormPreview(WeightCsvImportForm)),
         name='import-csv'),
 
     url(r'^overview/(?P<username>[\w.@+-]+)$',
@@ -44,10 +46,10 @@ urlpatterns = [
     # url(r'^overview/$',
     #     views.overview,
     #     name='overview'),
-    url(r'^api/get_weight_data/(?P<username>[\w.@+-]+)$', # JS
+    url(r'^api/get_weight_data/(?P<username>[\w.@+-]+)$',  # JS
         views.get_weight_data,
         name='weight-data'),
-    url(r'^api/get_weight_data/$', # JS
+    url(r'^api/get_weight_data/$',  # JS
         views.get_weight_data,
         name='weight-data'),
 ]

@@ -11,7 +11,8 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU Affero General Public License
-# along with Workout Manager.  If not, see <http://www.gnu.org/licenses/>.
+# along with Workout Manager.  If not, see
+# <http://www.gnu.org/licenses/>.
 
 from wger.core.models import WeightUnit
 from wger.core.tests import api_base_test
@@ -34,7 +35,10 @@ class RepresentationTestCase(WorkoutManagerTestCase):
         '''
         Test that the representation of an object is correct
         '''
-        self.assertEqual("{0}".format(WeightUnit.objects.get(pk=1)), 'kg')
+        self.assertEqual(
+            "{0}".format(
+                WeightUnit.objects.get(
+                    pk=1)), 'kg')
 
 
 class OverviewTest(WorkoutManagerAccessTestCase):

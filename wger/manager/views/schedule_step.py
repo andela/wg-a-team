@@ -12,7 +12,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
-# You should have received a copy of the GNU Affero General Public License
+# You should have received a copy of the GNU Affero General Public
+# License
 
 import logging
 
@@ -41,7 +42,10 @@ from wger.utils.generic_views import (
 logger = logging.getLogger(__name__)
 
 
-class StepCreateView(WgerFormMixin, CreateView, PermissionRequiredMixin):
+class StepCreateView(
+        WgerFormMixin,
+        CreateView,
+        PermissionRequiredMixin):
     '''
     Creates a new workout schedule
     '''
@@ -59,7 +63,9 @@ class StepCreateView(WgerFormMixin, CreateView, PermissionRequiredMixin):
         '''
 
         class StepForm(ModelForm):
-            workout = ModelChoiceField(queryset=Workout.objects.filter(user=self.request.user))
+            workout = ModelChoiceField(
+                queryset=Workout.objects.filter(
+                    user=self.request.user))
 
             class Meta:
                 model = ScheduleStep
@@ -68,26 +74,36 @@ class StepCreateView(WgerFormMixin, CreateView, PermissionRequiredMixin):
         return StepForm
 
     def get_context_data(self, **kwargs):
-        context = super(StepCreateView, self).get_context_data(**kwargs)
-        context['form_action'] = reverse('manager:step:add',
-                                         kwargs={'schedule_pk': self.kwargs['schedule_pk']})
+        context = super(
+            StepCreateView,
+            self).get_context_data(
+            **kwargs)
+        context['form_action'] = reverse(
+            'manager:step:add', kwargs={
+                'schedule_pk': self.kwargs['schedule_pk']})
         return context
 
     def get_success_url(self):
-        return reverse('manager:schedule:view', kwargs={'pk': self.kwargs['schedule_pk']})
+        return reverse(
+            'manager:schedule:view', kwargs={
+                'pk': self.kwargs['schedule_pk']})
 
     def form_valid(self, form):
         '''Set the schedule and the order'''
 
         schedule = Schedule.objects.get(pk=self.kwargs['schedule_pk'])
 
-        max_order = schedule.schedulestep_set.all().aggregate(models.Max('order'))
+        max_order = schedule.schedulestep_set.all().aggregate(
+            models.Max('order'))
         form.instance.schedule = schedule
         form.instance.order = (max_order['order__max'] or 0) + 1
         return super(StepCreateView, self).form_valid(form)
 
 
-class StepEditView(WgerFormMixin, UpdateView, PermissionRequiredMixin):
+class StepEditView(
+        WgerFormMixin,
+        UpdateView,
+        PermissionRequiredMixin):
     '''
     Generic view to update an existing schedule step
     '''
@@ -105,7 +121,9 @@ class StepEditView(WgerFormMixin, UpdateView, PermissionRequiredMixin):
         '''
 
         class StepForm(ModelForm):
-            workout = ModelChoiceField(queryset=Workout.objects.filter(user=self.request.user))
+            workout = ModelChoiceField(
+                queryset=Workout.objects.filter(
+                    user=self.request.user))
 
             class Meta:
                 model = ScheduleStep
@@ -114,10 +132,15 @@ class StepEditView(WgerFormMixin, UpdateView, PermissionRequiredMixin):
         return StepForm
 
     def get_success_url(self):
-        return reverse('manager:schedule:view', kwargs={'pk': self.object.schedule_id})
+        return reverse(
+            'manager:schedule:view', kwargs={
+                'pk': self.object.schedule_id})
 
 
-class StepDeleteView(WgerDeleteMixin, DeleteView, PermissionRequiredMixin):
+class StepDeleteView(
+        WgerDeleteMixin,
+        DeleteView,
+        PermissionRequiredMixin):
     '''
     Generic view to delete a schedule step
     '''
@@ -128,13 +151,20 @@ class StepDeleteView(WgerDeleteMixin, DeleteView, PermissionRequiredMixin):
     messages = ugettext_lazy('Successfully deleted')
 
     def get_success_url(self):
-        return reverse('manager:schedule:view', kwargs={'pk': self.object.schedule.id})
+        return reverse(
+            'manager:schedule:view', kwargs={
+                'pk': self.object.schedule.id})
 
     def get_context_data(self, **kwargs):
         '''
         Send some additional data to the template
         '''
-        context = super(StepDeleteView, self).get_context_data(**kwargs)
+        context = super(
+            StepDeleteView,
+            self).get_context_data(
+            **kwargs)
         context['title'] = _(u'Delete {0}?').format(self.object)
-        context['form_action'] = reverse('core:license:delete', kwargs={'pk': self.kwargs['pk']})
+        context['form_action'] = reverse(
+            'core:license:delete', kwargs={
+                'pk': self.kwargs['pk']})
         return context

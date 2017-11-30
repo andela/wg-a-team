@@ -20,6 +20,7 @@ sdist/
 var/
 *.egg-info/
 .installed.cfg
+.env
 *.egg
 
 # PyInstaller
@@ -43,10 +44,14 @@ coverage.xml
 # Translations
 *.mo
 *.pot
+venv-django/
 
 # Django stuff:
 *.log
+
 settings*.py
+!settings.py
+
 *.sqlite
 /CACHE
 
@@ -58,7 +63,21 @@ target/
 
 # IDE
 .idea/
+venv-django/
 
-# External Libraries 
+# External Libraries
 wger/core/static/bower_components
 node_modules
+
+#virtualenv
+venv-django/
+
+#statics
+**/static/**
+
+#vscode settings
+<<<<<<< HEAD
+.vscode/
+=======
+.vscode/
+>>>>>>> aa5b49a49cd45803419b59495f99fe58858d4757
