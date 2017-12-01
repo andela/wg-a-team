@@ -218,6 +218,7 @@ class MuscleViewSet(viewsets.ReadOnlyModelViewSet):
     filter_fields = ('name',
                      'is_front')
 
+
 class ExerciseInfoView(viewsets.ModelViewSet):
 
     '''
