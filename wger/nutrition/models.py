@@ -115,8 +115,8 @@ class NutritionPlan(models.Model):
         '''
         Sums the nutritional info of all items in the plan
         '''
-        nutritional_cache=cache.get(cache_mapper.get_nutrition_key(self.id))
-        print (nutritional_cache )
+        nutritional_cache = cache.get(cache_mapper.get_nutrition_key(self.id))
+        print(nutritional_cache)
         if not nutritional_cache:
             use_metric = self.user.userprofile.use_metric
             unit = 'kg' if use_metric else 'lb'
@@ -746,19 +746,19 @@ class MealItem(models.Model):
 
         return nutritional_info
 
+
 @receiver(post_save, sender=NutritionPlan)
 @receiver(post_delete, sender=NutritionPlan)
 @receiver(post_save, sender=Meal)
 @receiver(post_delete, sender=Meal)
 @receiver(post_save, sender=MealItem)
 @receiver(post_delete, sender=MealItem)
-
 def delete_nutrition_cache(sender, **kwargs):
     '''
     Delete the nutrition info dict from cache
     '''
-    sender_instance =kwargs["instance"]
-    if isinstance(sender_instance, (Meal,MealItem)):
+    sender_instance = kwargs["instance"]
+    if isinstance(sender_instance, (Meal, MealItem)):
         cache.delete(cache_mapper.get_nutrition_key(sender_instance.get_owner_object().id))
     elif isinstance(sender_instance, NutritionPlan):
         cache.delete(cache_mapper.get_nutrition_key(sender_instance.id))
