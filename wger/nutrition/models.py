@@ -34,7 +34,8 @@ from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 from django.utils import translation
 from django.conf import settings
-
+from django.db.models.signals import post_save, post_delete
+from django.dispatch import receiver
 from wger.core.models import Language
 from wger.utils.constants import TWOPLACES
 from wger.utils.cache import cache_mapper
@@ -744,3 +745,20 @@ class MealItem(models.Model):
                 nutritional_info[i]).quantize(TWOPLACES)
 
         return nutritional_info
+
+@receiver(post_save, sender=NutritionPlan)
+@receiver(post_delete, sender=NutritionPlan)
+@receiver(post_save, sender=Meal)
+@receiver(post_delete, sender=Meal)
+@receiver(post_save, sender=MealItem)
+@receiver(post_delete, sender=MealItem)
+
+def delete_nutrition_cache(sender, **kwargs):
+    '''
+    Delete the nutrition info dict from cache
+    '''
+    sender_instance =kwargs["instance"]
+    if isinstance(sender_instance, (Meal,MealItem)):
+        cache.delete(cache_mapper.get_nutrition_key(sender_instance.get_owner_object().id))
+    elif isinstance(sender_instance, NutritionPlan):
+        cache.delete(cache_mapper.get_nutrition_key(sender_instance.id))
