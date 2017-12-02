@@ -151,7 +151,7 @@ def add(request, pk):
     # 'extra'
     WorkoutLogFormSet = modelformset_factory(
         WorkoutLog, form=WorkoutLogForm, exclude=(
-            'date', 'workout'), extra=total_sets)
+            'date', 'workout', 'session_id'), extra=total_sets)
     # Process the request
     if request.method == 'POST':
 
@@ -204,6 +204,7 @@ def add(request, pk):
                     user=request.user, date=log_date)
                 instance.instance = session
             instance.save()
+            session_id = instance
 
             # Log entries (only the ones with actual content)
             instances = [
@@ -215,12 +216,18 @@ def add(request, pk):
                 instance.user = request.user
                 instance.workout = day.training
                 instance.date = log_date
+                instance.session_id = session_id
                 instance.save()
 
             return HttpResponseRedirect(
                 reverse(
                     'manager:log:log', kwargs={
                         'pk': day.training_id}))
+
+        else:
+
+            print("formset: ", formset.errors)
+
     else:
         # Initialise the formset with a queryset that won't return any objects
         # (we only add new logs here and that seems to be the fastest way)
