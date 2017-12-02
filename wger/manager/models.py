@@ -293,8 +293,7 @@ class Schedule(models.Model):
             return False
         while not found:
             for step in steps:
-                current_limit = start_date + \
-                                datetime.timedelta(weeks=step.duration)
+                current_limit = start_date + datetime.timedelta(weeks=step.duration)
                 if current_limit >= datetime.date.today():
                     found = True
                     return step
@@ -315,8 +314,7 @@ class Schedule(models.Model):
 
         end_date = self.start_date
         for step in self.schedulestep_set.all():
-            end_date = end_date + \
-                       datetime.timedelta(weeks=step.duration)
+            end_date = end_date + datetime.timedelta(weeks=step.duration)
         return end_date
 
 
@@ -484,13 +482,13 @@ class Day(models.Model):
                     set=set_obj,
                     exercise=exercise).order_by(
                     'order',
-                    'id'):
+                        'id'):
                     setting_tmp.append(setting)
 
                 # "Smart" textual representation
-                setting_text, setting_list, weight_list, reps_list, \
-                repetition_units, weight_units \
-                    = reps_smart_text(setting_tmp, set_obj)
+                setting_text, setting_list, \
+                    weight_list, reps_list, repetition_units, weight_units = \
+                    reps_smart_text(setting_tmp, set_obj)
 
                 # Flag indicating whether all exercises have settings
                 has_setting_tmp = True if len(
@@ -536,9 +534,8 @@ class Day(models.Model):
                         exercise['setting_list'].pop(-1)
                         exercise['setting_obj_list'].pop(-1)
                         setting_text, setting_list, weight_list, \
-                        reps_list, repetition_units, weight_units = \
-                            reps_smart_text(
-                                exercise['setting_obj_list'], set_obj)
+                            reps_list, repetition_units, weight_units = \
+                            reps_smart_text(exercise['setting_obj_list'], set_obj)
                         exercise['setting_text'] = setting_text
                         exercise['repetition_units'] = repetition_units
 
@@ -815,11 +812,7 @@ class WorkoutSession(models.Model):
                 _("If you enter a time, you must \
                     enter both start and end time."))
 
-        if (
-                    self.time_end and
-                    self.time_start and
-                    self.time_start > self.time_end
-        ):
+        if self.time_end and self.time_start and self.time_start > self.time_end:
             raise ValidationError(
                 _("The start time cannot be after the end time."))
 
