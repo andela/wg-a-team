@@ -59,7 +59,6 @@ class WeightAddView(WgerFormMixin, CreateView):
     def get_initial(self):
         '''
         Set the initial data for the form.
-
         Read the comment on weight/models.py WeightEntry about why we need
         to pass the user here.
         '''
@@ -139,7 +138,6 @@ def export_csv(request):
 def overview(request, username=None):
     '''
     Shows a plot with the weight data
-
     More info about the D3 library can be found here:
         * https://github.com/mbostock/d3
         * http://d3js.org/
@@ -195,12 +193,6 @@ def get_weight_data(request, username=None):
     fitbit = request.GET.get('fitbit')
     weights = []
 
-    if date_min and date_max:
-        weights = WeightEntry.objects.filter(
-            user=user, date__range=(date_min, date_max))
-    else:
-        weights = WeightEntry.objects.filter(user=user)
-
     chart_data = []
 
     if fitbit:
@@ -221,9 +213,9 @@ def get_weight_data(request, username=None):
                 'date': i.date, 'weight': i.weight
             })
 
-    for i in weights:
-        chart_data.append({'date': i.date,
-                           'weight': i.weight})
+        for i in weights:
+            chart_data.append({'date': i.date,
+                               'weight': i.weight})
 
     # Return the results to the client
     return Response(chart_data)
