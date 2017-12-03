@@ -896,10 +896,8 @@ class WorkoutLog(models.Model):
         '''
         Return a more human-readable representation
         '''
-        return u"Log entry: {0} - {1} kg on {2}".format(self.reps,
-                                                        self.weight,
-                                                        self.date,
-                                                        self.session_id)
+        return u"Log entry: {0} - {1} kg on {2} and {3}".format(
+            self.reps, self.weight, self.date, self.session_id)
 
     def get_owner_object(self):
         '''
@@ -916,7 +914,7 @@ class WorkoutLog(models.Model):
         if not date:
             date = self.date
         if not session_id:
-            session_id = 1
+            session_id = self.session_id
 
         try:
             return WorkoutSession.objects.filter(
