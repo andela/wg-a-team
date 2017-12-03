@@ -176,7 +176,6 @@ class UserProfile(models.Model):
                                                  null=True)
     '''
     The last time the user got a workout reminder email
-
     This is needed e.g. to check daily per cron for old workouts but only
     send users an email once per week
     '''
@@ -407,7 +406,6 @@ class UserProfile(models.Model):
     def calculate_bmi(self):
         '''
         Calculates the user's BMI
-
         Formula: weight/height^2
         - weight in kg
         - height in m
@@ -426,7 +424,6 @@ class UserProfile(models.Model):
     def calculate_basal_metabolic_rate(self, formula=1):
         '''
         Calculates the basal metabolic rate.
-
         Currently only the Mifflin-St.Jeor formula is supported
         '''
         factor = 5 if self.gender == self.GENDER_MALE else -161
@@ -447,7 +444,6 @@ class UserProfile(models.Model):
     def calculate_activities(self):
         '''
         Calculates the calories needed by additional physical activities
-
         Factors taken from
         * https://en.wikipedia.org/wiki/Physical_activity_level
         * http://www.fao.org/docrep/007/y5686e/y5686e07.htm
@@ -532,7 +528,6 @@ class UserCache(models.Model):
     last_activity = models.DateField(null=True)
     '''
     The user's last activity.
-
     Values for this entry are saved by signals as calculated by the
     get_user_last_activity helper function.
     '''
@@ -548,7 +543,6 @@ class UserCache(models.Model):
 class DaysOfWeek(models.Model):
     '''
     Model for the days of the week
-
     This model is needed so that 'Day' can have
     multiple days of the week selected
     '''
@@ -649,7 +643,6 @@ class RepetitionUnit(models.Model):
     def is_repetition(self):
         '''
         Checks that the repetition unit is a repetition proper
-
         This is done basically to not litter the code with magic IDs
         '''
         return self.id == 1
@@ -688,7 +681,6 @@ class WeightUnit(models.Model):
     def is_weight(self):
         '''
         Checks that the unit is a weight proper
-
         This is done basically to not litter the code with magic IDs
         '''
         return self.id in (1, 2)
@@ -754,11 +746,12 @@ class FitbitUser(models.Model):
         return fitbit_instance
 
     def getWeightInfo(self, start=None, end=None):
+        clean_data = []
         try:
             fitbit_instance = self.initFitbit()
             body_weight = fitbit_instance.get_bodyweight(period='1m')
-            clean_data = []
             prev_entry = None
+
             for data in body_weight['weight']:
                 weight_obj = WeightEntry()
                 weight_diff = 0
@@ -766,12 +759,13 @@ class FitbitUser(models.Model):
                 weight_obj.date = data['date']
                 weight_obj.weight = data['weight']
 
-            if prev_entry:
-                weight_diff = weight_obj.weight - prev_entry.weight
-                day_diff = (
-                    parse_date(weight_obj.date) - parse_date(prev_entry.date)).days
+                if prev_entry:
+                    weight_diff = weight_obj.weight - prev_entry.weight
+                    day_diff = (
+                        parse_date(weight_obj.date) - parse_date(prev_entry.date)).days
                 prev_entry = weight_obj
                 clean_data.append((weight_obj, int(weight_diff), day_diff))
+
         except HTTPUnauthorized:
             return False
         except BaseException:
