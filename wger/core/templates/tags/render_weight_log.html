@@ -1,32 +1,57 @@
 {% load i18n staticfiles wger_extras %}
 <div id="svg-{{div_uuid}}" style="text-align:center;"></div>
 
+<style>
+    div.weight-chart-table table tr td {
+        text-align: center !important
+    }
+
+    .panel-group {
+        margin-left: 5px;
+    }
+</style>
+
 <div style="overflow-x: auto;" class="weight-chart-table">
-<table class="noborder" style="border: 0 none; width: 7em;">
-    <tr>
-    {% for date, entry_list in log.items %}
-    <td style="padding: 0em; border-top-width: 0px; vertical-align: top;">
-        <table class="narrow" style="width: 7em;">
-            <tr>
-                <th colspan="3">{{date|date:"d.m.Y"}}</th>
-            </tr>
-            <tr>
-                <td style="text-align:right;">{% trans "Reps" %}</td>
-                <td></td>
-                <td style="padding:0px;">
-                    {% trans_weight_unit 'kg' user %}
-                </td>
-            </tr>
-            {% for entry in entry_list %}
-            <tr>
-                <td style="text-align:right;">{{entry.reps}}</td>
-                <td style="padding:0px ; text-align: center;">×</td>
-                <td style="padding:0px;">{{entry.weight}}</td>
-            </tr>
+
+    <table class="noborder" style="border: 0 none; width: 7em;">
+        <tr>
+            {% for date, entry_list in log.items %}
+            <td style="padding: 0em; border-top-width: 0px; vertical-align: top;">
+
+                <div class="panel-group">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" href="#collapse-{{div_uuid}}-{{date|date:'d-m-Y'}}">{{date|date:"d.m.Y"}}</a>
+                            </h4>
+                        </div>
+                        <div id="collapse-{{div_uuid}}-{{date|date:'d-m-Y'}}" class="panel-collapse collapse">
+                            <div class="panel-body">
+
+                                <table class="narrow" style="width: 7em;">
+                                    <tr>
+                                        <td style="text-align:right;">{% trans "Reps" %}</td>
+                                        <td></td>
+                                        <td style="padding:0px;">
+                                            {% trans_weight_unit 'kg' user %}
+                                        </td>
+                                    </tr>
+                                    {% for entry in entry_list %}
+                                    <tr>
+                                        <td style="text-align:right;">{{entry.reps}}</td>
+                                        <td style="padding:0px ; text-align: center;">×</td>
+                                        <td style="padding:0px;">{{entry.weight}}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </td>
             {% endfor %}
-        </table>
-    </td>
-    {% endfor %}
-    </tr>
-</table>
+        </tr>
+    </table>
 </div>
