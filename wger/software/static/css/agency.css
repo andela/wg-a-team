@@ -264,6 +264,9 @@ header {
   text-align: center;
   color: white;
   height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 header .intro-text {
   padding-top: 100px;
