@@ -269,7 +269,7 @@ class WorkoutLogViewSet(WgerOwnerObjectModelViewSet):
         Only allow access to appropriate objects
         '''
 
-        return WorkoutLog.objects.filter(user=self.request.user)
+        return WorkoutLog.objects.all()
 
     def perform_create(self, serializer):
         '''
