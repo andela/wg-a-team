@@ -9,112 +9,279 @@
     {{ block.super }}
     <meta property="og:title" content="{% trans 'Weight log' %}">
     <meta property="og:description" content="{% trans 'Weight log' %} / {{ workout }} / {{ owner_user.username }}">
-{% endblock %}
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.min.js"></script>
+<script>
 
-{#             #}
-{# Breadcrumbs #}
-{#             #}
-{% block breadcrumbs %}
-    {{ block.super }}
+        extractData = (data, me=false, other=false) => {
 
-    {% breadcrumb workout workout %}
-    {% breadcrumb "Weight log" "manager:log:log" workout.pk %}
-{% endblock %}
+            let allMyData = [];
+            let allOtherData = [];
+            
+            if( !me && !other ){
+                for (i = 0; i < data.length; i++) {
+                    let myData = data[i][0];
 
+                    allMyData.push({
+                        x: new Date(myData.date),
+                        y: myData.weight,
+                        v: myData.reps
+                    });
 
-{#       #}
-{# Title #}
-{#       #}
-{% block title %}{% trans "Weight log for workout" %}{% endblock %}
+                }
+            }else{
 
+                for (i = 0; i < data.length; i++) {
+                    let myData = data[i];
 
-{#        #}
-{# Header #}
-{#        #}
-{% block header %}
-{% endblock %}
+                    let obj = {
+                            x: new Date(myData.date),
+                            y: myData.weight,
+                            v: myData.reps
+                        }
 
+                    if(me == myData.user)
+                        allMyData.push(obj);
+                    
+                    else if(other == myData.user)
+                        allOtherData.push(obj);
 
-{#         #}
-{# Content #}
-{#         #}
-{% block content %}
-{% if workout.comment %}
+                }
+
+            }
+
+            return [allMyData, allOtherData];
+        }
+
+        createGraph = (data, uuid, me=false, other=false) => {
+
+            let Ccdata = extractData(data, me, other);
+
+            let scatterChartData = {
+                datasets: [{
+                    label: "My First dataset",
+                    borderColor: "#FF000055",
+                    backgroundColor: "#FF000055",
+                    data: Ccdata[0]
+                }]
+            };
+
+            if(Ccdata[1].length > 0)
+                scatterChartData.datasets.push({
+                    label: "My Second dataset",
+                    borderColor: "#0000FF55",
+                    backgroundColor: "0000FF55",
+                    data: Ccdata[1]
+                })
+
+            let ctx = document.getElementById("canvas-"+uuid).getContext("2d");
+            window.myScatter = new Chart(ctx, {
+                type: 'bubble',
+                data: scatterChartData,
+                options: {
+                    aspectRatio: 1,
+                    legend: false,
+
+                    elements: {
+                        point: {
+                            backgroundColor: "red",//colorize.bind(null, false),
+
+                            borderColor: "red",//colorize.bind(null, true),
+
+                            borderWidth: function(context) {
+                                return Math.min(Math.max(1, context.datasetIndex + 1), 8);
+                            },
+
+                            hoverBackgroundColor: 'transparent',
+
+                            // hoverBorderColor: function(context) {
+                            //     return utils.color(context.datasetIndex);
+                            // },
+
+                            hoverBorderWidth: function(context) {
+                                var value = context.dataset.data[context.dataIndex];
+                                return Math.round(8 * value.v / 1000);
+                            },
+
+                            radius: function(context) {
+                                var value = context.dataset.data[context.dataIndex];
+                                var size = context.chart.width;
+                                var base = Math.abs(value.v) / 1000;
+                                return value.v/2;
+                            }
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: 'Chart.js Scatter Chart'
+                    },
+                    scales: {
+                        xAxes: [{
+                            type: 'time',
+                            time: {
+                                displayFormats: {
+                                    quarter: 'MMM YYYY'
+                                }
+                            }
+                        }]
+                    },
+                    tooltips: {
+                        callbacks: {
+                            title: function(tooltipItem, data) {
+                                
+                                let date = new Date(tooltipItem[0].xLabel);
+                                var output = date.getDate() +'-'+ date.getMonth() + 1 + '-' +date.getFullYear();
+                                return output;
+                            },
+                            label: function(tooltipItem, data) {
+                                return "Weight: "+tooltipItem.yLabel ;
+                            },
+                            afterLabel: function(tooltipItem, data) {
+                                return "Reps: "+data.datasets[0].data[tooltipItem.index].v;
+                            }
+                        },
+                        backgroundColor: '#FFF',
+                        titleFontSize: 16,
+                        titleFontColor: '#0066ff',
+                        bodyFontColor: '#000',
+                        bodyFontSize: 14,
+                        displayColors: false
+                    }
+                }
+            });
+        }
+            
+    </script>
+
+    {% endblock %} 
+    
+    {#             #} 
+    {# Breadcrumbs #} 
+    {#             #} 
+    {% block breadcrumbs %} 
+        {{ block.super }} 
+    
+        {% breadcrumb workout workout %}
+    {% breadcrumb "Weight log" "manager:log:log" workout.pk %} {% endblock %} 
+
+    {#       #} 
+    {# Title #} 
+    {#       #} 
+    {% block title %}
+    {% trans "Weight log for workout" %}
+    {% endblock %} 
+
+    {#        #} 
+    {# Header #} 
+    {#        #} 
+    
+    {% block header %} 
+    {% endblock %} 
+    
+    {#         #} 
+    {# Content #}
+    {#         #} 
+    
+    {% block content %} {% if workout.comment %}
 <p>
     <strong>{% trans "Goal" %}:</strong> {{workout.comment}}
 </p>
-{% endif %}
+{% endif %} 
 
 {% for day in workout.canonical_representation.day_list %}
-    <h4>{{ day.obj.description }}</h4>
+<h4>{{ day.obj.description }}</h4>
 
-    {% if is_owner %}
-    <p>
-        <a href="{% url 'manager:day:log' day.obj.id %}" class="btn btn-success btn-sm">
-            {% trans 'Add weight log to this day' %}
-        </a>
-    </p>
-    {% endif %}
-
-    {% for set in day.set_list %}
-    {% for exercise in set.exercise_list %}
-
-        {% with day_list=workout_log|get_item:day.obj.id %}
-        {% with exercise_list=day_list|get_item:exercise.obj.id %}
+{% if is_owner %}
+<p>
+    <a href="{% url 'manager:day:log' day.obj.id %}" class="btn btn-success btn-sm">
+        {% trans 'Add weight log to this day' %}
+    </a>
+</p>
+{% endif %} 
 
 
-            <div class="row" style="padding-top: 1em;">
-                <div class="col-xs-3">
-                    <strong><a href="{{ exercise.obj.get_absolute_url }}">{{ exercise.obj.name }}</a></strong>
-                </div>
-                <div class="col-xs-9">
-                    {% if exercise_list.log_by_date %}
-                        {#  TODO: perhaps move the draw_weight_chart function to render_weight_log #}
-                        {% with list=exercise_list.log_by_date %}
-                            {% render_weight_log list exercise_list.div_uuid owner_user %}
-                            <script>
-                            $(document).ready(function() {
-                            wgerDrawWeightLogChart({{exercise_list.chart_data|safe}},
-                                                  "{{exercise_list.div_uuid}}");
-                            });
-                            </script>
-                        {% endwith %}
+{% for set in day.set_list %} 
+{% for exercise in set.exercise_list %} 
+{% with day_list=workout_log|get_item:day.obj.id %} 
+{% with exercise_list=day_list|get_item:exercise.obj.id %}
 
+<div class="row" style="padding-top: 1em;">
+    <div class="col-xs-3">
+        <strong>
+            <a href="{{ exercise.obj.get_absolute_url }}">{{ exercise.obj.name }}</a>
+        </strong>
+    </div>
+    <div class="col-xs-9">
+        {% if exercise_list.log_by_date %} 
+        {# TODO: perhaps move the draw_weight_chart function to render_weight_log #} 
+        {% with list=exercise_list.log_by_date %} 
 
-                    {% else %}
-                        <p><em>{% trans "No weight entries here." %}</em></p>
+        <div class="form-group">
+            <label for="sel1">Select user to compare with:</label>
+            <select class="form-control other-person" data-my-id="{{ request.user.id }}" data-uuid="{{exercise_list.div_uuid}}" data-ex-id="{{ exercise.obj.id }}" id="sel1">
+                <option>Just Me</option>
+                {% for usr in users %}
+                    {% if user.id != usr.id %}
+                        <option value="{{ usr.id }}">{{ usr.username }}</option>
                     {% endif %}
-                </div>
-            </div>
+                {% endfor %}
+            </select>
+        </div>
+        {% render_weight_log list exercise_list.div_uuid owner_user %}
+        <script>
+            
+            $(document).ready(function () {
+                createGraph({{ exercise_list.chart_data | safe }}, "{{exercise_list.div_uuid}}");
+            });
 
-        {% endwith %}
-        {% endwith %}
+        </script> {% endwith %} {% else %}
+        <p>
+            <em>{% trans "No weight entries here." %}</em>
+        </p>
+        {% endif %}
+    </div>
+</div>
 
-    {% empty%}
-    <p>
-        <em>{% trans "No exercises for this day." %}</em>
-    </p>
-    {% endfor %}
-    {% endfor %}
-{% endfor %}
-{% endblock %}
-
-
-{#          #}
-{# Side bar #}
-{#          #}
+{% endwith %} 
+{% endwith %} 
+{% empty %}
+<p>
+    <em>{% trans "No exercises for this day." %}</em>
+</p>
+{% endfor %} 
+{% endfor %} 
+{% endfor %} 
+{% endblock %} 
+{# #} 
+{# Side bar #} 
+{# #} 
 {% block sidebar %}
 <h4>{% trans "Notes" %}</h4>
-<p>{% blocktrans %}This page shows the weight logs belonging to this workout
-only. Click on an exercise to see all the historical data for
-it.{% endblocktrans %}</p>
+<p>{% blocktrans %}This page shows the weight logs belonging to this workout only. Click on an exercise to see all the historical
+    data for it.{% endblocktrans %}</p>
 
-<p>{% blocktrans %}If on a single day there is more than one entry with the
-same number of repetitions, but different weights, only the entry with the
-higher weight is shown in the diagram.{% endblocktrans %}</p>
+<p>{% blocktrans %}If on a single day there is more than one entry with the same number of repetitions, but different weights,
+    only the entry with the higher weight is shown in the diagram.{% endblocktrans %}</p>
 
-<p>{% blocktrans %}Note that only entries with a weight unit (kg or lb) and
-repetitions are charted, other combinations such as time or until failure
-are ignored here.{% endblocktrans %}</p>
+<p>{% blocktrans %}Note that only entries with a weight unit (kg or lb) and repetitions are charted, other combinations such
+    as time or until failure are ignored here.{% endblocktrans %}</p>
+
+<script>
+    $(document).ready(function () {
+        
+        $(document).on("change", "select.other-person", function(){
+            uuid = $(this).attr("data-uuid");
+            myId = $(this).attr("data-my-id");
+            user_id = $("select.other-person[data-uuid='"+uuid+"'] option:selected").val();
+            exercise = $(this).attr("data-ex-id");
+
+            $.get("/api/v2/workoutlog/?limit=200&exercise="+exercise, function(data, status){
+                createGraph(data.results, uuid, myId, user_id);
+            });
+            
+        });
+
+    });
+</script>
+
 {% endblock %}
