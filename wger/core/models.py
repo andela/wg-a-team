@@ -17,6 +17,9 @@
 
 import datetime
 import decimal
+from wger.settings_global import WGER_SETTINGS as settings_global
+import fitbit
+from fitbit.exceptions import HTTPUnauthorized
 
 from django.db import models
 from django.db.models import IntegerField
@@ -26,6 +29,7 @@ from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
+from django.utils.dateparse import parse_date
 from wger.gym.models import Gym
 
 from wger.utils.constants import TWOPLACES
@@ -182,7 +186,6 @@ class UserProfile(models.Model):
                                                  null=True)
     '''
     The last time the user got a workout reminder email
-
     This is needed e.g. to check daily per cron for old workouts but only
     send users an email once per week
     '''
@@ -413,7 +416,6 @@ class UserProfile(models.Model):
     def calculate_bmi(self):
         '''
         Calculates the user's BMI
-
         Formula: weight/height^2
         - weight in kg
         - height in m
@@ -432,7 +434,6 @@ class UserProfile(models.Model):
     def calculate_basal_metabolic_rate(self, formula=1):
         '''
         Calculates the basal metabolic rate.
-
         Currently only the Mifflin-St.Jeor formula is supported
         '''
         factor = 5 if self.gender == self.GENDER_MALE else -161
@@ -453,7 +454,6 @@ class UserProfile(models.Model):
     def calculate_activities(self):
         '''
         Calculates the calories needed by additional physical activities
-
         Factors taken from
         * https://en.wikipedia.org/wiki/Physical_activity_level
         * http://www.fao.org/docrep/007/y5686e/y5686e07.htm
@@ -538,7 +538,6 @@ class UserCache(models.Model):
     last_activity = models.DateField(null=True)
     '''
     The user's last activity.
-
     Values for this entry are saved by signals as calculated by the
     get_user_last_activity helper function.
     '''
@@ -554,7 +553,6 @@ class UserCache(models.Model):
 class DaysOfWeek(models.Model):
     '''
     Model for the days of the week
-
     This model is needed so that 'Day' can have
     multiple days of the week selected
     '''
@@ -655,7 +653,6 @@ class RepetitionUnit(models.Model):
     def is_repetition(self):
         '''
         Checks that the repetition unit is a repetition proper
-
         This is done basically to not litter the code with magic IDs
         '''
         return self.id == 1
@@ -694,7 +691,93 @@ class WeightUnit(models.Model):
     def is_weight(self):
         '''
         Checks that the unit is a weight proper
-
         This is done basically to not litter the code with magic IDs
         '''
         return self.id in (1, 2)
+
+
+class FitbitUser(models.Model):
+    user = models.ForeignKey(
+        User, verbose_name=_('User'),
+        editable=False, on_delete=models.CASCADE)
+    fitbit_id = models.CharField(max_length=10)
+    access_token = models.CharField(max_length=100)
+    refresh_token = models.CharField(max_length=100)
+
+    def authenticate(self, user):
+        self.user = user
+        self.key = settings_global['FITBIT_CLIENT_ID']
+        self.secret = settings_global['FITBIT_CLIENT_SECRET']
+        is_authorized = self.isAuthenticated()
+
+        if is_authorized:
+            self.access_token = is_authorized.access_token
+            self.refresh_token = is_authorized.refresh_token
+            self.authenticated = True
+            return self.authenticated
+
+        return False
+
+    def refresh(self, token):
+        print(token)
+
+    def getUrl(self):
+        auth = fitbit.FitbitOauth2Client(self.key, self.secret)
+        return auth.authorize_token_url()
+
+    def isAuthenticated(self):
+        is_authorized = FitbitUser.objects.filter(user=self.user).first()
+        return is_authorized
+
+    def completeAuth(self, code):
+        auth = fitbit.FitbitOauth2Client(self.key, self.secret)
+        data = auth.fetch_access_token(code)
+        self.access_token = data['access_token']
+        self.refresh_token = data['refresh_token']
+        self.fitbit_id = data['user_id']
+        self.authenticated = True
+
+        is_authorized = self.isAuthenticated()
+        if is_authorized:
+            is_authorized.access_token = self.access_token
+            is_authorized.refresh_token = self.refresh_token
+            is_authorized.save()
+
+        else:
+            self.save()
+            return self
+
+    def initFitbit(self):
+        fitbit_instance = fitbit.Fitbit(
+            self.key, self.secret,
+            access_token=self.access_token,
+            refresh_token=self.refresh_token,
+            system='en_UK')
+        return fitbit_instance
+
+    def getWeightInfo(self, start=None, end=None):
+        clean_data = []
+        try:
+            fitbit_instance = self.initFitbit()
+            body_weight = fitbit_instance.get_bodyweight(period='1m')
+            prev_entry = None
+
+            for data in body_weight['weight']:
+                weight_obj = WeightEntry()
+                weight_diff = 0
+                day_diff = 0
+                weight_obj.date = data['date']
+                weight_obj.weight = data['weight']
+
+                if prev_entry:
+                    weight_diff = weight_obj.weight - prev_entry.weight
+                    day_diff = (
+                        parse_date(weight_obj.date) - parse_date(prev_entry.date)).days
+                prev_entry = weight_obj
+                clean_data.append((weight_obj, int(weight_diff), day_diff))
+
+        except HTTPUnauthorized:
+            return False
+        except BaseException:
+            return clean_data
+        return clean_data
