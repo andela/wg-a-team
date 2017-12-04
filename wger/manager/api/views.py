@@ -268,8 +268,13 @@ class WorkoutLogViewSet(WgerOwnerObjectModelViewSet):
         '''
         Only allow access to appropriate objects
         '''
+        if (
+            self.request.query_params.get('compare', None) and
+            self.request.query_params.get('compare', None) == "comparison"
+        ):
+            return WorkoutLog.objects.all()
 
-        return WorkoutLog.objects.all()
+        return WorkoutLog.objects.filter(user=self.request.user)
 
     def perform_create(self, serializer):
         '''
