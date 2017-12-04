@@ -53,7 +53,6 @@ script:
   # Regular application
   - coverage run --source='.' ./manage.py test
   # Code coverage
-
   - coverage report
 notifications:
   slack: andela:OZefQdjnsTAbpFnQwexjb41q
@@ -64,3 +63,4 @@ deploy:
     secure: "H+SBOzoB/5G25E+Q/28xiYDpC3piCRPoDCdbI3cCHzNNF03Qz+DCwj95kBfiAy/r6eQX+gJDYPsnowNMuqiQZkJUTTI2tH3UPf14xoqR+VdCyLKKGjUxJWgOEdTp85rSEQNB1SfCtZSlyCcbNRqkaMEzSe7jiOClf/+jstl5rDuPumgA9TXjo/syLfaOnILUPZ0nxsWVcSzt5L6DJ3s6ivYAv+kbM5LqFi7Xh0EKsvBp09X9+dCrdhqDAiXIZ4XS1AXesj0o4ywaUsgxLHd2rrV9gUJnQuBPD9Bl+VHjaKilSY6GIW6M6YkessjaVdT8XkJwFSCbIO4j0H1EG+RcQJwqmGJbCFRdjCv5C/k+v8waMlYmy4Bj3x38vlBLTOnjzJcxMt8HItYyQHppTgfupixmvATt1DeoxjZzAuxbz++fpj/VKDtbf6aThzsyprdQYTqI3Fpc9X9G0GDDpFp5JSAmpkp0qW9r83KK/5vP3yEIYv/hRj3HO9nM5NLQQ9opETRPyA6AzoOIZk3Hn9NjcJB4bTEMAb91bgzNg/37FN6eeqLHj4TbUGC3y6Q0IbfJppDzv8WRCr5dn2WDrYo8yTUa9Ct/9l3tMFrOus4s/f9X3melCfKHZ6z3HaFzVRaLzlPWuA0KC8ZAzgk5ye6D3cBPH53XmO1N/dDs7Uxi818="
   app: wger-a-team
   on: develop
+
