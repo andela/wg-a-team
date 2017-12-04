@@ -275,7 +275,7 @@
             user_id = $("select.other-person[data-uuid='"+uuid+"'] option:selected").val();
             exercise = $(this).attr("data-ex-id");
 
-            $.get("/api/v2/workoutlog/?limit=200&exercise="+exercise, function(data, status){
+            $.get("/api/v2/workoutlog/?compare=comparison&limit=200&exercise="+exercise, function(data, status){
                 createGraph(data.results, uuid, myId, user_id);
             });
             
