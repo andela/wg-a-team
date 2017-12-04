@@ -10,7 +10,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
-# You should have received a copy of the GNU Affero General Public License
+# You should have received a copy of the GNU Affero General Public
+# License
 
 import logging
 
@@ -30,12 +31,18 @@ class SpacelessTestCase(WorkoutManagerTestCase):
         '''
         Tests the custom spaceless template tag
         '''
-        t = Template('{% load wger_extras %}'
-                     '{% spaceless_config %}<p>A text</p>   <p>more</p>{% endspaceless_config %}')
+        t = Template(
+            '{% load wger_extras %}'
+            '{% spaceless_config %}<p>A text</p>\
+            <p>more</p>{% endspaceless_config %}')
         context = Context()
 
         with self.settings(WGER_SETTINGS={'REMOVE_WHITESPACE': True}):
-            self.assertEqual(t.render(context), '<p>A text</p><p>more</p>')
+            self.assertEqual(
+                t.render(context),
+                '<p>A text</p><p>more</p>')
 
         with self.settings(WGER_SETTINGS={'REMOVE_WHITESPACE': False}):
-            self.assertEqual(t.render(context), '<p>A text</p>   <p>more</p>')
+            self.assertEqual(
+                t.render(context),
+                '<p>A text</p>            <p>more</p>')

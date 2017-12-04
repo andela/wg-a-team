@@ -10,7 +10,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
-# You should have received a copy of the GNU Affero General Public License
+# You should have received a copy of the GNU Affero General Public
+# License
 
 import logging
 
@@ -39,7 +40,8 @@ class ApiKeyTestCase(WorkoutManagerTestCase):
         # User already has a key
         response = self.client.get(reverse('core:user:api-key'))
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'Delete current API key and generate new one')
+        self.assertContains(
+            response, 'Delete current API key and generate new one')
         self.assertTrue(Token.objects.get(user=user))
 
         # User has no keys
@@ -47,7 +49,10 @@ class ApiKeyTestCase(WorkoutManagerTestCase):
         response = self.client.get(reverse('core:user:api-key'))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'You have no API key yet')
-        self.assertRaises(Token.DoesNotExist, Token.objects.get, user=user)
+        self.assertRaises(
+            Token.DoesNotExist,
+            Token.objects.get,
+            user=user)
 
     def test_api_key_page_generation(self):
         '''
@@ -58,11 +63,13 @@ class ApiKeyTestCase(WorkoutManagerTestCase):
         user = User.objects.get(username='test')
         key_before = Token.objects.get(user=user)
 
-        response = self.client.get(reverse('core:user:api-key'), {'new_key': True})
+        response = self.client.get(
+            reverse('core:user:api-key'), {'new_key': True})
         self.assertEqual(response.status_code, 302)
         response = self.client.get(response['Location'])
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'Delete current API key and generate new one')
+        self.assertContains(
+            response, 'Delete current API key and generate new one')
 
         key_after = Token.objects.get(user=user)
         self.assertTrue(key_after)

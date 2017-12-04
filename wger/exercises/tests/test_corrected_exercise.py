@@ -10,7 +10,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
-# You should have received a copy of the GNU Affero General Public License
+# You should have received a copy of the GNU Affero General Public
+# License
 
 from django.core import mail
 from django.core.urlresolvers import reverse
@@ -29,12 +30,17 @@ class ExercisesCorrectionTestCase(WorkoutManagerTestCase):
         Helper function
         '''
         description = 'a nice, long and accurate description for the exercise'
-        response = self.client.post(reverse('exercise:exercise:correct', kwargs={'pk': 1}),
-                                    {'category': 3,
-                                     'name_original': 'my test exercise',
-                                     'license': 2,
-                                     'description': description,
-                                     'muscles': [3]})
+        response = self.client.post(
+            reverse(
+                'exercise:exercise:correct',
+                kwargs={
+                    'pk': 1}),
+            {
+                'category': 3,
+                'name_original': 'my test exercise',
+                'license': 2,
+                'description': description,
+                'muscles': [3]})
 
         if fail:
             self.assertEqual(response.status_code, 403)
@@ -50,8 +56,10 @@ class ExercisesCorrectionTestCase(WorkoutManagerTestCase):
         self.assertEqual(exercise.description, '')
         self.assertEqual(exercise.category_id, 2)
         self.assertEqual(exercise.language_id, 1)
-        self.assertEqual([i.pk for i in exercise.muscles.all()], [1, 2])
-        self.assertEqual([i.pk for i in exercise.muscles_secondary.all()], [3])
+        self.assertEqual(
+            [i.pk for i in exercise.muscles.all()], [1, 2])
+        self.assertEqual(
+            [i.pk for i in exercise.muscles_secondary.all()], [3])
 
         # Check the notification email
         if fail:

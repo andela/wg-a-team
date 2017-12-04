@@ -10,7 +10,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
-# You should have received a copy of the GNU Affero General Public License
+# You should have received a copy of the GNU Affero General Public
+# License
 
 import logging
 
@@ -32,7 +33,9 @@ class DeleteUserTestCase(WorkoutManagerTestCase):
         Helper function
         '''
         response = self.client.get(reverse('core:user:delete'))
-        self.assertEqual(User.objects.filter(username='test').count(), 1)
+        self.assertEqual(
+            User.objects.filter(
+                username='test').count(), 1)
         if fail:
             self.assertEqual(response.status_code, 302)
         else:
@@ -40,18 +43,27 @@ class DeleteUserTestCase(WorkoutManagerTestCase):
 
         # Wrong user password
         if not fail:
-            response = self.client.post(reverse('core:user:delete'),
-                                        {'password': 'not the user password'})
+            response = self.client.post(
+                reverse('core:user:delete'), {
+                    'password': 'not the user password'})
             self.assertEqual(response.status_code, 200)
-            self.assertEqual(User.objects.filter(username='test').count(), 1)
+            self.assertEqual(
+                User.objects.filter(
+                    username='test').count(), 1)
 
         # Correct user password
-        response = self.client.post(reverse('core:user:delete'), {'password': 'testtest'})
+        response = self.client.post(
+            reverse('core:user:delete'), {
+                'password': 'testtest'})
         self.assertEqual(response.status_code, 302)
         if fail:
-            self.assertEqual(User.objects.filter(username='test').count(), 1)
+            self.assertEqual(
+                User.objects.filter(
+                    username='test').count(), 1)
         else:
-            self.assertEqual(User.objects.filter(username='test').count(), 0)
+            self.assertEqual(
+                User.objects.filter(
+                    username='test').count(), 0)
 
     def test_delete_user_logged_in(self):
         '''
@@ -76,31 +88,56 @@ class DeleteUserByAdminTestCase(WorkoutManagerTestCase):
         '''
         Helper function
         '''
-        response = self.client.get(reverse('core:user:delete', kwargs={'user_pk': 2}))
-        self.assertEqual(User.objects.filter(username='test').count(), 1)
+        response = self.client.get(
+            reverse(
+                'core:user:delete',
+                kwargs={
+                    'user_pk': 2}))
+        self.assertEqual(
+            User.objects.filter(
+                username='test').count(), 1)
         if fail:
-            self.assertIn(response.status_code, (302, 403),
-                          'Unexpected status code for user {0}'.format(self.current_user))
+            self.assertIn(
+                response.status_code,
+                (302,
+                 403),
+                'Unexpected status code for user {0}'.format(
+                    self.current_user))
         else:
-            self.assertEqual(response.status_code, 200,
-                             'Unexpected status code for user {0}'.format(self.current_user))
+            self.assertEqual(
+                response.status_code,
+                200,
+                'Unexpected status code for user {0}'.format(
+                    self.current_user))
 
         # Wrong admin password
         if not fail:
-            response = self.client.post(reverse('core:user:delete', kwargs={'user_pk': 2}),
-                                        {'password': 'blargh'})
+            response = self.client.post(
+                reverse(
+                    'core:user:delete', kwargs={
+                        'user_pk': 2}), {
+                    'password': 'blargh'})
             self.assertEqual(response.status_code, 200)
-            self.assertEqual(User.objects.filter(username='test').count(), 1)
+            self.assertEqual(
+                User.objects.filter(
+                    username='test').count(), 1)
 
         # Correct user password
-        response = self.client.post(reverse('core:user:delete', kwargs={'user_pk': 2}),
-                                    {'password': self.current_password})
+        response = self.client.post(
+            reverse(
+                'core:user:delete', kwargs={
+                    'user_pk': 2}), {
+                'password': self.current_password})
         if fail:
             self.assertIn(response.status_code, (302, 403))
-            self.assertEqual(User.objects.filter(username='test').count(), 1)
+            self.assertEqual(
+                User.objects.filter(
+                    username='test').count(), 1)
         else:
             self.assertEqual(response.status_code, 302)
-            self.assertEqual(User.objects.filter(username='test').count(), 0)
+            self.assertEqual(
+                User.objects.filter(
+                    username='test').count(), 0)
 
     def test_delete_user_manager(self):
         '''
@@ -172,7 +209,7 @@ class DeleteUserByAdminTestCase(WorkoutManagerTestCase):
         self.user_login('member1')
         self.delete_user(fail=True)
 
-    def test_delete_user_member(self):
+    def test_delete_other_user_member(self):
         '''
         Tests deleting the user account as a gym member
         '''

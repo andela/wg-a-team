@@ -11,7 +11,8 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU Affero General Public License
-# along with Workout Manager.  If not, see <http://www.gnu.org/licenses/>.
+# along with Workout Manager.  If not, see
+# <http://www.gnu.org/licenses/>.
 from django.core.urlresolvers import reverse_lazy
 
 from wger.core.models import UserProfile
@@ -33,7 +34,11 @@ class GymRepresentationTestCase(WorkoutManagerTestCase):
         '''
         Test that the representation of an object is correct
         '''
-        self.assertEqual("{0}".format(Gym.objects.get(pk=1)), 'Test 123')
+        self.assertEqual(
+            "{0}".format(
+                Gym.objects.get(
+                    pk=1)),
+            'Test 123')
 
 
 class GymOverviewTest(WorkoutManagerAccessTestCase):
@@ -108,6 +113,7 @@ class DeleteGymTestCase(WorkoutManagerDeleteTestCase):
                  'manager1',
                  'manager3')
 
+
 delete_testcase_add_methods(DeleteGymTestCase)
 
 
@@ -142,7 +148,11 @@ class GymTestCase(WorkoutManagerTestCase):
         Tests that deleting a gym also removes it from all user profiles
         '''
         gym = Gym.objects.get(pk=1)
-        self.assertEqual(UserProfile.objects.filter(gym=gym).count(), 17)
+        self.assertEqual(
+            UserProfile.objects.filter(
+                gym=gym).count(), 17)
 
         gym.delete()
-        self.assertEqual(UserProfile.objects.filter(gym=gym).count(), 0)
+        self.assertEqual(
+            UserProfile.objects.filter(
+                gym=gym).count(), 0)

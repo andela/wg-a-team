@@ -10,7 +10,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
-# You should have received a copy of the GNU Affero General Public License
+# You should have received a copy of the GNU Affero General Public
+# License
 
 import datetime
 import random
@@ -41,7 +42,8 @@ class DemoUserTestCase(WorkoutManagerTestCase):
         '''
         Counts the number of temporary users
         '''
-        return User.objects.filter(userprofile__is_temporary=1).count()
+        return User.objects.filter(
+            userprofile__is_temporary=1).count()
 
     def test_demo_data_no_guest_account(self):
         '''
@@ -73,19 +75,33 @@ class DemoUserTestCase(WorkoutManagerTestCase):
         self.client.get(reverse('core:user:demo-entries'))
         # Workout
         self.assertEqual(Workout.objects.filter(user=user).count(), 4)
-        self.assertEqual(Day.objects.filter(training__user=user).count(), 2)
-        self.assertEqual(WorkoutLog.objects.filter(user=user).count(), 56)
+        self.assertEqual(
+            Day.objects.filter(
+                training__user=user).count(), 2)
+        self.assertEqual(
+            WorkoutLog.objects.filter(
+                user=user).count(), 56)
 
         # Schedule
-        self.assertEqual(Schedule.objects.filter(user=user).count(), 3)
-        self.assertEqual(ScheduleStep.objects.filter(schedule__user=user).count(), 6)
+        self.assertEqual(
+            Schedule.objects.filter(
+                user=user).count(), 3)
+        self.assertEqual(
+            ScheduleStep.objects.filter(
+                schedule__user=user).count(), 6)
 
         # Nutrition
-        self.assertEqual(NutritionPlan.objects.filter(user=user).count(), 1)
-        self.assertEqual(Meal.objects.filter(plan__user=user).count(), 3)
+        self.assertEqual(
+            NutritionPlan.objects.filter(
+                user=user).count(), 1)
+        self.assertEqual(
+            Meal.objects.filter(
+                plan__user=user).count(), 3)
 
         # Body weight
-        self.assertEqual(WeightEntry.objects.filter(user=user).count(), 19)
+        self.assertEqual(
+            WeightEntry.objects.filter(
+                user=user).count(), 19)
 
     def test_demo_data_body_weight(self):
         '''
@@ -99,15 +115,23 @@ class DemoUserTestCase(WorkoutManagerTestCase):
         temp = []
         for i in range(1, 5):
             creation_date = datetime.date.today() - datetime.timedelta(days=i)
-            entry = WeightEntry(user=user,
-                                weight=80 + 0.5 * i + random.randint(1, 3),
-                                date=creation_date)
+            entry = WeightEntry(
+                user=user,
+                weight=80 +
+                0.5 *
+                i +
+                random.randint(
+                    1,
+                    3),
+                date=creation_date)
             temp.append(entry)
         WeightEntry.objects.bulk_create(temp)
         create_demo_entries(user)
 
         # Body weight
-        self.assertEqual(WeightEntry.objects.filter(user=user).count(), 19)
+        self.assertEqual(
+            WeightEntry.objects.filter(
+                user=user).count(), 19)
 
     def test_demo_user(self):
         '''
@@ -157,16 +181,34 @@ class DemoUserTestCase(WorkoutManagerTestCase):
         '''
         demo_notice_text = 'You are using a guest account'
         self.user_login('demo')
-        self.assertContains(self.client.get(reverse('core:dashboard')), demo_notice_text)
-        self.assertContains(self.client.get(reverse('manager:workout:overview')),
-                            demo_notice_text)
-        self.assertContains(self.client.get(reverse('exercise:exercise:overview')),
-                            demo_notice_text)
-        self.assertContains(self.client.get(reverse('exercise:muscle:overview')), demo_notice_text)
-        self.assertContains(self.client.get(reverse('nutrition:plan:overview')),
-                            demo_notice_text)
-        self.assertContains(self.client.get(reverse('software:issues')), demo_notice_text)
-        self.assertContains(self.client.get(reverse('software:license')), demo_notice_text)
+        self.assertContains(
+            self.client.get(
+                reverse('core:dashboard')),
+            demo_notice_text)
+        self.assertContains(
+            self.client.get(
+                reverse('manager:workout:overview')),
+            demo_notice_text)
+        self.assertContains(
+            self.client.get(
+                reverse('exercise:exercise:overview')),
+            demo_notice_text)
+        self.assertContains(
+            self.client.get(
+                reverse('exercise:muscle:overview')),
+            demo_notice_text)
+        self.assertContains(
+            self.client.get(
+                reverse('nutrition:plan:overview')),
+            demo_notice_text)
+        self.assertContains(
+            self.client.get(
+                reverse('software:issues')),
+            demo_notice_text)
+        self.assertContains(
+            self.client.get(
+                reverse('software:license')),
+            demo_notice_text)
 
     def test_command_delete_old_users(self):
         '''

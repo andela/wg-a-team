@@ -12,7 +12,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
-# You should have received a copy of the GNU Affero General Public License
+# You should have received a copy of the GNU Affero General Public
+# License
 
 from django.db import models
 from django.db.models import Q
@@ -26,6 +27,7 @@ class GymManager(models.Manager):
     '''
     Custom query manager for Gyms
     '''
+
     def get_members(self, gym_pk):
         '''
         Returns all members for this gym (i.e non-admin ones)

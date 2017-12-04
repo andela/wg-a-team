@@ -82,6 +82,23 @@ the comments in the documentation (development chapter) about this::
 
  $ python manage.py runserver
 
+Enabling social media logins
+
+ In order to enable users to login with facebook, twitter and google get the following keys and add as shown.
+
+    $ cd ~
+    $ vim .config/wger/settings.py 
+
+Add the following:
+
+    SOCIAL_AUTH_TWITTER_KEY = 'your twtter key'
+    SOCIAL_AUTH_TWITTER_SECRET = 'your twitter secret'
+    SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = 'google api key'
+    SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'google api secret'
+    SOCIAL_AUTH_FACEBOOK_KEY = 'facebook key'
+    SOCIAL_AUTH_FACEBOOK_SECRET = 'Facebook secret key' # App Secret
+
+
 Docker images
 ~~~~~~~~~~~~~
 

@@ -12,7 +12,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
-# You should have received a copy of the GNU Affero General Public License
+# You should have received a copy of the GNU Affero General Public
+# License
 
 from django.contrib.auth.models import User
 from django import forms
@@ -51,16 +52,19 @@ class GymUserPermisssionForm(forms.ModelForm):
         if 'trainer' in available_roles:
             field_choices.append((self.TRAINER, _('Trainer')))
         if 'admin' in available_roles:
-            field_choices.append((self.GYM_ADMIN, _('Gym administrator')))
+            field_choices.append(
+                (self.GYM_ADMIN, _('Gym administrator')))
         if 'manager' in available_roles:
             field_choices.append((self.MANAGER, _('General manager')))
 
-        self.fields['role'] = forms.MultipleChoiceField(choices=field_choices,
-                                                        initial=User,
-                                                        widget=BootstrapSelectMultiple())
+        self.fields['role'] = forms.MultipleChoiceField(
+            choices=field_choices,
+            initial=User, widget=BootstrapSelectMultiple())
 
 
-class GymUserAddForm(GymUserPermisssionForm, UserPersonalInformationForm):
+class GymUserAddForm(
+        GymUserPermisssionForm,
+        UserPersonalInformationForm):
     '''
     Form used when adding a user to a gym
     '''
@@ -68,16 +72,25 @@ class GymUserAddForm(GymUserPermisssionForm, UserPersonalInformationForm):
     class Meta:
         model = User
         widgets = {'role': BootstrapSelectMultiple()}
-        fields = ('first_name', 'last_name', 'username', 'email', 'role',)
+        fields = (
+            'first_name',
+            'last_name',
+            'username',
+            'email',
+            'role',
+        )
 
-    username = forms.RegexField(label=_("Username"),
-                                max_length=30,
-                                regex=r'^[\w.@+-]+$',
-                                help_text=_("Required. 30 characters or fewer. Letters, digits and "
-                                            "@/./+/-/_ only."),
-                                error_messages={
-                                'invalid': _("This value may contain only letters, numbers and "
-                                             "@/.//-/_ characters.")})
+    username = forms.RegexField(
+        label=_("Username"),
+        max_length=30,
+        regex=r'^[\w.@+-]+$',
+        help_text=_(
+            "Required. 30 characters or fewer. Letters, digits and "
+            "@/./+/-/_ only."),
+        error_messages={
+            'invalid': _(
+                "This value may contain only letters, numbers and "
+                "@/.//-/_ characters.")})
 
     def clean_username(self):
         '''
@@ -89,4 +102,5 @@ class GymUserAddForm(GymUserPermisssionForm, UserPersonalInformationForm):
             User._default_manager.get(username=username)
         except User.DoesNotExist:
             return username
-        raise forms.ValidationError(_("A user with that username already exists."))
+        raise forms.ValidationError(
+            _("A user with that username already exists."))
