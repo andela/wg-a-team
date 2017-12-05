@@ -11,7 +11,7 @@
     "**/.*",
     "node_modules",
     "bower_components",
-    "wger/core/static/bower_components",
+    "wger/static/bower_components",
     "test",
     "tests"
   ],
