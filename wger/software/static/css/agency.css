@@ -296,6 +296,7 @@ header .intro-text .intro-lead-in {
   font-size: 22px;
   line-height: 22px;
   margin-bottom: 5rem;
+  color: #999;
 }
 header .intro-text .intro-heading {
   font-family: "minion-pro-caption", "Open Sans Light", Arial, Helvetica, sans-serif;
