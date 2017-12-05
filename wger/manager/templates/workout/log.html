@@ -10,7 +10,7 @@
     <meta property="og:title" content="{% trans 'Weight log' %}">
     <meta property="og:description" content="{% trans 'Weight log' %} / {{ workout }} / {{ owner_user.username }}">
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.min.js"></script>
+<script src="{% static 'bower_components/chart.js/dist/Chart.bundle.min.js' %}"></script>
 <script>
 
         extractData = (data, me=false, other=false) => {
