@@ -424,16 +424,6 @@ section h3.section-subheading {
   padding: 0;
   position: relative;
 }
-.timeline:before {
-  top: 0;
-  bottom: 0;
-  position: absolute;
-  content: "";
-  width: 2px;
-  background-color: #d3d7cf;
-  left: 40px;
-  margin-left: -1.5px;
-}
 .timeline > li {
   margin-bottom: 50px;
   position: relative;
@@ -516,9 +506,6 @@ section h3.section-subheading {
   margin-bottom: 0;
 }
 @media (min-width: 768px) {
-  .timeline:before {
-    left: 50%;
-  }
   .timeline > li {
     margin-bottom: 100px;
     min-height: 100px;
