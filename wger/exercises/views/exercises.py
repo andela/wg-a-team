@@ -216,7 +216,6 @@ class ExercisesEditAddView(WgerFormMixin):
             class Media:
                 js = ('/static/bower_components/tinymce/tinymce.min.js',)
 
-
         return ExerciseForm
 
 
