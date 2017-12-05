@@ -59,7 +59,7 @@
 
             let scatterChartData = {
                 datasets: [{
-                    label: "My First dataset",
+                    label: "My Data",
                     borderColor: "#FF000055",
                     backgroundColor: "#FF000055",
                     data: Ccdata[0]
@@ -68,7 +68,7 @@
 
             if(Ccdata[1].length > 0)
                 scatterChartData.datasets.push({
-                    label: "My Second dataset",
+                    label: "My Partner's Data",
                     borderColor: "#0000FF55",
                     backgroundColor: "0000FF55",
                     data: Ccdata[1]
@@ -80,7 +80,6 @@
                 data: scatterChartData,
                 options: {
                     aspectRatio: 1,
-                    legend: false,
 
                     elements: {
                         point: {
