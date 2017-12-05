@@ -84,6 +84,21 @@ h6 {
 .bg-darkest-gray .text-muted {
   color: #999;
 }
+/* Begin styles for feature icons */
+.feature_icon_wrapper {
+  width: 12rem;
+  height: 12rem;
+  margin-bottom: 5rem;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100%;
+  border: 3px solid #fff;
+}
+.feature_icon_wrapper img {
+  width: 6.5rem;
+}
+/* End styles for feature icons */
 .btn-primary {
   color: white;
   background-color: #204a87;
