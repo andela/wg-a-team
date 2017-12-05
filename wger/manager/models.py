@@ -913,23 +913,8 @@ class WorkoutLog(models.Model):
         '''
         if not date:
             date = self.date
-            # if not session_id:
-
-
-        # try:
-        #     # print('s-id', session_id)
-        #     try:
-        #         return WorkoutSession.objects.filter(
-        #             user=self.user).get(id=session_id.id)
-        #     except WorkoutSession.DoesNotExist:
-        #         return WorkoutSession.objects.filter(
-        #             user=self.user).get(date=date)
-        # except WorkoutSession.DoesNotExist:
-        #     return None
-        #
 
         try:
-            # print('s-id', session_id)
             if not self.session_id:
                 return WorkoutSession.objects.filter(
                     user=self.user).get(date=date)
