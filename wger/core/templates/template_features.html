@@ -95,11 +95,15 @@
             </div>
             <div class="col-md-4">
                 <ul class="list-inline social-buttons">
-                    <li>
-                        <a href="https://github.com/wger-project/wger" title="Github">
-                            <img src="/static/images/github_icon.svg" />
-                        </a>
-                    </li>
+                  <li>
+                    {% if show_shariff %}
+                      {% include 'misc/fragments/shariff_modal.html' %}
+                      <a data-toggle="modal" href="#shariffModal" title="Share">
+                        <img src="/static/images/share_icon.svg" />
+                      </a>
+                      <div class="clearfix"></div>
+                    {% endif %}
+                  </li>
                     <li>
                         <a href="https://twitter.com/wger_de" title="Twitter">
                          <img src="/static/images/twitter_icon.svg" />
@@ -111,13 +115,9 @@
                         </a>
                     </li>
                     <li>
-                      {% if show_shariff %}
-                        {% include 'misc/fragments/shariff_modal.html' %}
-                        <a data-toggle="modal" href="#shariffModal" title="Share">
-                          <img src="/static/images/share_icon.svg" />
+                        <a href="https://github.com/wger-project/wger" title="Github">
+                            <img src="/static/images/github_icon.svg" />
                         </a>
-                        <div class="clearfix"></div>
-                      {% endif %}
                     </li>
                 </ul>
             </div>
