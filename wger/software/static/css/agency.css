@@ -338,6 +338,8 @@ section h3.section-subheading {
   text-transform: none;
   font-weight: 400;
   margin-bottom: 75px;
+  width: 50%;
+  display: inline-block;
 }
 @media (min-width: 768px) {
   section {
