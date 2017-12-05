@@ -482,12 +482,12 @@ class Day(models.Model):
                     set=set_obj,
                     exercise=exercise).order_by(
                     'order',
-                    'id'):
+                        'id'):
                     setting_tmp.append(setting)
 
                 # "Smart" textual representation
                 setting_text, setting_list, \
-                weight_list, reps_list, repetition_units, weight_units = \
+                    weight_list, reps_list, repetition_units, weight_units = \
                     reps_smart_text(setting_tmp, set_obj)
 
                 # Flag indicating whether all exercises have settings
@@ -534,7 +534,7 @@ class Day(models.Model):
                         exercise['setting_list'].pop(-1)
                         exercise['setting_obj_list'].pop(-1)
                         setting_text, setting_list, weight_list, \
-                        reps_list, repetition_units, weight_units = \
+                            reps_list, repetition_units, weight_units = \
                             reps_smart_text(exercise['setting_obj_list'], set_obj)
                         exercise['setting_text'] = setting_text
                         exercise['repetition_units'] = repetition_units
