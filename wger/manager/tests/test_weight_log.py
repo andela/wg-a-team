@@ -281,7 +281,6 @@ class WeightlogTestCase(WorkoutManagerTestCase):
         session1.notes = 'Something here'
         session1.impression = '3'
         session1.date = datetime.date(2014, 1, 5)
-        # session1.session_id = 1
         session1.save()
 
         workout_log = WorkoutLog()
@@ -291,6 +290,7 @@ class WeightlogTestCase(WorkoutManagerTestCase):
         workout_log.workout = workout1
         workout_log.weight = 10
         workout_log.reps = 10
+        workout_log.session_id = session1
         workout_log.save()
 
         session2 = WorkoutSession()
@@ -309,7 +309,7 @@ class WeightlogTestCase(WorkoutManagerTestCase):
         session3.date = datetime.date(2014, 1, 5)
         session3.save()
 
-        self.assertEqual(workout_log.get_workout_session(session_id=session1.id), session1)
+        self.assertEqual(workout_log.get_workout_session(), session1)
 
 
 class WeightLogDeleteTestCase(WorkoutManagerDeleteTestCase):
@@ -363,7 +363,7 @@ class WeightLogEntryEditTestCase(WorkoutManagerTestCase):
             # Logged out users get a 302 redirect to login page
             # Users not owning the workout, a 403, forbidden
             self.assertTrue(response.status_code in (302, 403))
-            print(date_after)
+            # print(date_after)
             self.assertEqual(date_before, date_after)
 
         else:

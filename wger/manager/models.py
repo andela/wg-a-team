@@ -482,12 +482,12 @@ class Day(models.Model):
                     set=set_obj,
                     exercise=exercise).order_by(
                     'order',
-                        'id'):
+                    'id'):
                     setting_tmp.append(setting)
 
                 # "Smart" textual representation
                 setting_text, setting_list, \
-                    weight_list, reps_list, repetition_units, weight_units = \
+                weight_list, reps_list, repetition_units, weight_units = \
                     reps_smart_text(setting_tmp, set_obj)
 
                 # Flag indicating whether all exercises have settings
@@ -534,7 +534,7 @@ class Day(models.Model):
                         exercise['setting_list'].pop(-1)
                         exercise['setting_obj_list'].pop(-1)
                         setting_text, setting_list, weight_list, \
-                            reps_list, repetition_units, weight_units = \
+                        reps_list, repetition_units, weight_units = \
                             reps_smart_text(exercise['setting_obj_list'], set_obj)
                         exercise['setting_text'] = setting_text
                         exercise['repetition_units'] = repetition_units
@@ -905,7 +905,7 @@ class WorkoutLog(models.Model):
         '''
         return self
 
-    def get_workout_session(self, date=None, session_id=None):
+    def get_workout_session(self, date=None):
         '''
         Returns the corresponding workout session
 
@@ -913,12 +913,31 @@ class WorkoutLog(models.Model):
         '''
         if not date:
             date = self.date
-        if not session_id:
-            session_id = self.session_id
+            # if not session_id:
+
+
+        # try:
+        #     # print('s-id', session_id)
+        #     try:
+        #         return WorkoutSession.objects.filter(
+        #             user=self.user).get(id=session_id.id)
+        #     except WorkoutSession.DoesNotExist:
+        #         return WorkoutSession.objects.filter(
+        #             user=self.user).get(date=date)
+        # except WorkoutSession.DoesNotExist:
+        #     return None
+        #
 
         try:
+            # print('s-id', session_id)
+            if not self.session_id:
+                return WorkoutSession.objects.filter(
+                    user=self.user).get(date=date)
+
+            session_id = self.session_id
             return WorkoutSession.objects.filter(
-                user=self.user).get(date=date, id=session_id)
+                user=self.user).get(date=date, id=session_id.id)
+
         except WorkoutSession.DoesNotExist:
             return None
 
