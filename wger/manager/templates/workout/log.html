@@ -117,11 +117,21 @@
                     },
                     scales: {
                         xAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Workout Date'
+                            },
                             type: 'time',
                             time: {
                                 displayFormats: {
                                     quarter: 'MMM YYYY'
                                 }
+                            }
+                        }],
+                        yAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Workout Weight'
                             }
                         }]
                     },
