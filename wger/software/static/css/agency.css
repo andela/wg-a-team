@@ -287,6 +287,31 @@ header {
   flex-direction: column;
   justify-content: center;
 }
+/* Begin banner styles */
+.banner {
+  padding: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 10rem;
+  display: flex;
+  align-items: center;
+}
+.banner_logo {
+  float: left;
+  width: 20%;
+  text-align: left;
+  padding: 0 5rem;
+}
+.banner_nav {
+  flex: 1;
+  text-align: right;
+  padding: 0 5rem;
+}
+.banner_logo img {
+  width: 5rem;
+}
+/* End banner styles */
 header .intro-text {
   padding-top: 100px;
   padding-bottom: 50px;
