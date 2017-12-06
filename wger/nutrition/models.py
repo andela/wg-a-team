@@ -115,9 +115,9 @@ class NutritionPlan(models.Model):
         '''
         Sums the nutritional info of all items in the plan
         '''
-        nutritional_cache = cache.get(cache_mapper.get_nutrition_key(self.id))
-        print(nutritional_cache)
-        if not nutritional_cache:
+        result = cache.get(cache_mapper.get_nutrition_key(self.id))
+        print(result)
+        if not result:
             use_metric = self.user.userprofile.use_metric
             unit = 'kg' if use_metric else 'lb'
             result = {'total': {'energy': 0,
@@ -164,9 +164,10 @@ class NutritionPlan(models.Model):
                     result[key][i] = Decimal(
                         result[key][i]).quantize(TWOPLACES)
             cache.set(cache_mapper.get_nutrition_key(self.id), result)
+            
             cache.close()
-            return result
-        return nutritional_cache
+        return result
+        
 
     def get_closest_weight_entry(self):
         '''
