@@ -64,8 +64,11 @@ INSTALLED_APPS = (
     'wger.gym',
     'wger.email',
 
-    # reCaptcha support, see
-    # https://github.com/praekelt/django-recaptcha
+    # fitbit
+    'fitbit',
+
+    # reCaptcha support, see https://github.com/praekelt/django-recaptcha
+
     'captcha',
 
     # The sitemaps app
@@ -385,5 +388,7 @@ WGER_SETTINGS = {
     'ALLOW_REGISTRATION': True,
     'ALLOW_GUEST_USERS': True,
     'EMAIL_FROM': 'wger Workout Manager <wger@example.com>',
-    'TWITTER': False
+    'TWITTER': False,
+    'FITBIT_CLIENT_ID': '22CGC8',
+    'FITBIT_CLIENT_SECRET': '9f39ac23df33ea084561a68af5fd01b5'
 }
