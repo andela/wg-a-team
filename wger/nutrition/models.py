@@ -164,10 +164,8 @@ class NutritionPlan(models.Model):
                     result[key][i] = Decimal(
                         result[key][i]).quantize(TWOPLACES)
             cache.set(cache_mapper.get_nutrition_key(self.id), result)
-            
             cache.close()
         return result
-        
 
     def get_closest_weight_entry(self):
         '''
