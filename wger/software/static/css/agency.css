@@ -272,7 +272,7 @@ fieldset[disabled] .btn-xl.active {
   }
 }
 header {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.8),rgba(0, 0, 0, 0.8)), url('../images/main.jpg');
+  background-image: linear-gradient(rgba(26, 60, 110, 0.6),rgba(0, 0, 0, 0.6)), url('../images/main.jpg');
   background-repeat: no-repeat;
   background-attachment: scroll;
   background-position: center center;
