@@ -18,6 +18,7 @@ import logging
 
 from django.contrib.auth.mixins import (
     PermissionRequiredMixin, LoginRequiredMixin)
+from django.core.cache import cache
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.utils.translation import ugettext as _
 from django.utils.translation import ugettext_lazy
@@ -148,4 +149,5 @@ class MuscleDeleteView(
         context['form_action'] = reverse(
             'exercise:muscle:delete', kwargs={
                 'pk': self.kwargs['pk']})
+        cache.clear()
         return context

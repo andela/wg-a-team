@@ -643,6 +643,9 @@ class MealItem(models.Model):
     order = models.IntegerField(verbose_name=_('Order'),
                                 blank=True,
                                 editable=False)
+    consumed = models.TextField(verbose_name=_('Consumed'),
+                                blank=True,
+                                editable=True)
     amount = models.DecimalField(decimal_places=2,
                                  max_digits=6,
                                  verbose_name=_('Amount'),
