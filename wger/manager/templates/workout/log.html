@@ -13,15 +13,20 @@
 <script src="{% static 'bower_components/chart.js/dist/Chart.bundle.min.js' %}"></script>
 <script>
 
+        /* 
+            function used to create datasets for chartjs from the data that comes from the server,
+        */
         extractData = (data, me=false, other=false) => {
 
             let allMyData = [];
             let allOtherData = [];
             
+            /* we're getting data from the first time the page loads */
             if( !me && !other ){
                 for (i = 0; i < data.length; i++) {
                     let myData = data[i][0];
 
+                    //populate an array that will act as the data set
                     allMyData.push({
                         x: new Date(myData.date),
                         y: myData.weight,
@@ -29,6 +34,10 @@
                     });
 
                 }
+            
+            /* 
+                were getting 2 sets of data from the server 
+            */
             }else{
 
                 for (i = 0; i < data.length; i++) {
@@ -39,10 +48,12 @@
                             y: myData.weight,
                             v: myData.reps
                         }
-
+                    
+                    /* the data belongs to the logged in user */
                     if(me == myData.user)
                         allMyData.push(obj);
-                    
+
+                    /* data belongs to the person who were comparing our data with */
                     else if(other == myData.user)
                         allOtherData.push(obj);
 
@@ -53,10 +64,13 @@
             return [allMyData, allOtherData];
         }
 
+        /* function to populate bubble graphs in the log overview */
         createGraph = (data, uuid, me=false, other=false) => {
 
+            // first get the "arranged" data
             let Ccdata = extractData(data, me, other);
 
+            //populate the first data set which always exists
             let scatterChartData = {
                 datasets: [{
                     label: "My Data",
@@ -66,6 +80,7 @@
                 }]
             };
 
+            // if were comparing data, the second index will have data, which we use to create a second dataset
             if(Ccdata[1].length > 0)
                 scatterChartData.datasets.push({
                     label: "My Partner's Data",
@@ -74,6 +89,7 @@
                     data: Ccdata[1]
                 })
 
+            //get the canvas to hold the bubble chart for that exercise and build a graph
             let ctx = document.getElementById("canvas-"+uuid).getContext("2d");
             window.myScatter = new Chart(ctx, {
                 type: 'bubble',
