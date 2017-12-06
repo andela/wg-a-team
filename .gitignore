@@ -76,8 +76,4 @@ venv-django/
 **/static/**
 
 #vscode settings
-<<<<<<< HEAD
 .vscode/
-=======
-.vscode/
->>>>>>> aa5b49a49cd45803419b59495f99fe58858d4757
