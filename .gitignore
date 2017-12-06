@@ -80,3 +80,6 @@ venv-django/
 
 #migration files
 **/migrations/
+
+#MAC file system files
+**/.DS_Store
