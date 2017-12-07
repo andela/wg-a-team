@@ -22,6 +22,7 @@
         <section class="banner">
           <div class="banner_logo">
             <img src="/static/images/logo.svg" />
+            <span class="banner_name">{% trans "Wger" %}</span>
           </div>
           <div class="banner_nav">
             {% if allow_guest_users and not user.is_authenticated %}
@@ -38,7 +39,6 @@
         </section>
         <div class="container">
             <div class="intro-text">
-                <div class="intro-heading">{% trans "Wger" %}</div>
                 <div class="intro-lead-in">{% trans "Manage your exercises and personal workouts." %}</div>
 
                 {% if not user.is_authenticated or user.userprofile.is_temporary %}

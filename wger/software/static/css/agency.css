@@ -297,10 +297,14 @@ header {
   align-items: center;
 }
 .banner_logo {
-  float: left;
-  width: 20%;
-  text-align: left;
+  display: inline-flex;
+  align-items: center;
   padding: 0 5rem;
+}
+.banner_name{
+  font-family: "minion-pro-caption", "Open Sans Light", Arial, Helvetica, sans-serif;
+  font-size: 3rem;
+  font-weight: 600;
 }
 .banner_nav {
   flex: 1;
