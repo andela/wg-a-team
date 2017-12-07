@@ -87,13 +87,7 @@
 <footer class="bg-darkest-gray">
     <div class="container">
         <div class="row">
-            <div class="col-md-4">
-                <ul class="list-inline quicklinks">
-                    <li><a href="{% url 'software:contribute' %}">{% trans "Contribute!" %}</a></li>
-                    <li><a href="{% url 'core:contact' %}">{% trans "Get in touch" %}</a></li>
-                </ul>
-            </div>
-            <div class="col-md-4">
+            <div>
                 <ul class="list-inline social-buttons">
                   <li>
                     {% if show_shariff %}
@@ -121,10 +115,11 @@
                     </li>
                 </ul>
             </div>
-            <div class="col-md-4">
+            <div>
                 <ul class="list-inline quicklinks">
+                    <li><a href="{% url 'software:contribute' %}">{% trans "Contribute!" %}</a></li>
+                    <li><a href="{% url 'core:contact' %}">{% trans "Get in touch" %}</a></li>
                     <li><a href="{% url 'core:about' %}">{% trans "About" %}</a></li>
-
                     <li><a href="{% url 'software:tos' %}">{% trans "Terms of service" %}</a></li>
                 </ul>
             </div>

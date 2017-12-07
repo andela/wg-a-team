@@ -687,7 +687,7 @@ footer ul.quicklinks {
   text-transform: uppercase;
   text-transform: none;
 }
-footer ul.quicklinks a { color: white; }
+footer ul.quicklinks a { color: #999; }
 ul.social-buttons {
   margin-bottom: 0;
 }
@@ -695,15 +695,15 @@ ul.social-buttons li a {
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  height: 7rem;
-  width: 7rem;
+  height: 5rem;
+  width: 5rem;
   border-radius: 100%;
   -webkit-transition: all 0.3s;
   -moz-transition: all 0.3s;
   transition: all 0.3s;
 }
 ul.social-buttons li img {
-  width: 5rem;
+  width: 4rem;
 }
 ul.social-buttons li a:hover,
 ul.social-buttons li a:focus,
