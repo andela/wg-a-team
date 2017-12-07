@@ -79,4 +79,4 @@ venv-django/
 .vscode/
 
 #migration files
-**/migrations/
+#**/migrations/
