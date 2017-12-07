@@ -18,9 +18,9 @@ python:
 # https://github.com/travis-ci/travis-ci/issues/1519
 env:
   - TEST_MOBILE=True  DB_TYPE=postgresql TRAVIS_NODE_VERSION="4" DB='wger' USER='postgres' PASSWORD='' HOST='localhost' PORT=5432
-  - TEST_MOBILE=True  DB_TYPE=sqlite     TRAVIS_NODE_VERSION="4" DB='wger' USER='postgres' PASSWORD='' HOST='localhost' PORT=5432
+  - TEST_MOBILE=True  DB_TYPE=sqlite     TRAVIS_NODE_VERSION="4" DB='/home/travis/.local/share/wger/database.sqlite' USER='postgres' PASSWORD='' HOST='localhost' PORT=5432
   - TEST_MOBILE=False DB_TYPE=postgresql TRAVIS_NODE_VERSION="4" DB='wger' USER='postgres' PASSWORD='' HOST='localhost' PORT=5432
-  - TEST_MOBILE=False DB_TYPE=sqlite     TRAVIS_NODE_VERSION="4" DB='wger' USER='postgres' PASSWORD='' HOST='localhost' PORT=5432
+  - TEST_MOBILE=False DB_TYPE=sqlite     TRAVIS_NODE_VERSION="4" DB='/home/travis/.local/share/wger/database.sqlite' USER='postgres' PASSWORD='' HOST='localhost' PORT=5432
 # Install the application
 install:
   # Update nvm and set wanted Node version.
