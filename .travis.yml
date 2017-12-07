@@ -44,7 +44,8 @@ before_script:
   - npm install gulp
   - if [[ "$DB" = "postgresq" ]]; then psql -c 'DROP DATABASE IF EXISTS postgresql;' -U postgres; fi
   - if [[ "$DB" = "postgresql" ]]; then psql -c 'CREATE DATABASE postgresql;' -U postgres; fi
-  - python manage.py migrate --fake-initial
+  - python manage.py migrate auth
+  - python manage.py migrate
 
 # Do the tests
 script:
