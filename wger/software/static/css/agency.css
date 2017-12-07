@@ -314,16 +314,10 @@ header {
   width: 5rem;
 }
 /* End banner styles */
-header .intro-text {
-  padding-top: 100px;
-  padding-bottom: 50px;
-}
 header .intro-text .intro-lead-in {
   font-family: "proxima-nova", "Open Sans Light", Arial, Helvetica, sans-serif;
-  font-size: 22px;
-  line-height: 22px;
+  font-size: 2rem;
   margin-bottom: 5rem;
-  color: #999;
 }
 header .intro-text .intro-heading {
   font-family: "minion-pro-caption", "Open Sans Light", Arial, Helvetica, sans-serif;
@@ -334,14 +328,8 @@ header .intro-text .intro-heading {
   margin-bottom: 1rem;
 }
 @media (min-width: 768px) {
-  header .intro-text {
-    padding-top: 300px;
-    padding-bottom: 200px;
-  }
   header .intro-text .intro-lead-in {
     font-family: "proxima-nova", "Open Sans Light", Arial, Helvetica, sans-serif;
-    font-size: 40px;
-    line-height: 40px;
     margin-bottom: 5rem;
   }
   header .intro-text .intro-heading {
