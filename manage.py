@@ -14,7 +14,6 @@ if __name__ == "__main__":
 
     # If user passed the settings flag ignore the default wger settings
     if not any('--settings' in s for s in sys.argv):
-        print(BASE_DIR)
         setup_django_environment(
             os.path.join(BASE_DIR, "wger/settings.py"))
 
