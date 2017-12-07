@@ -318,6 +318,8 @@ header .intro-text .intro-lead-in {
   font-family: "proxima-nova", "Open Sans Light", Arial, Helvetica, sans-serif;
   font-size: 2rem;
   margin-bottom: 5rem;
+  width: 50%;
+  display: inline-block;
 }
 header .intro-text .intro-heading {
   font-family: "minion-pro-caption", "Open Sans Light", Arial, Helvetica, sans-serif;
