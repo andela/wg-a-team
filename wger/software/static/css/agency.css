@@ -77,6 +77,28 @@ h6 {
 .bg-light-gray {
   background-color: #eeeeee;
 }
+/* Begin carousel styles */
+#about {
+  padding: 10rem 0;
+}
+#carousel_container {
+  width: auto;
+  padding: 0;
+}
+#carousel {
+  white-space: nowrap;
+  overflow: scroll;
+  margin: 0;
+}
+#carousel > li {
+  white-space: normal;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  width: 100%;
+}
+/* End carousel styles */
 .bg-darkest-gray {
   background-color: #222222;
 }
@@ -462,30 +484,13 @@ section h3.section-subheading {
 }
 .timeline > li .timeline-panel {
   width: 100%;
-  float: right;
-  padding: 0 20px 0 100px;
-  position: relative;
-  text-align: left;
-}
-.timeline > li .timeline-panel:before {
-  border-left-width: 0;
-  border-right-width: 15px;
-  left: -15px;
-  right: auto;
-}
-.timeline > li .timeline-panel:after {
-  border-left-width: 0;
-  border-right-width: 14px;
-  left: -14px;
-  right: auto;
+  padding: 0 3rem;
 }
 .timeline > li .timeline-image {
   left: 0;
   margin-left: 0;
   width: 80px;
   height: 80px;
-  position: absolute;
-  z-index: 100;
   background-color: #204a87;
   color: white;
   border-radius: 100%;
@@ -535,9 +540,6 @@ section h3.section-subheading {
   }
   .timeline > li .timeline-panel {
     width: 41%;
-    float: left;
-    padding: 0 20px 20px 30px;
-    text-align: right;
   }
   .timeline > li .timeline-image {
     width: 100px;
@@ -559,9 +561,6 @@ section h3.section-subheading {
   .timeline > li {
     min-height: 150px;
   }
-  .timeline > li .timeline-panel {
-    padding: 0 20px 20px;
-  }
   .timeline > li .timeline-image {
     width: 150px;
     height: 150px;
@@ -579,9 +578,6 @@ section h3.section-subheading {
 @media (min-width: 1200px) {
   .timeline > li {
     min-height: 170px;
-  }
-  .timeline > li .timeline-panel {
-    padding: 0 20px 20px 100px;
   }
   .timeline > li .timeline-image {
     width: 170px;
