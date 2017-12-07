@@ -150,7 +150,7 @@ fieldset[disabled] .btn-primary.active {
   font-family: "proxima-nova", "Open Sans Bold", Arial, Helvetica, sans-serif;
   text-transform: uppercase;
   font-weight: 400;
-  border-radius: 0;
+  border-radius: 5rem;
   font-size: 18px;
   padding: 20px 40px;
   border-width: 3px;
