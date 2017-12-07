@@ -25,12 +25,12 @@
           </div>
           <div class="banner_nav">
             {% if allow_guest_users and not user.is_authenticated %}
-                <a href="{% url 'core:user:demo-entries' %}" class="page-scroll btn btn-xl" rel="nofollow" style="margin-top: 1em;">
+                <a href="{% url 'core:user:demo-entries' %}" class="page-scroll btn btn-xl" rel="nofollow">
                     {% trans "Try it" %}
                 </a>
             {% endif %}
             {% if not user.is_authenticated or user.userprofile.is_temporary %}
-              <a href="{% url 'core:user:login' %}" class="page-scroll btn btn-xl" style="margin-top: 1em;">
+              <a href="{% url 'core:user:login' %}" class="page-scroll btn btn-xl">
                   {% trans "Log in" %}
               </a>
             {% endif %}
@@ -43,7 +43,7 @@
 
                 {% if not user.is_authenticated or user.userprofile.is_temporary %}
                     {% if allow_registration %}
-                        <a href="{% url 'core:user:registration' %}" class="page-scroll btn btn-xl" style="margin-top: 1em;">
+                        <a href="{% url 'core:user:registration' %}" class="page-scroll btn btn-xl">
                             {% trans "Sign up" %}
                         </a>
                     {% endif %}

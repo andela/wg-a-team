@@ -152,9 +152,8 @@ fieldset[disabled] .btn-primary.active {
   font-weight: 400;
   border-radius: 5rem;
   font-size: 18px;
-  padding: 20px 40px;
   border-width: 3px;
-  padding: 1.5rem 4rem;
+  padding: 1.2rem 3rem;
   margin: 0 1rem;
 }
 .btn-xl:hover,
