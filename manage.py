@@ -16,7 +16,8 @@ if __name__ == "__main__":
     if not any('--settings' in s for s in sys.argv):
 
         if 'test' in sys.argv:
-            print(get_user_config_path('wger', 'settings.py'))
+            setup_django_environment(
+                get_user_config_path('wger', 'settings.py'))
         else:
             setup_django_environment(
                 os.path.join(BASE_DIR, "wger/settings.py"))
