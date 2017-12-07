@@ -24,7 +24,7 @@ from django.utils.translation import ugettext_lazy
 from django.views.generic import CreateView, UpdateView
 
 from wger.nutrition.forms import MealItemForm
-from wger.nutrition.models import Meal, MealItem
+from wger.nutrition.models import Meal, MealItem, NutritionPlan
 from wger.utils.generic_views import WgerFormMixin
 
 
@@ -55,29 +55,32 @@ def delete_meal_item(request, item_id):
 
 class MealItemCreateView(WgerFormMixin, CreateView):
     '''
-    Generic view to create a new meal item
+    Generic view to create a new meal item as well as add new meal
     '''
 
     model = MealItem
     form_class = MealItemForm
     template_name = 'meal_item/edit.html'
+    meal_id, plan_id = None, None
 
     def dispatch(self, request, *args, **kwargs):
         '''
         Check that the user owns the meal
         '''
-        meal = get_object_or_404(Meal, pk=kwargs['meal_id'])
-        if meal.plan.user == request.user:
-            self.meal = meal
-            return super(
-                MealItemCreateView,
-                self).dispatch(
-                request,
-                *
-                args,
-                **kwargs)
+        self.meal_id = kwargs.get('meal_id', None)
+        self.plan_pk = kwargs.get('plan_pk', None)
+        if self.meal_id:
+            meal = get_object_or_404(Meal, pk=self.meal_id)
+
+            if meal.plan.user == request.user:
+                self.meal = meal
+                return super(MealItemCreateView, self).dispatch(request, *args,
+                    **kwargs)
+            else:
+                return HttpResponseForbidden()
         else:
-            return HttpResponseForbidden()
+            return super(MealItemCreateView, self).dispatch(request, *args,
+                **kwargs)
 
     def get_success_url(self):
         return reverse(
@@ -92,17 +95,29 @@ class MealItemCreateView(WgerFormMixin, CreateView):
             MealItemCreateView,
             self).get_context_data(
             **kwargs)
-        context['form_action'] = reverse(
-            'nutrition:meal_item:add', kwargs={
+        if self.meal_id:
+            context['form_action'] = reverse(
+                'nutrition:meal_item:add', kwargs={
                 'meal_id': self.meal.id})
+        else:
+            context['form_action'] = reverse('nutrition:meal_item:add-meal',
+                kwargs={'plan_pk': self.plan_pk})
         context['ingredient_searchfield'] = self.request.POST.get(
             'ingredient_searchfield', '')
+        context['plan_pk'] = self.plan_pk
         return context
 
     def form_valid(self, form):
         '''
         Manually set the corresponding meal
         '''
+        if not self.meal_id:
+            plan = get_object_or_404(NutritionPlan, pk=self.kwargs.get('plan_pk'), user=self.request.user)           
+            meal = Meal.objects.create(plan=plan, order=1)
+            meal.time = form.cleaned_data['time']
+            meal.save()
+            self.meal = meal
+
         form.instance.meal = self.meal
         form.instance.order = 1
         return super(MealItemCreateView, self).form_valid(form)
@@ -110,7 +125,7 @@ class MealItemCreateView(WgerFormMixin, CreateView):
 
 class MealItemEditView(WgerFormMixin, UpdateView):
     '''
-    Generic view to update an existing meal item
+    Generic view to update an existing meal item 
     '''
 
     model = MealItem
