@@ -31,7 +31,7 @@
                 </a>
             {% endif %}
             {% if not user.is_authenticated or user.userprofile.is_temporary %}
-              <a href="{% url 'core:user:login' %}" class="page-scroll btn btn-xl">
+              <a href="{% url 'core:user:login' %}" class="page-scroll btn btn-xl solid_button">
                   {% trans "Log in" %}
               </a>
             {% endif %}

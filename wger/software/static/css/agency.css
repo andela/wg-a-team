@@ -310,6 +310,14 @@ header {
   text-align: right;
   padding: 0 5rem;
 }
+.solid_button {
+  background: #FFF;
+  color: #1a3c6e;
+}
+.solid_button:hover {
+  background: #1a3c6e;
+  color: #FFF;
+}
 .banner_logo img {
   width: 5rem;
 }
