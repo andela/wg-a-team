@@ -74,13 +74,13 @@ class MealItemCreateView(WgerFormMixin, CreateView):
 
             if meal.plan.user == request.user:
                 self.meal = meal
-                return super(MealItemCreateView, self).dispatch(request, *args,
-                    **kwargs)
+                return super(MealItemCreateView, self).dispatch(
+                    request, *args, **kwargs)
             else:
                 return HttpResponseForbidden()
         else:
-            return super(MealItemCreateView, self).dispatch(request, *args,
-                **kwargs)
+            return super(MealItemCreateView, self).dispatch(
+                request, *args, **kwargs)
 
     def get_success_url(self):
         return reverse(
@@ -97,10 +97,11 @@ class MealItemCreateView(WgerFormMixin, CreateView):
             **kwargs)
         if self.meal_id:
             context['form_action'] = reverse(
-                'nutrition:meal_item:add', kwargs={
-                'meal_id': self.meal.id})
+                'nutrition:meal_item:add',
+                kwargs={'meal_id': self.meal.id})
         else:
-            context['form_action'] = reverse('nutrition:meal_item:add-meal',
+            context['form_action'] = reverse(
+                'nutrition:meal_item:add-meal',
                 kwargs={'plan_pk': self.plan_pk})
         context['ingredient_searchfield'] = self.request.POST.get(
             'ingredient_searchfield', '')
@@ -112,7 +113,9 @@ class MealItemCreateView(WgerFormMixin, CreateView):
         Manually set the corresponding meal
         '''
         if not self.meal_id:
-            plan = get_object_or_404(NutritionPlan, pk=self.kwargs.get('plan_pk'), user=self.request.user)           
+            plan = get_object_or_404(
+                NutritionPlan, pk=self.kwargs.get('plan_pk'),
+                user=self.request.user)
             meal = Meal.objects.create(plan=plan, order=1)
             meal.time = form.cleaned_data['time']
             meal.save()
@@ -125,7 +128,7 @@ class MealItemCreateView(WgerFormMixin, CreateView):
 
 class MealItemEditView(WgerFormMixin, UpdateView):
     '''
-    Generic view to update an existing meal item 
+    Generic view to update an existing meal item
     '''
 
     model = MealItem
