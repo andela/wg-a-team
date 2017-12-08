@@ -73,7 +73,7 @@ node_modules
 venv-django/
 
 #statics
-**/static/**
+**wger/static/**
 
 #vscode settings
 .vscode/
