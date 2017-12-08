@@ -17,10 +17,10 @@ python:
 # Manually define here the combinations environment variables to test
 # https://github.com/travis-ci/travis-ci/issues/1519
 env:
-  - TEST_MOBILE=True  DB_TYPE=postgresql TRAVIS_NODE_VERSION="4" DB='wger' USER='postgres' PASSWORD='' HOST='localhost' PORT=5432
-  - TEST_MOBILE=True  DB_TYPE=sqlite     TRAVIS_NODE_VERSION="4" DB='/home/travis/.local/share/wger/database.sqlite' USER='postgres' PASSWORD='' HOST='localhost' PORT=5432
-  - TEST_MOBILE=False DB_TYPE=postgresql TRAVIS_NODE_VERSION="4" DB='wger' USER='postgres' PASSWORD='' HOST='localhost' PORT=5432
-  - TEST_MOBILE=False DB_TYPE=sqlite     TRAVIS_NODE_VERSION="4" DB='/home/travis/.local/share/wger/database.sqlite' USER='postgres' PASSWORD='' HOST='localhost' PORT=5432
+  - TEST_MOBILE=True  DB_TYPE=postgresql TRAVIS_NODE_VERSION="4" DB='wger' USER='postgres' PASSWORD='' HOST='localhost' PORT=5432 ENGINE='django.db.backends.postgresql'
+  - TEST_MOBILE=True  DB_TYPE=sqlite     TRAVIS_NODE_VERSION="4" DB='/home/travis/.local/share/wger/database.sqlite' USER='postgres' PASSWORD='' HOST='localhost' PORT=5432  ENGINE='django.db.backends.sqlite3'
+  - TEST_MOBILE=False DB_TYPE=postgresql TRAVIS_NODE_VERSION="4" DB='wger' USER='postgres' PASSWORD='' HOST='localhost' PORT=5432 ENGINE='django.db.backends.postgresql'
+  - TEST_MOBILE=False DB_TYPE=sqlite     TRAVIS_NODE_VERSION="4" DB='/home/travis/.local/share/wger/database.sqlite' USER='postgres' PASSWORD='' HOST='localhost' PORT=5432 ENGINE='django.db.backends.sqlite3'
 # Install the application
 install:
   # Update nvm and set wanted Node version.
