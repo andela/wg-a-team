@@ -43,6 +43,8 @@ from wger.manager.models import (
     WorkoutLog,
     Schedule
 )
+from django.contrib.auth.models import User
+
 from wger.manager.forms import (
     HelperDateForm,
     HelperWorkoutSessionForm,
@@ -336,6 +338,7 @@ class WorkoutLogDetailView(DetailView, LoginRequiredMixin):
         context['owner_user'] = self.owner_user
         context['is_owner'] = is_owner
         context['show_shariff'] = is_owner
+        context['users'] = User.objects.all()
 
         return context
 

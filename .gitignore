@@ -79,4 +79,7 @@ venv-django/
 .vscode/
 
 #migration files
-#**/migrations/
+**/migrations/
+
+#MAC file system files
+**/.DS_Store
