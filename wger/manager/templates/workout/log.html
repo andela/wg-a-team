@@ -162,7 +162,7 @@
                                 return "Weight: "+tooltipItem.yLabel ;
                             },
                             afterLabel: function(tooltipItem, data) {
-                                return "Reps: "+data.datasets[0].data[tooltipItem.index].v;
+                                return "Reps: "+data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].v;
                             }
                         },
                         backgroundColor: '#FFF',
