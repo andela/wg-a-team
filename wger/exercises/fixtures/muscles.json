@@ -137,14 +137,6 @@
         }
     },
     {
-        "pk": 18, 
-        "model": "exercises.muscle", 
-        "fields": {
-            "is_front": true, 
-            "name": "Obliquus externus abdominis"
-        }
-    },
-    {
         "pk": 19, 
         "model": "exercises.muscle", 
         "fields": {
