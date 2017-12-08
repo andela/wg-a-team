@@ -45,9 +45,10 @@ before_script:
   - if [[ "$DB_TYPE" = "postgresql" ]]; then psql -c 'DROP DATABASE IF EXISTS wger;' -U postgres; fi
   - if [[ "$DB_TYPE" = "postgresql" ]]; then psql -c 'CREATE DATABASE wger;' -U postgres; fi
   - invoke migrate_db --settings-path=/home/travis/.config/wger/settings.py
-  - python manage.py makemigrations
+  - python manage.py makemigrations core manager weight exercises nutrition software utils config gym email
   - python manage.py migrate
-  - invoke migrate_db --settings-path=/home/travis/.config/wger/settings.py
+  - invoke load_fixtures --settings-path=/home/travis/.config/wger/settings.py
+
 # Do the tests
 script:
   # Formatting
