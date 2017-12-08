@@ -44,7 +44,8 @@ from wger.utils.permissions import UpdateOnlyPermission, WgerPermission
 
 # class RegisterUserViewSet(viewsets.ModelViewSet):
 class RegisterUserViewSet(
-        mixins.CreateModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
+        mixins.CreateModelMixin,
+        mixins.RetrieveModelMixin, viewsets.GenericViewSet):
 
     '''
     API endpoint for user registration
@@ -60,7 +61,8 @@ class RegisterUserViewSet(
             serializer = RegisteruserSerializer(data=request.data)
 
             if not serializer.is_valid():
-                return Response(serializer.errors, status=status.HTTP_404_NOT_FOUND)
+                return Response(
+                    serializer.errors, status=status.HTTP_404_NOT_FOUND)
 
             serializer.save()
             new_profile = User.objects.get(
@@ -71,7 +73,8 @@ class RegisterUserViewSet(
             profile.added_by = request.user.username
             profile.save()
 
-            return Response({'Message': 'profile created'}, status=status.HTTP_201_CREATED)
+            return Response(
+                {'Message': 'profile created'}, status=status.HTTP_201_CREATED)
         return Response({
             'Message': 'You have no permissions to create a user'},
             status=status.HTTP_403_FORBIDDEN)

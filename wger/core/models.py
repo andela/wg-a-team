@@ -772,7 +772,8 @@ class FitbitUser(models.Model):
                 if prev_entry:
                     weight_diff = weight_obj.weight - prev_entry.weight
                     day_diff = (
-                        parse_date(weight_obj.date) - parse_date(prev_entry.date)).days
+                        parse_date(weight_obj.date) -
+                        parse_date(prev_entry.date)).days
                 prev_entry = weight_obj
                 clean_data.append((weight_obj, int(weight_diff), day_diff))
 
