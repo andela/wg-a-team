@@ -47,7 +47,6 @@ before_script:
   - invoke migrate_db --settings-path=/home/travis/.config/wger/settings.py
   - python manage.py makemigrations core manager weight exercises nutrition software utils config gym email
   - python manage.py migrate
-  - invoke load_fixtures --settings-path=/home/travis/.config/wger/settings.py
 
 # Do the tests
 script:
