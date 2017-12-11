@@ -1,6 +1,6 @@
 [
     {
-        "pk": 2,  
+        "pk": 2,
         "model": "exercises.muscle", 
         "fields": {
             "is_front": true, 
