@@ -23,7 +23,7 @@ DATABASES = {
         'USER': os.getenv("USER"),
         'PASSWORD': os.getenv("PASSWORD"),
         'HOST': os.getenv("HOST"),
-        'PORT': os.getenv("PORT"),
+        'PORT': os.getenv("PORT_POSTGRE"),
         'TEST': {'CHARSET': 'UTF8'}
     }
 }
@@ -81,6 +81,10 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    os.path.join(PROJECT_ROOT, "wger", "static"),
+]
 
 if 'test' in sys.argv:
     DATABASES['default'] = {'ENGINE': 'django.db.backends.sqlite3'}
