@@ -22,5 +22,5 @@ function animateCarouselItems() {
 		current_item ++;
 
 
-	}, 7000 );
+	}, 3000 );
 }
