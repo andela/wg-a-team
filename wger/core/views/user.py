@@ -624,3 +624,8 @@ class UserListView(
                 _('Gym')],
             'users': context['object_list']['members']}
         return context
+
+
+@login_required
+def get_fitbitData(request):
+    return render(request, 'user/fitbit.html')
