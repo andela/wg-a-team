@@ -8,11 +8,11 @@ function animateCarouselItems() {
 		// console.log(itemList.children());
 		// iterate over list of items, sliding the current to the left, by the viewport width
 		// hiding it and revealing the next at the end of the animation
-    $(itemList.children()[currentItem]).animate({ marginLeft:-containerWidth }, 1000);
+    $(itemList.children()[currentItem]).animate({ marginLeft: -containerWidth }, 1000);
 		// then add current item to the end of the list for purposes of looping the animation
     itemList.append(itemList.children()[currentItem].outerHTML);
     currentItem++;
-	}, 3000);
+  }, 3000);
 }
 
 $(document).ready(function () {
