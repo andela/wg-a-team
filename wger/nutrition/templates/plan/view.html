@@ -48,7 +48,7 @@ function wgerCustomModalInit()
     <thead>
         <tr style="background: #E0E0E0;">
             <th>{% trans "Meal" %}</th>
-            <th>{% trans "Contents" %}</th>
+            <th colspan="2">{% trans "Contents" %}</th>
             <th class="align-right">{% trans "Energy" %}</th>
             <th class="align-right">{% trans "Protein" %}</th>
             <th class="align-right">{% trans "Carbohydrates" %}</th>
@@ -57,7 +57,9 @@ function wgerCustomModalInit()
     </thead>
     <tbody>
     <tr>
-        <td colspan="2"></td>
+        <td></td>
+        <td></td>
+        <td class="align-right">{% trans 'Consumed' %}</td>
         <td class="align-right">{% trans 'kcal' %}</td>
         <td class="align-right">{% trans_weight_unit 'g' owner_user %}</td>
         <td class="align-right">{% trans_weight_unit 'g' owner_user %}</td>
@@ -110,6 +112,7 @@ function wgerCustomModalInit()
             </span>
             {% endif %}
             </td>
+            <td class="align-right">{{item.consumed}}</td>
             <td class="align-right">{{item.get_nutritional_values.energy|floatformat}}</td>
             <td class="align-right">{{item.get_nutritional_values.protein|floatformat}}</td>
             <td class="align-right">{{item.get_nutritional_values.carbohydrates|floatformat}}</td>
@@ -133,7 +136,7 @@ function wgerCustomModalInit()
 {% empty %}
 {% if is_owner %}
 <p>
-     <a href="{% url 'nutrition:meal:add' plan.id %}"
+     <a href="{% url 'nutrition:meal_item:add-meal' plan.id %}"
         class="wger-modal-dialog btn btn-default btn-block">
             {% trans "No meals for this plan." %}
             {% trans "Add one now." %}
@@ -143,8 +146,8 @@ function wgerCustomModalInit()
 {% endfor %}
         {% if is_owner %}
         <tr>
-            <td colspan="6">
-            <a href="{% url 'nutrition:meal:add' plan.id %}"
+            <td colspan="7">
+            <a href="{% url 'nutrition:meal_item:add-meal' plan.id %}"
                class="wger-modal-dialog">
                 <span class="{% fa_class 'plus' %}"></span>
                 {% trans "Add a new meal" %}

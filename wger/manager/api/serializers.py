@@ -62,7 +62,6 @@ class WorkoutLogSerializer(serializers.ModelSerializer):
     '''
     class Meta:
         model = WorkoutLog
-        exclude = ('user',)
 
 
 class ScheduleStepSerializer(serializers.ModelSerializer):

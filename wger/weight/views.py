@@ -19,7 +19,7 @@ import logging
 import csv
 import datetime
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
@@ -42,7 +42,7 @@ from wger.weight.models import WeightEntry
 from wger.weight import helpers
 from wger.utils.helpers import check_access
 from wger.utils.generic_views import WgerFormMixin
-
+from wger.core.models import FitbitUser
 
 logger = logging.getLogger(__name__)
 
@@ -59,7 +59,6 @@ class WeightAddView(WgerFormMixin, CreateView):
     def get_initial(self):
         '''
         Set the initial data for the form.
-
         Read the comment on weight/models.py WeightEntry about why we need
         to pass the user here.
         '''
@@ -139,7 +138,6 @@ def export_csv(request):
 def overview(request, username=None):
     '''
     Shows a plot with the weight data
-
     More info about the D3 library can be found here:
         * https://github.com/mbostock/d3
         * http://d3js.org/
@@ -163,7 +161,17 @@ def overview(request, username=None):
                                      'month': max_date.month,
                                      'day': max_date.day}
 
-    last_weight_entries = helpers.get_last_entries(user)
+    fitbit = request.GET.get('fitbit')
+    last_weight_entries = []
+
+    if fitbit:
+        results = get_fitbit(request.user)
+        if results[0]:
+            last_weight_entries = results[1]
+        else:
+            return redirect(results[1])
+    else:
+        last_weight_entries = helpers.get_last_entries(user)
 
     template_data['is_owner'] = is_owner
     template_data['owner_user'] = user
@@ -182,21 +190,50 @@ def get_weight_data(request, username=None):
 
     date_min = request.GET.get('date_min', False)
     date_max = request.GET.get('date_max', True)
-
-    if date_min and date_max:
-        weights = WeightEntry.objects.filter(
-            user=user, date__range=(date_min, date_max))
-    else:
-        weights = WeightEntry.objects.filter(user=user)
+    fitbit = request.GET.get('fitbit')
+    weights = []
 
     chart_data = []
 
-    for i in weights:
-        chart_data.append({'date': i.date,
-                           'weight': i.weight})
+    if fitbit:
+        results = get_fitbit(request.user)
+        if results[0]:
+            weights_raw = results[1]
+            for i in weights_raw:
+                chart_data.append(
+                    {'date': i[0].date, 'weight': i[0].weight})
+    else:
+        if date_min and date_max:
+            weights = WeightEntry.objects.filter(
+                user=user, date_range=(date_min, date_max))
+        else:
+            weights = WeightEntry.objects.filter(user=user)
+        for i in weights:
+            chart_data.append({
+                'date': i.date, 'weight': i.weight
+            })
+
+        for i in weights:
+            chart_data.append({'date': i.date,
+                               'weight': i.weight})
 
     # Return the results to the client
     return Response(chart_data)
+
+
+def get_fitbit(user):
+    weights = False
+    fitbituser = FitbitUser()
+    result = fitbituser.authenticate(user)
+    if result:
+        weights = fitbituser.getWeightInfo()
+        if isinstance(weights, list):
+            weights = (True, weights)
+        else:
+            weights = (False, fitbituser.getUrl()[0])
+    else:
+        weights = (False, fitbituser.getUrl()[0])
+    return weights
 
 
 class WeightCsvImportFormPreview(FormPreview):
