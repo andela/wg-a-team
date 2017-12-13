@@ -319,9 +319,13 @@
 {#         #}
 {% block options %}
 {% if perms.gym.manage_gym or perms.gym.manage_gyms %}
+
+    <!-- button to produce form for creating a user and adding them to a gym -->
     <a href="{% url 'gym:gym:add-user' gym.pk %}" class="btn btn-success btn-sm wger-modal-dialog">
         {% trans "Add New member" %}
     </a>
+
+    <!-- button to produce form for adding an existing user to a gym -->
     <a href="{% url 'gym:gym:add-existing-user' gym.pk %}" class="btn btn-success btn-sm wger-modal-dialog" style="margin-left:5px">
         {% trans "Add Existing member" %}
     </a>

@@ -52,9 +52,12 @@ patterns_gym = [
     url(r'^(?P<gym_pk>\d+)/add-member$',
         gym.GymAddUserView.as_view(),
         name='add-user'),
+
+    # url for adding an existing user to a gym
     url(r'^(?P<gym_pk>\d+)/add-existing-member$',
         gym.GymAddExistingUserView.as_view(),
         name='add-existing-user'),
+        
     url(r'^add$',
         gym.GymAddView.as_view(),
         name='add'),
