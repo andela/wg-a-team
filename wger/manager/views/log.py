@@ -226,10 +226,6 @@ def add(request, pk):
                     'manager:log:log', kwargs={
                         'pk': day.training_id}))
 
-        else:
-
-            print("formset: ", formset.errors)
-
     else:
         # Initialise the formset with a queryset that won't return any objects
         # (we only add new logs here and that seems to be the fastest way)
