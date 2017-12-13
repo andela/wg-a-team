@@ -572,7 +572,8 @@ class GymAddExistingUserView(
         '''
         Send some additional data to the template
         '''
-        context = super(GymAddExistingUserView,
+        context = super(
+            GymAddExistingUserView,
             self).get_context_data(**kwargs)
         context['form_action'] = reverse(
             'gym:gym:add-existing-user',

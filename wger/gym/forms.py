@@ -112,7 +112,7 @@ class GymExistingUserAddForm(
     '''
     Form used when adding an existing user to a gym
     '''
-    
+
     class Meta:
         model = User
         widgets = {'role': BootstrapSelectMultiple()}
