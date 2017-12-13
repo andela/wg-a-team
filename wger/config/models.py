@@ -149,7 +149,7 @@ class GymConfig(models.Model):
                 user = profile.user
                 if not is_any_gym_admin(user):
                     try:
-                        user.gymuserconfig
+                        user.gymuserconfig_set.all()
                     except GymUserConfig.DoesNotExist:
                         config = GymUserConfig()
                         config.gym = self.default_gym

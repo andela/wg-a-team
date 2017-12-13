@@ -75,7 +75,7 @@ class Command(BaseCommand):
                     continue
 
                 # Check user preferences
-                if not user.gymuserconfig.include_inactive:
+                if not user.gymuserconfig_set.all()[0].include_inactive:
                     continue
 
                 last_activity = user.usercache.last_activity
@@ -94,7 +94,7 @@ class Command(BaseCommand):
                         continue
 
                     # Check trainer preferences
-                    if not trainer.gymadminconfig.overview_inactive:
+                    if not trainer.gymadminconfig_set.all()[0].overview_inactive:
                         continue
 
                     translation.activate(

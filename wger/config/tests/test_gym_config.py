@@ -52,7 +52,7 @@ class GymConfigTestCase(WorkoutManagerTestCase):
         new_user = User.objects.all().last()
 
         self.assertEqual(new_user.userprofile.gym, gym)
-        self.assertEqual(new_user.gymuserconfig.gym, gym)
+        self.assertEqual(new_user.gymuserconfig_set.all()[0].gym, gym)
 
     def test_no_default_gym(self):
         '''
