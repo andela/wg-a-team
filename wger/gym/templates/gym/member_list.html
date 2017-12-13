@@ -320,7 +320,10 @@
 {% block options %}
 {% if perms.gym.manage_gym or perms.gym.manage_gyms %}
     <a href="{% url 'gym:gym:add-user' gym.pk %}" class="btn btn-success btn-sm wger-modal-dialog">
-        {% trans "Add member" %}
+        {% trans "Add New member" %}
+    </a>
+    <a href="{% url 'gym:gym:add-existing-user' gym.pk %}" class="btn btn-success btn-sm wger-modal-dialog" style="margin-left:5px">
+        {% trans "Add Existing member" %}
     </a>
 {% endif %}
 {% endblock %}
