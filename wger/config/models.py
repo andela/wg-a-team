@@ -148,6 +148,11 @@ class GymConfig(models.Model):
                     gym=self.default_gym):
                 user = profile.user
                 if not is_any_gym_admin(user):
+
+                    # trying to get gymuserconfig of a user no longer
+                    # throws an exception this meant users with no
+                    # gym were not assigned the default gym hence
+                    # the use of an if statement
                     if len(user.gymuserconfig_set.all()) == 0:
                         config = GymUserConfig()
                         config.gym = self.default_gym
