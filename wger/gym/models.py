@@ -165,8 +165,9 @@ class AbstractGymUserConfigModel(m.Model):
     Gym this configuration belongs to
     '''
 
-    user = m.OneToOneField(User,
-                           editable=False)
+    user = m.ForeignKey(
+        User,
+        editable=False)
     '''
     User this configuration belongs to
     '''
