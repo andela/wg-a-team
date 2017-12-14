@@ -101,8 +101,7 @@ class GymConfigTestCase(WorkoutManagerTestCase):
             UserProfile.objects.filter(
                 gym=gym).count(), 24)
 
-        # print(GymUserConfig.objects.all())
         # 13 non-managers
-        # self.assertEqual(
-        #     GymUserConfig.objects.filter(
-        #         gym=gym).count(), 13)
+        self.assertEqual(
+            GymUserConfig.objects.filter(
+                gym=gym).count(), 13)

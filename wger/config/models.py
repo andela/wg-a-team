@@ -148,9 +148,7 @@ class GymConfig(models.Model):
                     gym=self.default_gym):
                 user = profile.user
                 if not is_any_gym_admin(user):
-                    try:
-                        user.gymuserconfig_set.all()
-                    except GymUserConfig.DoesNotExist:
+                    if len(user.gymuserconfig_set.all()) == 0:
                         config = GymUserConfig()
                         config.gym = self.default_gym
                         config.user = user
