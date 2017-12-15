@@ -41,7 +41,7 @@ class OverviewPlanTestCase(WorkoutManagerTestCase):
             "protein": 25.63,
             "carbohydrates": 0.0,
             'license': 1,
-            'license_author': 'internet'
+            'license_author': 'test'
         }
         for i in range(0, 50):
             self.client.post(
