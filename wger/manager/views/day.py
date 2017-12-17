@@ -33,7 +33,6 @@ from wger.manager.models import Workout, Day
 from wger.manager.forms import DayForm
 from wger.utils.generic_views import WgerFormMixin
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -144,27 +143,27 @@ class DayCreateView(DayView, CreateView):
         if 'Microcycle' in workout.cycle:
             context['form'].fields['day'].label = 'Day'
             context['form'].fields['description'].help_text = _('A description of what is done on'
-            'this day (e.g. "Pull day") or what'
-            'body parts are trained'
-            '(e.g. "Arms and arbs")')
+                                                                'this day (e.g. "Pull day") or what'
+                                                                'body parts are trained'
+                                                                '(e.g. "Arms and arbs")')
             context['form'].fields['day'].queryset = DaysOfWeek.objects.filter(
-                period_type = 'day').exclude(day_of_week__in=already_selected_options)
+                period_type='day').exclude(day_of_week__in=already_selected_options)
         elif 'Mesocycle' in workout.cycle:
             context['form'].fields['day'].label = 'Week'
             context['form'].fields['description'].help_text = _('A description of what is done in'
-            'this week (e.g. "Pull week") or'
-            'what body parts are trained'
-            '(e.g. "Arms and arbs")')
+                                                                'this week (e.g. "Pull week") or'
+                                                                'what body parts are trained'
+                                                                '(e.g. "Arms and arbs")')
             context['form'].fields['day'].queryset = DaysOfWeek.objects.filter(
-                period_type = 'week').exclude(day_of_week__in=already_selected_options)
+                period_type='week').exclude(day_of_week__in=already_selected_options)
         elif 'Macrocycle' in workout.cycle:
             context['form'].fields['day'].label = 'Month'
             context['form'].fields['description'].help_text = _('A description of what is done in'
-            'this month (e.g. "Pull month") or'
-            'what body parts are trained'
-            '(e.g. "Arms and arbs")')
+                                                                'this month (e.g. "Pull month") or'
+                                                                'what body parts are trained'
+                                                                '(e.g. "Arms and arbs")')
             context['form'].fields['day'].queryset = DaysOfWeek.objects.filter(
-                period_type = 'month').exclude(day_of_week__in=already_selected_options)
+                period_type='month').exclude(day_of_week__in=already_selected_options)
         context['form_action'] = reverse(
             'manager:day:add', kwargs={
                 'workout_pk': self.kwargs['workout_pk']})
