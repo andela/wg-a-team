@@ -93,16 +93,16 @@ class DayEditView(DayView, UpdateView):
     # Send some additional data to the template
     def get_context_data(self, **kwargs):
         context = super(DayEditView, self).get_context_data(**kwargs)
-        workout = Day.object.get(pk=self.kwargs['pk']).training
+        workout = Day.objects.get(pk=self.kwargs['pk']).training
         if 'Microcycle' in workout.cycle:
-            context['from'].fields['day'].lable = 'Day'
-            context['from'].fields['day'].queryset = DaysOfWeek.objects.filter(period_type='day')
+            context['form'].fields['day'].lable = 'Day'
+            context['form'].fields['day'].queryset = DaysOfWeek.objects.filter(period_type='day')
         if 'Mesocycle' in workout.cycle:
-            context['from'].fields['day'].lable = 'Day'
-            context['from'].fields['day'].queryset = DaysOfWeek.objects.filter(period_type='week')
+            context['form'].fields['day'].lable = 'Day'
+            context['form'].fields['day'].queryset = DaysOfWeek.objects.filter(period_type='week')
         if 'Macrocycle' in workout.cycle:
-            context['from'].fields['day'].lable = 'Day'
-            context['from'].fields['day'].queryset = DaysOfWeek.objects.filter(period_type='month')
+            context['form'].fields['day'].lable = 'Day'
+            context['form'].fields['day'].queryset = DaysOfWeek.objects.filter(period_type='month')
         context['title'] = _(u'Edit {0}').format(self.object)
         return context
 
