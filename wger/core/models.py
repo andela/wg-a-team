@@ -557,6 +557,7 @@ class DaysOfWeek(models.Model):
     multiple days of the week selected
     '''
 
+    period_type = models.CharField(max_length=9, null=True, blank=True)
     day_of_week = models.CharField(max_length=9,
                                    verbose_name=_('Day of the week'))
 
