@@ -48,12 +48,14 @@
                 </td>
                 {% if show_gym %}
                 <td>
-                    {% if current_user.obj.userprofile.gym_id %}
-                    <a href="{{ current_user.obj.userprofile.gym.get_absolute_url }}">
-                        {{ current_user.obj.userprofile.gym }}
-                    </a>
+                    {% if current_user.obj.userprofile.gyms %}
+                        {% for gym in current_user.obj.userprofile.gyms %}
+                            <a href="{% url 'gym:gym:user-list' gym.id %}">
+                                {{ gym.name }}
+                            </a>,
+                        {% endfor %}
                     {% else %}
-                    -/-
+                        -/-
                     {% endif %}
                 </td>
                 {% endif %}
@@ -90,13 +92,17 @@
                 </td>
                 {% if show_gym %}
                 <td>
-                    {% if current_user.obj.userprofile.gym_id %}
-                    <a href="{{ current_user.obj.userprofile.gym.get_absolute_url }}">
-                        {{ current_user.obj.userprofile.gym }}
-                    </a>
+
+                    {% if current_user.obj.userprofile.gyms %}
+                        {% for gym in current_user.obj.userprofile.gyms %}
+                            <a href="{% url 'gym:gym:user-list' gym.id %}">
+                                {{ gym.name }}
+                            </a>,
+                        {% endfor %}
                     {% else %}
-                    -/-
+                        -/-
                     {% endif %}
+
                 </td>
                 {% endif %}
             </tr>
@@ -133,12 +139,14 @@
                 </td>
                 {% if show_gym %}
                 <td>
-                    {% if current_user.obj.userprofile.gym_id %}
-                    <a href="{{ current_user.obj.userprofile.gym.get_absolute_url }}">
-                        {{ current_user.obj.userprofile.gym }}
-                    </a>
+                    {% if current_user.obj.userprofile.gyms %}
+                        {% for gym in current_user.obj.userprofile.gyms %}
+                            <a href="{% url 'gym:gym:user-list' gym.id %}">
+                                {{ gym.name }}
+                            </a>,
+                        {% endfor %}
                     {% else %}
-                    -/-
+                        -/-
                     {% endif %}
                 </td>
                 {% endif %}
