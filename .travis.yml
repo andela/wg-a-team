@@ -63,8 +63,7 @@ notifications:
 
 deploy:
   provider: heroku
-  api_key:
-    secure: gG+IhVo2HtF2UgrEbUA+UcP1X9zr9XnCZeteYlAuSuGJ2zHkMU0qePeaCg6pMyk0QmrziV7JOGTX6eWIIWUEvykR98cCi3n7FCmb5fZSWS6hp7ak2VkabQ0g+XnWQsC9FeRk5NFcqrio+CGCcrCvf3soobZ6X1C8Pj0MCOlRVogTbYzMZ1krThZ3UPqbC4YlucbKdmRo7fi9X3lYrifuEvmT59xSNYW09Bg61b/sRm1q+OaBUMnGjQc8VixjHLElFJykHQ+pM/KZ11zdlm/59iAhrI3wRls7D7uNBQJwS9G43IEE9vLq0CT/n6cyxjcQzIM9J2JfizSmLsGutwy7FFjBRuTdSBali1ys0oNV/enQ0YuGW93N/h37GFHbXGkuU101IQ8JgubcMpd/xZ8QJOpt/rBJri0NF8dccY646H8HG7C8ZSSPKoimI3BuoNEw9N3EO9ElqMia2kneecCNARnLUnxZEABInzGt/C2o7ovkInnGHuoevYBCQcFkqrEV6M3nlXgiPIZEkAxtZaql5abiA0Di1+yQrAO6wniSQ/FuAfQxZ5r+CVymIpSqPe+aZ+VM4GYWyZrIWBr+duCEqaLMZsfB8SnHFAHtRZTDH72FtHK5NCJEzAjXmDSuip9DW/PB7cAd6W13fHcPy6XxUt2Ae3lwZLSUqVXpOQn21q4=
+  api_key: $SECRET_KEY
   app: wger-a-team
   run: "python manage.py makemigrations && python manage.py migrate"
   on:
