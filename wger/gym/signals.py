@@ -36,6 +36,7 @@ def gym_config(sender, instance, created, **kwargs):
 
     config = GymConfig()
     config.gym = instance
+    config.show_name = True
     config.save()
 
 

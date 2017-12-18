@@ -116,7 +116,6 @@ class NutritionPlan(models.Model):
         Sums the nutritional info of all items in the plan
         '''
         result = cache.get(cache_mapper.get_nutrition_key(self.id))
-        print(result)
         if not result:
             use_metric = self.user.userprofile.use_metric
             unit = 'kg' if use_metric else 'lb'

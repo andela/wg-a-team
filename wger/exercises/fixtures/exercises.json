@@ -17,6 +17,7 @@
             "license": 1,
             "name": "Trizeps Seildr\u00fccken"
         },
+
         "model": "exercises.exercise"
     },
     {
@@ -1824,7 +1825,7 @@
             "category": 8,
             "uuid": "6dcc9adb-939c-4581-9e44-d0d73753997b",
             "muscles": [
-                1
+                1, 20
             ],
             "license": 1,
             "name": "Hammercurls"
@@ -2880,7 +2881,7 @@
             "category": 8,
             "uuid": "5baf40e5-ea3c-4f8d-b60a-d294ee2de55b",
             "muscles": [
-                1
+                1,20
             ],
             "license": 1,
             "name": "Hammercurls on cable"
@@ -3119,7 +3120,7 @@
             "category": 13,
             "uuid": "79a3a34c-262f-4cae-b827-b5a85b11b860",
             "muscles": [
-                2
+                2, 17
             ],
             "license": 1,
             "name": "Lateral raises on cable, one armed"
@@ -3887,7 +3888,7 @@
             "category": 8,
             "uuid": "84b4e711-8b29-4541-ad58-dad967f82390",
             "muscles": [
-                13
+                13,20
             ],
             "license": 1,
             "name": "Preacher Curls"
@@ -4199,7 +4200,7 @@
             "category": 8,
             "uuid": "438678dc-5a62-4496-9458-341af0616626",
             "muscles": [
-                1
+                1,20
             ],
             "license": 1,
             "name": "Reverse bar curl"
@@ -4590,7 +4591,7 @@
             "creation_date": "2014-03-09",
             "category": 13,
             "uuid": "53ca25b3-61d9-4f72-bfdb-492b83484ff5",
-            "muscles": [],
+            "muscles": [17],
             "license": 1,
             "name": "Arnold Shoulder Press"
         },
@@ -4640,7 +4641,7 @@
             "category": 13,
             "uuid": "89e6d2ea-9a17-4a77-9a52-d5bcf39d57fd",
             "muscles": [
-                2
+                2, 17, 19
             ],
             "license": 1,
             "name": "Military Press"
@@ -4731,7 +4732,7 @@
             "category": 13,
             "uuid": "a87de062-2101-4dc4-adda-328b4c722c6d",
             "muscles": [
-                2
+                2, 17
             ],
             "license": 1,
             "name": "Front raises"
@@ -6112,7 +6113,7 @@
             "uuid": "aba7ba7a-6ff0-47d4-ab66-8952e21e38c5",
             "muscles": [
                 2,
-                9
+                9, 17
             ],
             "license": 2,
             "name": "Lateral-to-Front Raises"
@@ -6214,7 +6215,7 @@
             "uuid": "97d7eba2-681f-4b14-8e78-7d9b5865d336",
             "muscles": [
                 2,
-                9
+                9, 19
             ],
             "license": 2,
             "name": "Upright Row w/ Dumbbells"

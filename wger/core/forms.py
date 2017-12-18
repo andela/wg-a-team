@@ -103,6 +103,31 @@ class UserPersonalInformationForm(UserEmailForm):
         fields = ('first_name', 'last_name', 'email')
 
 
+class UserChoiceField(forms.ModelChoiceField):
+    '''
+    An override of the ModelChoice Filed widget
+
+    This is used to display a user friendly select field where the user
+    sees the username
+    '''
+    def label_from_instance(self, obj):
+        return "%s" % (obj.username)
+
+
+class UserSelectFieldForm(forms.ModelForm):
+    '''
+    A form to make use of the UserChoiceField created
+
+    Creates a form with a select field for choosing a user
+    '''
+    id = UserChoiceField(
+        label="User", queryset=User.objects.all(), required=True)
+
+    class Meta:
+        model = User
+        fields = ['id']
+
+
 class PasswordConfirmationForm(Form):
     '''
     A simple password confirmation form.
