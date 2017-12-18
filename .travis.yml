@@ -63,8 +63,7 @@ notifications:
 
 deploy:
   provider: heroku
-  api_key:
-    secure: $SECRET_KEY
+  api_key: $SECRET_KEY
   app: wger-a-team
   run: "python manage.py makemigrations && python manage.py migrate"
   on:
