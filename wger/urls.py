@@ -135,6 +135,8 @@ router.register(r'exercisecomment', exercises_api_views.ExerciseCommentViewSet,
                 base_name='exercisecomment')
 router.register(
     r'muscle', exercises_api_views.MuscleViewSet, base_name='muscle')
+router.register(r'exerciseinfo', exercises_api_views.ExerciseInfoView,
+        base_name='exerciseinfo')
 
 # Nutrition app
 router.register(
