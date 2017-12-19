@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load i18n staticfiles wger_extras %}
+
+{% block title %}{% trans "Delete User From Gym" %} : {{ gym.name }} {% endblock %}
+
+
+{% block header %}
+{% endblock %}
+
+{% block content %}
+
+<form action="{{form_action}}"
+      method="post"
+      class="form-horizontal"
+      role="form">
+    <div class="panel panel-danger">
+        <div class="panel-heading">
+            <h4 class="panel-title">{% trans "Are you sure?" %}</h4>
+        </div>
+        <div class="panel-body">
+            {% with username=user_delete|format_username %}
+            <p>
+                {% blocktrans %}
+                    This action will delete the user account "{{username}}" from {{ gym.name }}.
+                {% endblocktrans %}
+            </p>
+            {% endwith %}
+
+            {% csrf_token %}
+
+            {% render_form_submit 'Delete from gym' 'danger' %}
+        </div>
+    </div>
+</form>
+
+{% endblock %}
+
+
+{% block sidebar %}
+{% endblock %}
