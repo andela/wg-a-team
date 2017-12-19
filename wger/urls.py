@@ -138,6 +138,9 @@ router.register(
 router.register(r'exerciseinfo', exercises_api_views.ExerciseInfoView,
         base_name='exerciseinfo')
 
+router.register(r'exerciseinfo', exercises_api_views.ExerciseInfoView,
+        base_name='exerciseinfo')
+
 # Nutrition app
 router.register(
     r'ingredient',

@@ -5,6 +5,9 @@ __pycache__/
 # C extensions
 *.so
 
+# Mac Files
+.DS_Store
+
 # Distribution / packaging
 .Python
 env/
@@ -72,10 +75,8 @@ node_modules
 
 #virtualenv
 venv-django/
-
 #statics
 **wger/static/**
-
 #vscode settings
 .vscode/
 

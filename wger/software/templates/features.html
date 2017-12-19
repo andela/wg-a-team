@@ -19,29 +19,34 @@
 {#         #}
 {% block content %}
     <header>
+        <section class="banner">
+          <div class="banner_logo">
+            <img src="/static/images/logo.svg" />
+            <span class="banner_name">{% trans "Wger" %}</span>
+          </div>
+          <div class="banner_nav">
+            {% if allow_guest_users and not user.is_authenticated %}
+                <a href="{% url 'core:user:demo-entries' %}" class="page-scroll btn btn-xl" rel="nofollow">
+                    {% trans "Try it" %}
+                </a>
+            {% endif %}
+            {% if not user.is_authenticated or user.userprofile.is_temporary %}
+              <a href="{% url 'core:user:login' %}" class="page-scroll btn btn-xl solid_button">
+                  {% trans "Log in" %}
+              </a>
+            {% endif %}
+          </div>
+        </section>
         <div class="container">
             <div class="intro-text">
-                <div class="intro-heading">{% trans "Welcome to wger" %}</div>
-                <div class="intro-lead-in">{% trans "Your body." %}</div>
-                <div class="intro-lead-in">{% trans "Your workouts." %}</div>
-                <div class="intro-lead-in">{% trans "Your data." %}</div>
-                <div class="intro-lead-in">{% trans "Your progress." %}</div>
-                {% if allow_guest_users and not user.is_authenticated %}
-                    <a href="{% url 'core:user:demo-entries' %}" class="page-scroll btn btn-xl" rel="nofollow" style="margin-top: 1em;">
-                        {% trans "Try it now" %}
-                    </a>
-                {% endif %}
-
+                <div class="intro-lead-in">{% trans "A free, and open source web application that manages your exercises, nutrition and personal workouts." %}</div>
+                <div></div>
                 {% if not user.is_authenticated or user.userprofile.is_temporary %}
                     {% if allow_registration %}
-                        <a href="{% url 'core:user:registration' %}" class="page-scroll btn btn-xl" style="margin-top: 1em;">
-                            {% trans "Register" %}
+                        <a href="{% url 'core:user:registration' %}" class="page-scroll btn btn-xl">
+                            {% trans "Sign up" %}
                         </a>
                     {% endif %}
-
-                    <a href="{% url 'core:user:login' %}" class="page-scroll btn btn-xl" style="margin-top: 1em;">
-                        {% trans "Login" %}
-                    </a>
                 {% endif %}
             </div>
         </div>
@@ -52,23 +57,14 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
-                    <h2 class="section-heading text-light">{% trans "Your advantages" %}</h2>
-                    <h3 class="section-subheading text-muted">
-                        {% blocktrans trimmed %}
-                            wger Workout Manager is a free, open source web application that manages
-                            your exercises, workouts and nutrition. It started as a pet project of
-                            mine to replace my growing collection of different spreadsheets, but it
-                            has become something other people could also find useful.
-                        {% endblocktrans %}
-                    </h3>
+                    <h2 class="section-heading text-light">{% trans "Features" %}</h2>
                 </div>
             </div>
             <div class="row text-center">
                 <div class="col-md-4">
-                    <span class="fa-stack fa-4x">
-                        <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                        <i class="fa fa-user fa-stack-1x fa-inverse"></i>
-                    </span>
+                    <div class="feature_icon_wrapper">
+                      <img src="/static/images/workout_icon.svg" />
+                    </div>
                     <h4 class="service-heading text-light">{% trans "Workouts" %}</h4>
                     <p class="text-muted">
                         {% blocktrans trimmed %}
@@ -80,10 +76,9 @@
                     </p>
                 </div>
                 <div class="col-md-4">
-                    <span class="fa-stack fa-4x">
-                        <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                        <i class="fa fa-cutlery fa-stack-1x fa-inverse"></i>
-                    </span>
+                    <div class="feature_icon_wrapper">
+                      <img src="/static/images/nutrition_icon.svg" />
+                    </div>
                     <h4 class="service-heading text-light">{% trans "Nutrition" %}</h4>
                     <p class="text-muted">
                         {% blocktrans trimmed %}
@@ -95,11 +90,10 @@
                     </p>
                 </div>
                 <div class="col-md-4">
-                    <span class="fa-stack fa-4x">
-                        <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                        <i class="fa fa-line-chart fa-stack-1x fa-inverse"></i>
-                    </span>
-                    <h4 class="service-heading text-light">{% trans 'Diary' %}</h4>
+                    <div class="feature_icon_wrapper">
+                      <img src="/static/images/diary_icon.svg" />
+                    </div>
+                    <h4 class="service-heading text-light">{% trans 'Analytics' %}</h4>
                     <p class="text-muted">
                         {% blocktrans trimmed %}
                             Enter the weights and repetitions you did for each exercise to generate
@@ -114,16 +108,10 @@
     </section>
 
     <section id="about" class="bg-light-gray">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <h2 class="section-heading">{% trans "Features" %}</h2>
-                    <h3 class="section-subheading text-muted">{% trans "Among many others" %}</h3>
-                </div>
-            </div>
+        <div class="container" id="carousel_container">
             <div class="row">
                 <div class="col-lg-12">
-                    <ul class="timeline">
+                    <ul class="timeline" id="carousel">
                         <li>
                             <div class="timeline-image">
                                 <img class="img-circle img-responsive" src="{% static 'images/weight-chart.png' %}" alt="">
@@ -216,14 +204,6 @@
                                         {% endblocktrans %}
                                     </p>
                                 </div>
-                            </div>
-                        </li>
-                        <li class="timeline">
-                            <div class="timeline-image">
-                                <h4>{% blocktrans trimmed %}100% Free
-                                    <br>and
-                                    <br>Open Source{% endblocktrans %}
-                                </h4>
                             </div>
                         </li>
                     </ul>
