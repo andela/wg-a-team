@@ -206,6 +206,14 @@
             <a href="{% url 'core:user:edit' current_user.pk %}" class="wger-modal-dialog">{% trans "Edit"%}</a>
         </li>
         <li class="divider"></li>
+
+        <!-- in the actions menu, add items that allow an admin remove a user from a gym -->
+        <li class="dropdown-header">{% trans "Remove From Gym"%}</li>
+        {% for gym in current_user.userprofile.gyms %}
+            <li><a class="dropdown-item wger-modal-dialog" href="{% url 'core:user:delete-user-from-gym' current_user.pk gym.id %}">{{ gym.name }}</a></li>
+        {% endfor %}
+
+        <li class="divider"></li>
         <li>
             {% if current_user.is_active %}
                 <a href="{% url 'core:user:deactivate' current_user.pk %}" >{% trans "Deactivate user"%}</a>
