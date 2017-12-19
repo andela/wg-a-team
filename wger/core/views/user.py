@@ -54,6 +54,7 @@ from wger.core.forms import (
     RegistrationFormNoCaptcha,
     UserLoginForm)
 from wger.core.models import Language
+from wger.gym.models import Gym
 from wger.manager.models import (
     WorkoutLog,
     WorkoutSession,
@@ -65,6 +66,7 @@ from wger.weight.models import WeightEntry
 from wger.gym.models import (
     AdminUserNote,
     GymUserConfig,
+    GymAdminConfig,
     Contract
 )
 from django.core.exceptions import ObjectDoesNotExist
@@ -147,6 +149,67 @@ def delete(request, user_pk=None):
                'form_action': form_action}
 
     return render(request, 'user/delete_account.html', context)
+
+
+@login_required()
+def delete_from_gym(request, user_pk=None, gym_pk=None):
+    '''
+    Delete a user from a gym
+    '''
+
+    if user_pk and gym_pk:
+        user = get_object_or_404(User, pk=user_pk)
+        gym = get_object_or_404(Gym, pk=gym_pk)
+        form_action = reverse(
+            'core:user:delete-user-from-gym', kwargs={
+                'user_pk': user_pk, 'gym_pk': gym_pk})
+
+        # Forbidden if the user has not enough rights, doesn't belong to the
+        # gym or is an admin as well. General admins can delete all
+        # users.
+        if not request.user.has_perm('gym.manage_gyms') \
+                and (not request.user.has_perm('gym.manage_gym')
+                    #  or request.user.userprofile.gym_id !=
+                    #  user.userprofile.gym_id
+                     or user.has_perm('gym.manage_gym')
+                     or user.has_perm('gym.gym_trainer')
+                     or user.has_perm('gym.manage_gyms')):
+            return HttpResponseForbidden()
+    else:
+        # send user to a list of gyms if any of the parameters are missing
+        return HttpResponseRedirect(reverse('gym:list'))
+
+    if request.method == 'POST':
+
+        # remove a user from their admin/ user roles from the gym
+        GymUserConfig.objects\
+            .filter(gym_id=gym_pk)\
+            .filter(user_id=user_pk).delete()
+        GymAdminConfig.objects\
+            .filter(gym_id=gym_pk)\
+            .filter(user_id=user_pk).delete()
+
+        messages.success(
+            request,
+            _('Account "{0}" was successfully removed from the gym : "{1}"')
+            .format(user.username, gym.name))
+
+        if not user_pk or not gym_pk:
+            django_logout(request)
+            return HttpResponseRedirect(
+                reverse('software:features'))
+        else:
+            return HttpResponseRedirect(
+                reverse(
+                    'gym:gym:user-list',
+                    kwargs={
+                        'pk': gym_pk}))
+
+    context = {'user_delete': user,
+               'gym': gym,
+               'form_action': form_action}
+
+    return render(request, 'user/delete_from_gym.html', context)
 
 
 @login_required()
