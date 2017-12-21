@@ -67,6 +67,7 @@ from wger.gym.models import (
     GymUserConfig,
     Contract
 )
+from django.core.exceptions import ObjectDoesNotExist
 
 logger = logging.getLogger(__name__)
 
@@ -604,8 +605,16 @@ class UserListView(
 
         for u in User.objects.select_related(
                 'usercache', 'userprofile__gym').all():
+
+            last_activity = ""
+
+            try:
+                last_activity = u.usercache.last_activity
+            except ObjectDoesNotExist:
+                pass
+
             out['members'].append(
-                {'obj': u, 'last_log': u.usercache.last_activity})
+                {'obj': u, 'last_log': last_activity})
 
         return out
 
@@ -624,3 +633,8 @@ class UserListView(
                 _('Gym')],
             'users': context['object_list']['members']}
         return context
+
+
+@login_required
+def get_fitbitData(request):
+    return render(request, 'user/fitbit.html')

@@ -19,7 +19,7 @@ from django.contrib.auth.models import User
 from django import forms
 from django.utils.translation import ugettext as _
 
-from wger.core.forms import UserPersonalInformationForm
+from wger.core.forms import UserPersonalInformationForm, UserSelectFieldForm
 from wger.utils.widgets import BootstrapSelectMultiple
 
 
@@ -104,3 +104,19 @@ class GymUserAddForm(
             return username
         raise forms.ValidationError(
             _("A user with that username already exists."))
+
+
+class GymExistingUserAddForm(
+        GymUserPermisssionForm,
+        UserSelectFieldForm):
+    '''
+    Form used when adding an existing user to a gym
+    '''
+
+    class Meta:
+        model = User
+        widgets = {'role': BootstrapSelectMultiple()}
+        fields = (
+            'id',
+            'role',
+        )

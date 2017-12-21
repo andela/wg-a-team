@@ -5,6 +5,9 @@ __pycache__/
 # C extensions
 *.so
 
+# Mac Files
+.DS_Store
+
 # Distribution / packaging
 .Python
 env/
@@ -20,7 +23,9 @@ sdist/
 var/
 *.egg-info/
 .installed.cfg
+.env
 *.egg
+**/migrations/
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -43,11 +48,14 @@ coverage.xml
 # Translations
 *.mo
 *.pot
+venv-django/
 
 # Django stuff:
 *.log
+
 settings*.py
 !settings.py
+
 *.sqlite
 /CACHE
 
@@ -67,9 +75,13 @@ node_modules
 
 #virtualenv
 venv-django/
-
 #statics
-**/static/**
-
+**wger/static/**
 #vscode settings
 .vscode/
+
+#migration files
+**/migrations/
+
+#MAC file system files
+**/.DS_Store

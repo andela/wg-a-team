@@ -43,6 +43,8 @@ from wger.manager.models import (
     WorkoutLog,
     Schedule
 )
+from django.contrib.auth.models import User
+
 from wger.manager.forms import (
     HelperDateForm,
     HelperWorkoutSessionForm,
@@ -151,7 +153,7 @@ def add(request, pk):
     # 'extra'
     WorkoutLogFormSet = modelformset_factory(
         WorkoutLog, form=WorkoutLogForm, exclude=(
-            'date', 'workout'), extra=total_sets)
+            'date', 'workout', 'session_id'), extra=total_sets)
     # Process the request
     if request.method == 'POST':
 
@@ -204,6 +206,7 @@ def add(request, pk):
                     user=request.user, date=log_date)
                 instance.instance = session
             instance.save()
+            session_id = instance
 
             # Log entries (only the ones with actual content)
             instances = [
@@ -215,12 +218,14 @@ def add(request, pk):
                 instance.user = request.user
                 instance.workout = day.training
                 instance.date = log_date
+                instance.session_id = session_id
                 instance.save()
 
             return HttpResponseRedirect(
                 reverse(
                     'manager:log:log', kwargs={
                         'pk': day.training_id}))
+
     else:
         # Initialise the formset with a queryset that won't return any objects
         # (we only add new logs here and that seems to be the fastest way)
@@ -329,6 +334,7 @@ class WorkoutLogDetailView(DetailView, LoginRequiredMixin):
         context['owner_user'] = self.owner_user
         context['is_owner'] = is_owner
         context['show_shariff'] = is_owner
+        context['users'] = User.objects.all()
 
         return context
 

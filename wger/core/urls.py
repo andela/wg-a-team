@@ -97,6 +97,9 @@ patterns_user = [
     url(r'^list',
         user.UserListView.as_view(),
         name='list'),
+    url(r'^fetch_fitbit_data',
+        user.get_fitbitData,
+        name='fitbitData'),
 
     # Password reset is implemented by Django, no need to
     # cook our own soup here (besides the templates)
@@ -192,7 +195,7 @@ urlpatterns = [
         name='index'),
 
     # The dashboard
-    url(r'^dashboard$',
+    url(r'^dashboard/$',
         misc.dashboard,
         name='dashboard'),
 

@@ -1,6 +1,6 @@
 [
     {
-        "pk": 2, 
+        "pk": 2,
         "model": "exercises.muscle", 
         "fields": {
             "is_front": true, 
@@ -125,6 +125,31 @@
         "fields": {
             "is_front": false, 
             "name": "Triceps brachii"
+        }
+    },
+
+    {
+        "pk": 17, 
+        "model": "exercises.muscle", 
+        "fields": {
+            "is_front": false, 
+            "name": "lateral deltoid"
+        }
+    },
+    {
+        "pk": 19, 
+        "model": "exercises.muscle", 
+        "fields": {
+            "is_front": false, 
+            "name": "Posterious Deltoid"
+        }
+    },
+    {
+        "pk": 20, 
+        "model": "exercises.muscle", 
+        "fields": {
+            "is_front": true, 
+            "name": "Forearms"
         }
     }
 ]

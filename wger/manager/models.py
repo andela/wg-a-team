@@ -42,7 +42,6 @@ from wger.utils.cache import (
 )
 from wger.utils.fields import Html5DateField
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -294,8 +293,7 @@ class Schedule(models.Model):
             return False
         while not found:
             for step in steps:
-                current_limit = start_date + \
-                    datetime.timedelta(weeks=step.duration)
+                current_limit = start_date + datetime.timedelta(weeks=step.duration)
                 if current_limit >= datetime.date.today():
                     found = True
                     return step
@@ -316,8 +314,7 @@ class Schedule(models.Model):
 
         end_date = self.start_date
         for step in self.schedulestep_set.all():
-            end_date = end_date + \
-                datetime.timedelta(weeks=step.duration)
+            end_date = end_date + datetime.timedelta(weeks=step.duration)
         return end_date
 
 
@@ -482,16 +479,16 @@ class Day(models.Model):
                         muscles_back_secondary.append(muscle.id)
 
                 for setting in Setting.objects.filter(
-                        set=set_obj,
-                        exercise=exercise).order_by(
-                        'order',
+                    set=set_obj,
+                    exercise=exercise).order_by(
+                    'order',
                         'id'):
                     setting_tmp.append(setting)
 
                 # "Smart" textual representation
-                setting_text, setting_list, weight_list, reps_list,\
-                    repetition_units, weight_units \
-                    = reps_smart_text(setting_tmp, set_obj)
+                setting_text, setting_list, \
+                    weight_list, reps_list, repetition_units, weight_units = \
+                    reps_smart_text(setting_tmp, set_obj)
 
                 # Flag indicating whether all exercises have settings
                 has_setting_tmp = True if len(
@@ -536,10 +533,9 @@ class Day(models.Model):
                     if len(exercise['setting_list']) > common_reps:
                         exercise['setting_list'].pop(-1)
                         exercise['setting_obj_list'].pop(-1)
-                        setting_text, setting_list, weight_list,\
+                        setting_text, setting_list, weight_list, \
                             reps_list, repetition_units, weight_units = \
-                            reps_smart_text(
-                                exercise['setting_obj_list'], set_obj)
+                            reps_smart_text(exercise['setting_obj_list'], set_obj)
                         exercise['setting_text'] = setting_text
                         exercise['repetition_units'] = repetition_units
 
@@ -720,111 +716,6 @@ class Setting(models.Model):
 
 
 @python_2_unicode_compatible
-class WorkoutLog(models.Model):
-    '''
-    A log entry for an exercise
-    '''
-
-    user = models.ForeignKey(User,
-                             verbose_name=_('User'),
-                             editable=False)
-    exercise = models.ForeignKey(Exercise,
-                                 verbose_name=_('Exercise'))
-    workout = models.ForeignKey(Workout,
-                                verbose_name=_('Workout'))
-
-    repetition_unit = models.ForeignKey(RepetitionUnit,
-                                        verbose_name=_('Unit'),
-                                        default=1)
-    '''
-    The unit of the log. This can be e.g. a repetition, a minute, etc.
-    '''
-
-    reps = models.IntegerField(verbose_name=_('Repetitions'),
-                               validators=[MinValueValidator(0)])
-    '''
-    Amount of repetitions, minutes, etc.
-
-    Note that since adding the unit field, the name is no longer correct,
-    but is kept for compatibility reasons (specially for the REST API).
-    '''
-
-    weight = models.DecimalField(decimal_places=2,
-                                 max_digits=5,
-                                 verbose_name=_('Weight'),
-                                 validators=[MinValueValidator(0)])
-
-    weight_unit = models.ForeignKey(WeightUnit,
-                                    verbose_name=_('Unit'),
-                                    default=1)
-    '''
-    The weight unit of the log. This can be e.g. kg, lb, km/h, etc.
-    '''
-
-    date = Html5DateField(verbose_name=_('Date'))
-
-    # Metaclass to set some other properties
-    class Meta:
-        ordering = ["date", "reps"]
-
-    def __str__(self):
-        '''
-        Return a more human-readable representation
-        '''
-        return u"Log entry: {0} - {1} kg on {2}".format(self.reps,
-                                                        self.weight,
-                                                        self.date)
-
-    def get_owner_object(self):
-        '''
-        Returns the object that has owner information
-        '''
-        return self
-
-    def get_workout_session(self, date=None):
-        '''
-        Returns the corresponding workout session
-
-        :return the WorkoutSession object or None if nothing was found
-        '''
-        if not date:
-            date = self.date
-
-        try:
-            return WorkoutSession.objects.filter(
-                user=self.user).get(date=date)
-        except WorkoutSession.DoesNotExist:
-            return None
-
-    def save(self, *args, **kwargs):
-        '''
-        Reset cache
-        '''
-        reset_workout_log(
-            self.user_id,
-            self.date.year,
-            self.date.month,
-            self.date.day)
-
-        # If the user selected "Until Failure", do only 1 "repetition",
-        # everythin else doesn't make sense.
-        if self.repetition_unit == 2:
-            self.reps = 1
-        super(WorkoutLog, self).save(*args, **kwargs)
-
-    def delete(self, *args, **kwargs):
-        '''
-        Reset cache
-        '''
-        reset_workout_log(
-            self.user_id,
-            self.date.year,
-            self.date.month,
-            self.date.day)
-        super(WorkoutLog, self).delete(*args, **kwargs)
-
-
-@python_2_unicode_compatible
 class WorkoutSession(models.Model):
     '''
     Model for a workout session
@@ -921,11 +812,7 @@ class WorkoutSession(models.Model):
                 _("If you enter a time, you must \
                     enter both start and end time."))
 
-        if (
-            self.time_end and
-            self.time_start and
-            self.time_start > self.time_end
-        ):
+        if self.time_end and self.time_start and self.time_start > self.time_end:
             raise ValidationError(
                 _("The start time cannot be after the end time."))
 
@@ -954,3 +841,114 @@ class WorkoutSession(models.Model):
             self.date.year,
             self.date.month)
         super(WorkoutSession, self).delete(*args, **kwargs)
+
+
+@python_2_unicode_compatible
+class WorkoutLog(models.Model):
+    '''
+    A log entry for an exercise
+    '''
+
+    user = models.ForeignKey(User,
+                             verbose_name=_('User'),
+                             editable=False)
+    exercise = models.ForeignKey(Exercise,
+                                 verbose_name=_('Exercise'))
+    workout = models.ForeignKey(Workout,
+                                verbose_name=_('Workout'))
+
+    repetition_unit = models.ForeignKey(RepetitionUnit,
+                                        verbose_name=_('Unit'),
+                                        default=1)
+    '''
+    The unit of the log. This can be e.g. a repetition, a minute, etc.
+    '''
+
+    reps = models.IntegerField(verbose_name=_('Repetitions'),
+                               validators=[MinValueValidator(0)])
+    '''
+    Amount of repetitions, minutes, etc.
+
+    Note that since adding the unit field, the name is no longer correct,
+    but is kept for compatibility reasons (specially for the REST API).
+    '''
+
+    weight = models.DecimalField(decimal_places=2,
+                                 max_digits=5,
+                                 verbose_name=_('Weight'),
+                                 validators=[MinValueValidator(0)])
+
+    weight_unit = models.ForeignKey(WeightUnit,
+                                    verbose_name=_('Unit'),
+                                    default=1)
+    '''
+    The weight unit of the log. This can be e.g. kg, lb, km/h, etc.
+    '''
+
+    date = Html5DateField(verbose_name=_('Date'))
+    session_id = models.ForeignKey(WorkoutSession, verbose_name=_('Session id'), null=True)
+
+    # Metaclass to set some other properties
+    class Meta:
+        ordering = ["date", "reps"]
+
+    def __str__(self):
+        '''
+        Return a more human-readable representation
+        '''
+        return u"Log entry: {0} - {1} kg on {2} and {3}".format(
+            self.reps, self.weight, self.date, self.session_id)
+
+    def get_owner_object(self):
+        '''
+        Returns the object that has owner information
+        '''
+        return self
+
+    def get_workout_session(self, date=None):
+        '''
+        Returns the corresponding workout session
+
+        :return the WorkoutSession object or None if nothing was found
+        '''
+        if not date:
+            date = self.date
+
+        try:
+            if not self.session_id:
+                return WorkoutSession.objects.filter(
+                    user=self.user).get(date=date)
+
+            session_id = self.session_id
+            return WorkoutSession.objects.filter(
+                user=self.user).get(date=date, id=session_id.id)
+
+        except WorkoutSession.DoesNotExist:
+            return None
+
+    def save(self, *args, **kwargs):
+        '''
+        Reset cache
+        '''
+        reset_workout_log(
+            self.user_id,
+            self.date.year,
+            self.date.month,
+            self.date.day)
+
+        # If the user selected "Until Failure", do only 1 "repetition",
+        # everythin else doesn't make sense.
+        if self.repetition_unit == 2:
+            self.reps = 1
+        super(WorkoutLog, self).save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        '''
+        Reset cache
+        '''
+        reset_workout_log(
+            self.user_id,
+            self.date.year,
+            self.date.month,
+            self.date.day)
+        super(WorkoutLog, self).delete(*args, **kwargs)
