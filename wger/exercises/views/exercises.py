@@ -79,8 +79,14 @@ class ExerciseListView(ListView):
         '''
         Filter to only active exercises in the configured languages
         '''
+        
+        url_lang = 'en'
+        if 'lan' in self.request.GET:
+            url_lang = self.request.GET['lan']
+            
         languages = load_item_languages(
-            LanguageConfig.SHOW_ITEM_EXERCISES)
+            LanguageConfig.SHOW_ITEM_EXERCISES, url_lang)
+        
         return Exercise.objects.accepted() \
             .filter(language__in=languages) \
             .order_by('category__id') \
