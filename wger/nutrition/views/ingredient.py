@@ -42,6 +42,7 @@ from wger.utils.generic_views import (
 from wger.utils.constants import PAGINATION_OBJECTS_PER_PAGE
 from wger.utils.language import load_language, load_ingredient_languages
 from wger.utils.cache import cache_mapper
+from wger.core.models import Language
 
 
 logger = logging.getLogger(__name__)
@@ -66,7 +67,22 @@ class IngredientListView(ListView):
         (the user can also want to see ingredients in English, in addition to
         his native language, see load_ingredient_languages)
         '''
+        language = self.request.GET.get('lan')
+        if language:
+            language_object = Language.objects.get(short_name=language)
+            filtered_ingredients = (Ingredient.objects
+                                    .filter(status__in=Ingredient.INGREDIENT_STATUS_OK)
+                                    .filter(language=language_object.id)
+                                    .only('id', 'name'))
+
+            if filtered_ingredients:
+               return filtered_ingredients
+            else:
+                "Language not available"
+
+        
         languages = load_ingredient_languages(self.request)
+
         return (
             Ingredient.objects.filter(
                 language__in=languages) .filter(
@@ -213,7 +229,7 @@ class IngredientCreateView(IngredientMixin, CreateView):
                              message,
                              fail_silently=True)
 
-        form.instance.language = load_language()
+        form.instance.language = load_language(self.request.GET['lan'])
         return super(IngredientCreateView, self).form_valid(form)
 
     def dispatch(self, request, *args, **kwargs):
