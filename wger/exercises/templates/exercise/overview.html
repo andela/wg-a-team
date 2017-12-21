@@ -38,7 +38,7 @@ $(document).ready(function() {
 -->
 {% block content %}
 
-{% cache cache_timeout exercise-overview language.id %}
+{% cache 0 exercise-overview language.id %}
 {% regroup exercises by category as exercise_list %}
 <ul class="nav nav-tabs">
     {% for item in exercise_list %}
@@ -121,6 +121,7 @@ $(document).ready(function() {
         <a href="{% url 'exercise:exercise:add' %}" class="btn btn-success btn-sm">
             {% trans "Add new exercise" %}
         </a>
+
     {% else %}
         <a href="#" class="btn btn-success btn-sm disabled">
             {% trans "Add new exercise" %}<br>
@@ -129,4 +130,17 @@ $(document).ready(function() {
             </small>
         </a>
     {% endif %}
+    <div class="btn-group">
+    <button style="padding: 5px 20px;" class="btn btn-primary dropdown-toggle btn-xs" type="button" data-toggle="dropdown"> English </button>
+    <ul class="dropdown-menu">
+        <li> <a href="{{request.path}}?lan=en"</a> <img src="/static/images/icons/flag-en.svg" alt="English" title="English" style="border: 1px solid #151515;" width="18" height="11"> English </li>
+        <li> <a href="{{request.path}}?lan=de" </a> <img src="/static/images/icons/flag-de.svg" alt="German" title="German" style="border: 1px solid #151515;" width="18" height="11"> German </li>
+        <li> <a href="/bg/exercise/overview/?lan=bg" </a> <img src="/static/images/icons/flag-bg.svg" alt="Bulgarian" title="Bulgarian" style="border: 1px solid #151515;" width="18" height="11"> Bulgarian </li>
+        <li> <a href="/es/exercise/overview/?lan=es" </a> <img src="/static/images/icons/flag-es.svg" alt="Spanish" title="Spanish" style="border: 1px solid #151515;" width="18" height="11"> Spanish </li>
+        <li> <a href="/ru/exercise/overview/?lan=ru" </a> <img src="/static/images/icons/flag-ru.svg" alt="Russian" title="Russian" style="border: 1px solid #151515;" width="18" height="11"> Russian </li>
+        <li> <a href="/nl/exercise/overview/?lan=nl" </a> <img src="/static/images/icons/flag-nl.svg" alt="Dutch" title="Dutch" style="border: 1px solid #151515;" width="18" height="11"> Dutch </li>
+        <li> <a href="/pt/exercise/overview/?lan=pt" </a> <img src="/static/images/icons/flag-pt.svg" alt="Portuguese" title="Portuguese" style="border: 1px solid #151515;" width="18" height="11"> Portuguese </li>
+        
+    </ul>
+    </div>
 {% endblock %}
