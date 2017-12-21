@@ -28,6 +28,11 @@ from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext as _
 
 from wger.gym.models import Gym
+from django.db.models import Q
+from django.contrib.auth.models import (
+    Permission,
+    User
+)
 
 logger = logging.getLogger(__name__)
 
@@ -69,7 +74,8 @@ def users(request, gym_pk):
                      _('City').encode('utf8'),
                      _('Street').encode('utf8'),
                      _('Phone').encode('utf8')])
-    for user in Gym.objects.get_members(gym_pk):
+
+    for user in get_members(gym_pk):
         address = user.userprofile.address
         writer.writerow([user.id,
                          gym.name.encode('utf8'),
@@ -92,3 +98,18 @@ def users(request, gym_pk):
         filename)
     response['Content-Length'] = len(response.content)
     return response
+
+
+def get_members(gym_pk):
+    '''
+    Returns all members for this gym (i.e non-admin ones)
+    '''
+    perm_gym = Permission.objects.get(codename='manage_gym')
+    perm_gyms = Permission.objects.get(codename='manage_gyms')
+    perm_trainer = Permission.objects.get(codename='gym_trainer')
+
+    the_users = User.objects.filter(userprofile__gym_id=gym_pk)
+    return the_users.exclude(
+        Q(groups__permissions=perm_gym) |
+        Q(groups__permissions=perm_gyms) |
+        Q(groups__permissions=perm_trainer)).distinct()

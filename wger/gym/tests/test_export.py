@@ -50,7 +50,7 @@ class GymMembersCsvExportTestCase(WorkoutManagerTestCase):
             self.assertEqual(
                 response['Content-Disposition'],
                 'attachment; filename={0}'.format(filename))
-            self.assertGreaterEqual(len(response.content), 854)
+            self.assertGreaterEqual(len(response.content), 1000)
             self.assertLessEqual(len(response.content), 1300)
 
     def test_export_csv_authorized(self):
