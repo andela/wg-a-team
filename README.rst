@@ -1,10 +1,8 @@
-[![Build Status](https://travis-ci.org/andela/wg-a-team.svg?branch=develop)](https://travis-ci.org/andela/wg-a-team)
+.. image:: https://travis-ci.org/andela/wg-a-team.svg?branch=develop
+    :target: https://travis-ci.org/andela/wg-a-team
 
-[![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
-
-[![PEP8](https://img.shields.io/badge/code%20style-pep8-orange.svg)](https://www.python.org/dev/peps/pep-0008/)
-
-
+.. image:: https://circleci.com/gh/andela/wg-a-team/tree/develop.svg?style=svg
+    :target: https://circleci.com/gh/andela/wg-a-team/tree/develop
 
 
 Thank you for downloading wger Workout Manager. wger (ˈvɛɡɐ) is a free, open source web
