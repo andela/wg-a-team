@@ -40,7 +40,6 @@ from wger.nutrition.models import NutritionPlan
 from wger.weight.models import WeightEntry
 from wger.weight.helpers import get_last_entries
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -64,10 +63,7 @@ def demo_entries(request):
     if not settings.WGER_SETTINGS['ALLOW_GUEST_USERS']:
         return HttpResponseRedirect(reverse('software:features'))
 
-    if ((
-        (
-            not request.user.is_authenticated() or
-            request.user.userprofile.is_temporary)
+    if (((not request.user.is_authenticated() or request.user.userprofile.is_temporary)
             and not request.session['has_demo_data'])):
         # If we reach this from a page that has no user created by the
         # middleware, do that now
@@ -150,12 +146,11 @@ def dashboard(request):
 
         if not day_has_workout:
             week_day_result.append(
-                (_(week.day_of_week), _('Rest '+ week.period_type), False))
+                (_(week.day_of_week), _('Rest ' + week.period_type), False))
 
     template_data['weekdays'] = week_day_result
 
     if plan:
-
         # Load the nutritional info
         template_data['nutritional_info'] = plan.get_nutritional_values()
 
