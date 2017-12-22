@@ -57,7 +57,14 @@
 
 {% if workout.cycle %}
 <p>
-    <strong>{% trans "Cycle" %}:</strong>{{workout.cycle}}
+    <strong>{% trans "Cycle" %}:</strong>{{workout.cycle}} -
+    {% if "Microcycle" in workout.cycle %}
+    {% trans "Daily workout plan that lasts 7 days. " %}
+    {% elif "Mesocycle" in workout.cycle %}
+    {% trans "Weekly workout plans that lasts 2 to 6 weeks." %}
+    {%elif "Macrocycle" in workout.cycle %}
+    {% trans "Monthly workout plan that lasts up to 12 months." %}
+    {% endif %}
 </p>
 {% endif %}
 {% if workout.comment %}
