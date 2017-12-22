@@ -150,7 +150,7 @@ def dashboard(request):
 
         if not day_has_workout:
             week_day_result.append(
-                (_(week.day_of_week), _('Rest day'), False))
+                (_(week.day_of_week), _('Rest '+ week.period_type), False))
 
     template_data['weekdays'] = week_day_result
 
