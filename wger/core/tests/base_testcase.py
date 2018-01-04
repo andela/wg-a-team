@@ -118,7 +118,8 @@ class BaseTestCase(object):
                 'test-nutrition-data',
                 'test-workout-data',
                 'test-workout-session',
-                'test-schedules')
+                'test-schedules',
+                'test-authors')
     current_user = 'anonymous'
     current_password = ''
     is_mobile = False
@@ -226,9 +227,12 @@ class WorkoutManagerTestCase(BaseTestCase, TestCase):
                     field.name), os.path.basename(
                     value.name))
 
-        # Other objects (from foreign keys), check the ID
+        # Other objects (from foreign keys), check the ID or name
         else:
-            self.assertEqual(field.id, value)
+            try:
+                self.assertEqual(field.id, value)
+            except Exception as e:
+                self.assertEqual(field.name, value)
 
     def post_test_hook(self):
         '''

@@ -295,6 +295,7 @@ def load_fixtures(context, settings_path=None):
     path = os.path.join(current_dir, 'wger', 'exercises', 'fixtures/')
     call_command("loaddata", path + "equipment.json")
     call_command("loaddata", path + "muscles.json")
+    call_command("loaddata", path + "authors.json")
     call_command("loaddata", path + "categories.json")
     call_command("loaddata", path + "exercises.json")
 
