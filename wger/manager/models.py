@@ -68,6 +68,13 @@ class Workout(models.Model):
             "example 'Focus on back' or 'Week 1 of program xy'."))
     user = models.ForeignKey(User, verbose_name=_('User'))
 
+    CYCLE_CHOICES = [
+        ('Microcycle', 'Microcycle - up to 1 week'),
+        ('Mesocycle', 'Mesocycle - 2 to 6 weeks'),
+        ('Macrocycle', 'Macrocycle - up to 12 Months'),
+    ]
+    cycle = models.CharField(max_length=10, choices=CYCLE_CHOICES, default='Microcycle')
+
     def get_absolute_url(self):
         '''
         Returns the canonical URL to view a workout

@@ -150,7 +150,7 @@ class EditWorkoutTestCase(WorkoutManagerEditTestCase):
     pk = 3
     user_success = 'test'
     user_fail = 'admin'
-    data = {'comment': 'A new comment'}
+    data = {'comment': 'A new comment', 'cycle': 'Microcycle'}
 
 
 class WorkoutOverviewTestCase(WorkoutManagerTestCase):
