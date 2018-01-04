@@ -67,6 +67,12 @@ patterns_user = [
     url(r'^(?P<user_pk>\d+)/delete$',
         user.delete,
         name='delete'),
+
+    # url used to remove a user from a gym
+    url(r'^(?P<user_pk>\d+)/delete/gym/(?P<gym_pk>\d+)$',
+        user.delete_from_gym,
+        name='delete-user-from-gym'),
+
     url(r'^(?P<user_pk>\d+)/trainer-login$',
         user.trainer_login,
         name='trainer-login'),

@@ -22,6 +22,7 @@ import fitbit
 from fitbit.exceptions import HTTPUnauthorized
 
 from django.db import models
+from django.db.models import Q
 from django.db.models import IntegerField
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
@@ -366,6 +367,22 @@ class UserProfile(models.Model):
         except WeightEntry.DoesNotExist:
             weight = 0
         return weight
+
+    @property
+    def gyms(self):
+        '''
+        Returns the gyms that this particular user belongs to
+        '''
+        try:
+            gyms = Gym.objects\
+                .filter(
+                    Q(gymuserconfig__user_id=self.user) |
+                    Q(gymadminconfig__user_id=self.user))\
+                .values('id', 'name').distinct()
+        except Exception:
+            gyms = []
+
+        return gyms
 
     @property
     def address(self):
